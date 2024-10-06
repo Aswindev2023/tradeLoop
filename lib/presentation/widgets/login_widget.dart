@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/presentation/widgets/input_field_widget.dart';
+import 'package:trade_loop/core/utils/form_validation_message.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController emailController;
   final TextEditingController passwordController;
@@ -23,6 +25,14 @@ class LoginForm extends StatelessWidget {
   });
 
   @override
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  String? emailError;
+  String? passwordError;
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -37,40 +47,73 @@ class LoginForm extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           child: Form(
-            key: formKey,
+            key: widget.formKey,
             child: Column(
               children: [
-                _buildInputField(
-                  controller: emailController,
-                  hintText: "Email",
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter E-mail';
-                    }
-                    return null;
-                  },
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 5.0),
+                    child: Text(
+                      "Email",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                InputFieldWidget(
+                  controller: widget.emailController,
+                  hintText: 'Email',
+                  fieldName: 'Email',
+                  errorMessage: emailError,
                 ),
                 const SizedBox(height: 30.0),
-                _buildInputField(
-                  controller: passwordController,
-                  hintText: "Password",
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 5.0),
+                    child: Text(
+                      "Password",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                InputFieldWidget(
+                  controller: widget.passwordController,
+                  hintText: 'Password',
+                  fieldName: 'Password',
                   obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter Password';
-                    }
-                    return null;
-                  },
+                  errorMessage: passwordError,
                 ),
                 const SizedBox(height: 30.0),
                 GestureDetector(
-                  onTap: onLoginTap,
+                  onTap: () {
+                    setState(() {
+                      emailError = FormValidators.validateForm(
+                          widget.emailController.text, 'Email');
+                      passwordError = FormValidators.validateForm(
+                          widget.passwordController.text, 'Password');
+                    });
+
+                    if (emailError == null && passwordError == null) {
+                      widget.onLoginTap();
+                    }
+                  },
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(
                         vertical: 13.0, horizontal: 30.0),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF273671),
+                      color: const Color.fromARGB(255, 14, 58, 237),
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: const Center(
@@ -90,7 +133,7 @@ class LoginForm extends StatelessWidget {
         ),
         const SizedBox(height: 20.0),
         GestureDetector(
-          onTap: onForgotPasswordTap,
+          onTap: widget.onForgotPasswordTap,
           child: const Text(
             "Forgot Password?",
             style: TextStyle(
@@ -112,7 +155,7 @@ class LoginForm extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
-              onTap: onGoogleSignIn,
+              onTap: widget.onGoogleSignIn,
               child: Image.asset(
                 "images/car (1).PNG",
                 height: 45,
@@ -122,7 +165,7 @@ class LoginForm extends StatelessWidget {
             ),
             const SizedBox(width: 30.0),
             GestureDetector(
-              onTap: onAppleSignIn,
+              onTap: widget.onAppleSignIn,
               child: Image.asset(
                 "images/car (1).PNG",
                 height: 50,
@@ -145,7 +188,7 @@ class LoginForm extends StatelessWidget {
             ),
             const SizedBox(width: 5.0),
             GestureDetector(
-              onTap: onSignUpTap,
+              onTap: widget.onSignUpTap,
               child: const Text(
                 "SignUp",
                 style: TextStyle(
@@ -157,31 +200,6 @@ class LoginForm extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-
-  Widget _buildInputField({
-    required TextEditingController controller,
-    required String hintText,
-    bool obscureText = false,
-    String? Function(String?)? validator,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 30.0),
-      decoration: BoxDecoration(
-        color: const Color(0xFFedf0f8),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: TextFormField(
-        controller: controller,
-        validator: validator,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: hintText,
-          hintStyle: const TextStyle(color: Color(0xFFb2b7bf), fontSize: 18.0),
-        ),
-        obscureText: obscureText,
-      ),
     );
   }
 }
