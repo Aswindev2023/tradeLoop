@@ -41,7 +41,7 @@ class InputFieldWidget extends StatelessWidget {
         if (errorMessage != null && errorMessage!.isNotEmpty)
           Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
+                const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
             child: Text(
               errorMessage!,
               style: const TextStyle(color: Colors.red, fontSize: 14.0),

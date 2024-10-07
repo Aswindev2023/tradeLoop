@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Signup extends StatelessWidget {
-  Signup({super.key});
+  const Signup({super.key});
 
   //final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   //final TextEditingController _emailController = TextEditingController();
