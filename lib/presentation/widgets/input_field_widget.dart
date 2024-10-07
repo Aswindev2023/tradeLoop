@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class InputFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
-  final String fieldName;
+  //final String fieldName;
   final String? errorMessage;
   final bool obscureText;
 
@@ -11,7 +11,7 @@ class InputFieldWidget extends StatelessWidget {
     super.key,
     required this.controller,
     required this.hintText,
-    required this.fieldName,
+    // required this.fieldName,
     this.errorMessage,
     this.obscureText = false,
   });

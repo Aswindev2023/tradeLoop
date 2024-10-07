@@ -9,7 +9,7 @@ class LoginForm extends StatefulWidget {
   final VoidCallback onLoginTap;
   final VoidCallback onForgotPasswordTap;
   final VoidCallback onGoogleSignIn;
-  final VoidCallback onAppleSignIn;
+
   final VoidCallback onSignUpTap;
 
   const LoginForm({
@@ -20,15 +20,14 @@ class LoginForm extends StatefulWidget {
     required this.onLoginTap,
     required this.onForgotPasswordTap,
     required this.onGoogleSignIn,
-    required this.onAppleSignIn,
     required this.onSignUpTap,
   });
 
   @override
-  _LoginFormState createState() => _LoginFormState();
+  LoginFormState createState() => LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class LoginFormState extends State<LoginForm> {
   String? emailError;
   String? passwordError;
 
@@ -68,7 +67,7 @@ class _LoginFormState extends State<LoginForm> {
                 InputFieldWidget(
                   controller: widget.emailController,
                   hintText: 'Email',
-                  fieldName: 'Email',
+                  //fieldName: 'Email',
                   errorMessage: emailError,
                 ),
                 const SizedBox(height: 30.0),
@@ -90,7 +89,7 @@ class _LoginFormState extends State<LoginForm> {
                 InputFieldWidget(
                   controller: widget.passwordController,
                   hintText: 'Password',
-                  fieldName: 'Password',
+                  // fieldName: 'Password',
                   obscureText: true,
                   errorMessage: passwordError,
                 ),
@@ -118,7 +117,7 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                     child: const Center(
                       child: Text(
-                        "Sign In",
+                        "Log In",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 22.0,
@@ -163,19 +162,9 @@ class _LoginFormState extends State<LoginForm> {
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(width: 30.0),
-            GestureDetector(
-              onTap: widget.onAppleSignIn,
-              child: Image.asset(
-                "images/car (1).PNG",
-                height: 50,
-                width: 50,
-                fit: BoxFit.cover,
-              ),
-            ),
           ],
         ),
-        const SizedBox(height: 40.0),
+        const SizedBox(height: 30.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
