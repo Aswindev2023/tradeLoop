@@ -71,26 +71,22 @@ class ForgotPassword extends StatelessWidget {
                         InputFieldWidget(
                           controller: _emailController,
                           hintText: 'Email',
-                          //fieldName: 'Email',
                         ),
                         const SizedBox(height: 20.0),
                         SizedBox(
                           width: 250,
                           child: ElevatedButton(
                             onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                if (FormValidators.isValidEmail(
-                                    _emailController.text)) {
-                                  BlocProvider.of<AuthBlocBloc>(context)
-                                      .add(ForgotPasswordEvent(
-                                    email: _emailController.text,
-                                  ));
-                                } else {
-                                  SnackbarUtils.showSnackbar(
-                                      context, 'Invalid Email Format');
-                                }
+                              if (FormValidators.isValidEmail(
+                                  _emailController.text)) {
+                                BlocProvider.of<AuthBlocBloc>(context)
+                                    .add(ForgotPasswordEvent(
+                                  email: _emailController.text,
+                                ));
+                                Navigator.pop(context, 'Email Sent');
                               } else {
-                                print('sent email button validation');
+                                SnackbarUtils.showSnackbar(
+                                    context, 'Invalid Email Format');
                               }
                             },
                             style: ElevatedButton.styleFrom(

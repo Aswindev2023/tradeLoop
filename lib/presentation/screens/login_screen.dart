@@ -8,7 +8,9 @@ import 'package:trade_loop/presentation/screens/signup_screen.dart';
 import 'package:trade_loop/presentation/widgets/login_widget.dart';
 
 class LogIn extends StatelessWidget {
-  LogIn({super.key});
+  final String? successMessage;
+
+  LogIn({super.key, this.successMessage});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -16,6 +18,11 @@ class LogIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (successMessage != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        SnackbarUtils.showSnackbar(context, successMessage!);
+      });
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocListener<AuthBlocBloc, AuthBlocState>(
@@ -50,19 +57,17 @@ class LogIn extends StatelessWidget {
             },
             onForgotPasswordTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ForgotPassword()));
-            },
-            onGoogleSignIn: () {
-              // Google Sign-In logic here
-            },
-            onSignUpTap: () {
-              Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Signup()))
+                      MaterialPageRoute(builder: (context) => ForgotPassword()))
                   .then((result) {
                 if (result != null) {
                   SnackbarUtils.showSnackbar(context, result);
                 }
               });
+            },
+            onGoogleSignIn: () {},
+            onSignUpTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Signup()));
             },
           ),
         ),

@@ -21,7 +21,15 @@ class Signup extends StatelessWidget {
       body: BlocListener<AuthBlocBloc, AuthBlocState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            Navigator.pop(context, 'Account Created');
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute<void>(
+                builder: (
+                  BuildContext context,
+                ) =>
+                    LogIn(),
+              ),
+            );
           } else if (state is AuthFailure) {
             SnackbarUtils.showSnackbar(context, state.message,
                 backgroundColor: Colors.orangeAccent);
@@ -44,6 +52,13 @@ class Signup extends StatelessWidget {
                     password: _passwordController.text,
                     name: _nameController.text,
                   ));
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => LogIn(
+                          successMessage: 'Account created successfully!'),
+                    ),
+                  );
                 } else {
                   SnackbarUtils.showSnackbar(
                       context, 'Invalid Email/Name Format');

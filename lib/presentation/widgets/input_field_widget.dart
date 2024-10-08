@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-//import 'package:trade_loop/core/utils/form_validation_message.dart';
 
 class InputFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   //final String fieldName;
+  final String? errorMessage;
   final bool obscureText;
-  final FormFieldValidator<String>? validator;
 
   const InputFieldWidget({
     super.key,
     required this.controller,
     required this.hintText,
+    // required this.fieldName,
+    this.errorMessage,
     this.obscureText = false,
-    this.validator,
   });
 
   @override
@@ -36,9 +36,17 @@ class InputFieldWidget extends StatelessWidget {
                   const TextStyle(color: Color(0xFFb2b7bf), fontSize: 18.0),
             ),
             obscureText: obscureText,
-            validator: validator,
           ),
         ),
+        if (errorMessage != null && errorMessage!.isNotEmpty)
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
+            child: Text(
+              errorMessage!,
+              style: const TextStyle(color: Colors.red, fontSize: 14.0),
+            ),
+          ),
       ],
     );
   }
