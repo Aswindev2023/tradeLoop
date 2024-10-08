@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
+import 'package:trade_loop/presentation/screens/login_screen.dart';
 import 'package:trade_loop/presentation/widgets/signup_widget.dart';
 
 class Signup extends StatelessWidget {
@@ -33,15 +35,28 @@ class Signup extends StatelessWidget {
             nameController: _nameController,
             onSignUpTap: () {
               if (_formKey.currentState!.validate()) {
-                BlocProvider.of<AuthBlocBloc>(context).add(SignUpButtonPressed(
-                  email: _emailController.text,
-                  password: _passwordController.text,
-                  name: _nameController.text,
-                ));
+                if (FormValidators.isValidEmail(_emailController.text) &&
+                    FormValidators.isValidName(_nameController.text)) {
+                  print("Email and Name are valid");
+                  BlocProvider.of<AuthBlocBloc>(context)
+                      .add(SignUpButtonPressed(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    name: _nameController.text,
+                  ));
+                } else {
+                  SnackbarUtils.showSnackbar(
+                      context, 'Invalid Email/Name Format');
+                }
               }
             },
             onLogInTap: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => LogIn(),
+                ),
+              );
             },
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
+import 'package:trade_loop/presentation/bloc/validation_bloc/validation_bloc.dart';
 import 'package:trade_loop/presentation/screens/login_screen.dart';
 import 'package:trade_loop/services/auth_services.dart';
 
@@ -22,6 +23,9 @@ class MyApp extends StatelessWidget {
           BlocProvider<AuthBlocBloc>(
             create: (BuildContext context) => AuthBlocBloc(authServices),
           ),
+          BlocProvider<ValidationBloc>(
+            create: (BuildContext context) => ValidationBloc(),
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -39,15 +43,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 

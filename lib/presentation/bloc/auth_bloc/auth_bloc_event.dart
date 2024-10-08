@@ -24,3 +24,11 @@ class SignUpButtonPressed extends AuthBlocEvent {
   @override
   List<Object> get props => [name, email, password];
 }
+
+class ForgotPasswordEvent extends AuthBlocEvent {
+  final String email;
+  const ForgotPasswordEvent({required this.email});
+
+  @override
+  List<Object> get props => [email];
+}

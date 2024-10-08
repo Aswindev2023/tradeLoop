@@ -9,6 +9,7 @@ part 'auth_bloc_state.dart';
 class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
   final AuthServices _authServices;
   AuthBlocBloc(this._authServices) : super(AuthBlocInitial()) {
+    //Log In Bloc
     on<LoginButtonPressed>((event, emit) async {
       emit(AuthLoading());
       try {
@@ -18,6 +19,7 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
         emit(AuthFailure(message: e.message ?? 'Login Failed'));
       }
     });
+    //Sign Up Bloc
     on<SignUpButtonPressed>((event, emit) async {
       emit(AuthLoading());
       try {
@@ -25,6 +27,17 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
         emit(AuthSuccess());
       } on FirebaseAuthException catch (e) {
         emit(AuthFailure(message: e.message ?? 'Sign Up Failed'));
+      }
+    });
+    //Password Reset Bloc
+    on<ForgotPasswordEvent>((event, emit) async {
+      emit((AuthLoading()));
+      try {
+        await _authServices.resetPassword(event.email);
+        emit(PasswordResetSuccess());
+      } on FirebaseAuthException catch (e) {
+        emit(PasswordResetFailure(
+            message: e.message ?? 'Password Reset Failed'));
       }
     });
   }

@@ -21,3 +21,14 @@ class AuthFailure extends AuthBlocState {
   @override
   List<Object> get props => [message];
 }
+
+class PasswordResetSuccess extends AuthBlocState {}
+
+class PasswordResetFailure extends AuthBlocState {
+  final String message;
+
+  const PasswordResetFailure({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

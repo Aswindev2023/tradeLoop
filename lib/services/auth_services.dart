@@ -12,4 +12,8 @@ class AuthServices {
     return await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
   }
+
+  Future<void> resetPassword(String email) async {
+    return await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
 }
