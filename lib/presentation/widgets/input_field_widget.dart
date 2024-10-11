@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/utils/input_field_utils.dart';
 
 class InputFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
-  //final String fieldName;
   final String? errorMessage;
   final bool obscureText;
+  final VoidCallback? toggleVisibility;
 
   const InputFieldWidget({
     super.key,
     required this.controller,
     required this.hintText,
-    // required this.fieldName,
     this.errorMessage,
     this.obscureText = false,
+    this.toggleVisibility,
   });
 
   @override
@@ -29,13 +30,17 @@ class InputFieldWidget extends StatelessWidget {
           ),
           child: TextFormField(
             controller: controller,
+            obscureText: obscureText,
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: hintText,
               hintStyle:
                   const TextStyle(color: Color(0xFFb2b7bf), fontSize: 18.0),
+              suffixIcon: getPasswordVisibilityIcon(
+                obscureText: obscureText,
+                toggleVisibility: toggleVisibility,
+              ),
             ),
-            obscureText: obscureText,
           ),
         ),
         if (errorMessage != null && errorMessage!.isNotEmpty)

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/presentation/widgets/google_signin_button.dart';
 import 'package:trade_loop/presentation/widgets/input_field_widget.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 
@@ -30,6 +31,13 @@ class LoginForm extends StatefulWidget {
 class LoginFormState extends State<LoginForm> {
   String? emailError;
   String? passwordError;
+  bool _obscurePassword = true;
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscurePassword = !_obscurePassword;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +97,9 @@ class LoginFormState extends State<LoginForm> {
                 InputFieldWidget(
                   controller: widget.passwordController,
                   hintText: 'Password',
-                  // fieldName: 'Password',
-                  obscureText: true,
+                  obscureText: _obscurePassword,
                   errorMessage: passwordError,
+                  toggleVisibility: _togglePasswordVisibility,
                 ),
                 const SizedBox(height: 30.0),
                 GestureDetector(
@@ -141,9 +149,9 @@ class LoginFormState extends State<LoginForm> {
                 fontWeight: FontWeight.w500),
           ),
         ),
-        const SizedBox(height: 40.0),
+        const SizedBox(height: 20.0),
         const Text(
-          "or LogIn with",
+          "or",
           style: TextStyle(
               color: Color(0xFF273671),
               fontSize: 22.0,
@@ -151,6 +159,12 @@ class LoginFormState extends State<LoginForm> {
         ),
         const SizedBox(height: 30.0),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GoogleSignInButton(onGoogleSignIn: widget.onGoogleSignIn),
+          ],
+        ),
+        /* Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
@@ -163,7 +177,7 @@ class LoginFormState extends State<LoginForm> {
               ),
             ),
           ],
-        ),
+        ),*/
         const SizedBox(height: 30.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

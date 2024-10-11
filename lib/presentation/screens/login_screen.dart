@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
+import 'package:trade_loop/main.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
 import 'package:trade_loop/presentation/screens/forgot_password.dart';
 import 'package:trade_loop/presentation/screens/signup_screen.dart';
@@ -28,8 +29,12 @@ class LogIn extends StatelessWidget {
       body: BlocListener<AuthBlocBloc, AuthBlocState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const Placeholder()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const MyHomePage(
+                          title: 'Home',
+                        )));
           } else if (state is AuthFailure) {
             SnackbarUtils.showSnackbar(
               context,

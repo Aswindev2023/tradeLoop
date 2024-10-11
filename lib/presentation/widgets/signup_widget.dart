@@ -29,6 +29,13 @@ class SignupWidgetState extends State<SignupWidget> {
   String? emailError;
   String? passwordError;
   String? nameError;
+  bool _obscurePassword = true;
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscurePassword = !_obscurePassword;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,9 +117,9 @@ class SignupWidgetState extends State<SignupWidget> {
                 InputFieldWidget(
                   controller: widget.passwordController,
                   hintText: 'Password',
-                  // fieldName: 'Password',
-                  obscureText: true,
+                  obscureText: _obscurePassword,
                   errorMessage: passwordError,
+                  toggleVisibility: _togglePasswordVisibility,
                 ),
                 const SizedBox(height: 30.0),
                 GestureDetector(
