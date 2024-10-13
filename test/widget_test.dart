@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:trade_loop/main.dart';
-import 'package:trade_loop/repositories/auth_services.dart';
+import 'package:trade_loop/features/authentication/repositories/auth_services.dart';
 
 void main() {
   setUpAll(() async {

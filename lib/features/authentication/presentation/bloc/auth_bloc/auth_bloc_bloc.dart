@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:trade_loop/repositories/auth_services.dart';
+import 'package:trade_loop/features/authentication/repositories/auth_services.dart';
 
 part 'auth_bloc_event.dart';
 part 'auth_bloc_state.dart';
@@ -38,6 +38,20 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
       } on FirebaseAuthException catch (e) {
         emit(PasswordResetFailure(
             message: e.message ?? 'Password Reset Failed'));
+      }
+    });
+    //Google Signin Bloc
+    on<GoogleSignInButtonPressed>((event, emit) async {
+      emit(AuthLoading());
+      try {
+        final user = await _authServices.signInWithGoogle();
+        if (user != null) {
+          emit(AuthSuccess());
+        } else {
+          emit(const AuthFailure(message: 'Google Sign-In failed'));
+        }
+      } on Exception catch (e) {
+        emit(AuthFailure(message: e.toString()));
       }
     });
   }

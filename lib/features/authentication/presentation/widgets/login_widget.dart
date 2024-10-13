@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:trade_loop/presentation/widgets/google_signin_button.dart';
-import 'package:trade_loop/presentation/widgets/input_field_widget.dart';
+import 'package:trade_loop/features/authentication/presentation/widgets/google_signin_button.dart';
+import 'package:trade_loop/features/authentication/presentation/widgets/input_field_widget.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 
 class LoginForm extends StatefulWidget {
@@ -37,6 +37,13 @@ class LoginFormState extends State<LoginForm> {
     setState(() {
       _obscurePassword = !_obscurePassword;
     });
+  }
+
+  @override
+  void dispose() {
+    widget.emailController.dispose();
+    widget.passwordController.dispose();
+    super.dispose();
   }
 
   @override

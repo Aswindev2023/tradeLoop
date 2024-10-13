@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/main.dart';
-import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
-import 'package:trade_loop/presentation/screens/forgot_password.dart';
-import 'package:trade_loop/presentation/screens/signup_screen.dart';
-import 'package:trade_loop/presentation/widgets/login_widget.dart';
+import 'package:trade_loop/features/authentication/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
+import 'package:trade_loop/features/authentication/presentation/screens/forgot_password.dart';
+import 'package:trade_loop/features/authentication/presentation/screens/signup_screen.dart';
+import 'package:trade_loop/features/authentication/presentation/widgets/login_widget.dart';
 
 class LogIn extends StatelessWidget {
   final String? successMessage;
@@ -29,12 +29,13 @@ class LogIn extends StatelessWidget {
       body: BlocListener<AuthBlocBloc, AuthBlocState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            Navigator.push(
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const MyHomePage(
-                          title: 'Home',
-                        )));
+                    builder: (context) => const MyHomePage(title: 'HOME')),
+              );
+            });
           } else if (state is AuthFailure) {
             SnackbarUtils.showSnackbar(
               context,
@@ -51,10 +52,10 @@ class LogIn extends StatelessWidget {
             onLoginTap: () {
               if (_formKey.currentState!.validate()) {
                 if (FormValidators.isValidEmail(_emailController.text)) {
-                  BlocProvider.of<AuthBlocBloc>(context).add(LoginButtonPressed(
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                  ));
+                  context.read<AuthBlocBloc>().add(LoginButtonPressed(
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      ));
                 } else {
                   SnackbarUtils.showSnackbar(context, 'Invalid Email Format');
                 }
@@ -69,7 +70,10 @@ class LogIn extends StatelessWidget {
                 }
               });
             },
-            onGoogleSignIn: () {},
+            onGoogleSignIn: () {
+              BlocProvider.of<AuthBlocBloc>(context)
+                  .add(GoogleSignInButtonPressed());
+            },
             onSignUpTap: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Signup()));

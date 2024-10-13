@@ -32,3 +32,5 @@ class ForgotPasswordEvent extends AuthBlocEvent {
   @override
   List<Object> get props => [email];
 }
+
+class GoogleSignInButtonPressed extends AuthBlocEvent {}

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
-import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
-import 'package:trade_loop/presentation/screens/login_screen.dart';
-import 'package:trade_loop/presentation/widgets/signup_widget.dart';
+import 'package:trade_loop/features/authentication/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
+import 'package:trade_loop/features/authentication/presentation/screens/login_screen.dart';
+import 'package:trade_loop/features/authentication/presentation/widgets/signup_widget.dart';
 
 class Signup extends StatelessWidget {
   Signup({super.key});
@@ -21,15 +21,15 @@ class Signup extends StatelessWidget {
       body: BlocListener<AuthBlocBloc, AuthBlocState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute<void>(
-                builder: (
-                  BuildContext context,
-                ) =>
-                    LogIn(),
-              ),
-            );
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      LogIn(successMessage: 'Account created successfully!'),
+                ),
+              );
+            });
           } else if (state is AuthFailure) {
             SnackbarUtils.showSnackbar(context, state.message,
                 backgroundColor: Colors.orangeAccent);
@@ -45,20 +45,11 @@ class Signup extends StatelessWidget {
               if (_formKey.currentState!.validate()) {
                 if (FormValidators.isValidEmail(_emailController.text) &&
                     FormValidators.isValidName(_nameController.text)) {
-                  print("Email and Name are valid");
-                  BlocProvider.of<AuthBlocBloc>(context)
-                      .add(SignUpButtonPressed(
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                    name: _nameController.text,
-                  ));
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) => LogIn(
-                          successMessage: 'Account created successfully!'),
-                    ),
-                  );
+                  context.read()<AuthBlocBloc>().add(SignUpButtonPressed(
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                        name: _nameController.text,
+                      ));
                 } else {
                   SnackbarUtils.showSnackbar(
                       context, 'Invalid Email/Name Format');

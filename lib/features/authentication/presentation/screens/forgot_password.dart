@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
-import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
-import 'package:trade_loop/presentation/widgets/input_field_widget.dart';
+import 'package:trade_loop/features/authentication/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
+import 'package:trade_loop/features/authentication/presentation/widgets/input_field_widget.dart';
 
 class ForgotPassword extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -30,7 +30,7 @@ class ForgotPassword extends StatelessWidget {
             SnackbarUtils.showSnackbar(
               context,
               state.message,
-              backgroundColor: Colors.orangeAccent,
+              backgroundColor: const Color.fromARGB(255, 10, 8, 5),
             );
           }
         },
@@ -79,10 +79,11 @@ class ForgotPassword extends StatelessWidget {
                             onPressed: () {
                               if (FormValidators.isValidEmail(
                                   _emailController.text)) {
-                                BlocProvider.of<AuthBlocBloc>(context)
+                                context
+                                    .read()<AuthBlocBloc>()
                                     .add(ForgotPasswordEvent(
-                                  email: _emailController.text,
-                                ));
+                                      email: _emailController.text,
+                                    ));
                                 Navigator.pop(context, 'Email Sent');
                               } else {
                                 SnackbarUtils.showSnackbar(

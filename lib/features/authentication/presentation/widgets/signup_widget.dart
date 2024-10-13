@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
-import 'package:trade_loop/presentation/widgets/input_field_widget.dart';
+import 'package:trade_loop/features/authentication/presentation/widgets/input_field_widget.dart';
 
 class SignupWidget extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -35,6 +35,14 @@ class SignupWidgetState extends State<SignupWidget> {
     setState(() {
       _obscurePassword = !_obscurePassword;
     });
+  }
+
+  @override
+  void dispose() {
+    widget.emailController.dispose();
+    widget.passwordController.dispose();
+    widget.nameController.dispose();
+    super.dispose();
   }
 
   @override
