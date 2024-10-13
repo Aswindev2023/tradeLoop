@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
-import 'package:trade_loop/features/authentication/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
-import 'package:trade_loop/features/authentication/presentation/widgets/input_field_widget.dart';
+import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
+import 'package:trade_loop/presentation/widgets/input_field_widget.dart';
 
 class ForgotPassword extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
