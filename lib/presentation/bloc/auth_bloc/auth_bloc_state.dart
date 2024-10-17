@@ -32,3 +32,5 @@ class PasswordResetFailure extends AuthBlocState {
   @override
   List<Object> get props => [message];
 }
+
+class AuthLoggedOut extends AuthBlocState {}

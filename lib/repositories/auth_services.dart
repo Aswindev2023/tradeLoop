@@ -36,4 +36,12 @@ class AuthServices {
       throw Exception(e);
     }
   }
+
+  Future<void> signOut() async {
+    try {
+      await _firebaseAuth.signOut();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

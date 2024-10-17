@@ -34,3 +34,5 @@ class ForgotPasswordEvent extends AuthBlocEvent {
 }
 
 class GoogleSignInButtonPressed extends AuthBlocEvent {}
+
+class LogoutEvent extends AuthBlocEvent {}

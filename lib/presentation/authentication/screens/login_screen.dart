@@ -30,7 +30,7 @@ class LogIn extends StatelessWidget {
         listener: (context, state) {
           if (state is AuthSuccess) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const MyHomePage(title: 'HOME')),

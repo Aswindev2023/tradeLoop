@@ -82,7 +82,6 @@ class LoginFormState extends State<LoginForm> {
                 InputFieldWidget(
                   controller: widget.emailController,
                   hintText: 'Email',
-                  //fieldName: 'Email',
                   errorMessage: emailError,
                 ),
                 const SizedBox(height: 30.0),
