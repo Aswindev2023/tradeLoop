@@ -1,34 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
-import 'package:trade_loop/presentation/widgets/input_field_widget.dart';
+import 'package:trade_loop/presentation/authentication/widgets/google_signin_button.dart';
+import 'package:trade_loop/presentation/authentication/widgets/input_field_widget.dart';
 
-class SignupWidget extends StatefulWidget {
+class LoginForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  final TextEditingController nameController;
+  final VoidCallback onLoginTap;
+  final VoidCallback onForgotPasswordTap;
+  final VoidCallback onGoogleSignIn;
+
   final VoidCallback onSignUpTap;
 
-  final VoidCallback onLogInTap;
-
-  const SignupWidget({
+  const LoginForm({
     super.key,
     required this.formKey,
     required this.emailController,
     required this.passwordController,
-    required this.nameController,
+    required this.onLoginTap,
+    required this.onForgotPasswordTap,
+    required this.onGoogleSignIn,
     required this.onSignUpTap,
-    required this.onLogInTap,
   });
 
   @override
-  SignupWidgetState createState() => SignupWidgetState();
+  LoginFormState createState() => LoginFormState();
 }
 
-class SignupWidgetState extends State<SignupWidget> {
+class LoginFormState extends State<LoginForm> {
   String? emailError;
   String? passwordError;
-  String? nameError;
   bool _obscurePassword = true;
 
   void _togglePasswordVisibility() {
@@ -41,7 +43,6 @@ class SignupWidgetState extends State<SignupWidget> {
   void dispose() {
     widget.emailController.dispose();
     widget.passwordController.dispose();
-    widget.nameController.dispose();
     super.dispose();
   }
 
@@ -68,28 +69,6 @@ class SignupWidgetState extends State<SignupWidget> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 5.0),
                     child: Text(
-                      "Name",
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                InputFieldWidget(
-                  controller: widget.nameController,
-                  hintText: 'Name',
-                  // fieldName: 'Name',
-                  errorMessage: nameError,
-                ),
-                const SizedBox(height: 30.0),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 5.0),
-                    child: Text(
                       "Email",
                       style: TextStyle(
                         fontSize: 18.0,
@@ -103,7 +82,7 @@ class SignupWidgetState extends State<SignupWidget> {
                 InputFieldWidget(
                   controller: widget.emailController,
                   hintText: 'Email',
-                  // fieldName: 'Email',
+                  //fieldName: 'Email',
                   errorMessage: emailError,
                 ),
                 const SizedBox(height: 30.0),
@@ -137,14 +116,10 @@ class SignupWidgetState extends State<SignupWidget> {
                           widget.emailController.text, 'Email');
                       passwordError = FormValidators.validateForm(
                           widget.passwordController.text, 'Password');
-                      nameError = FormValidators.validateForm(
-                          widget.nameController.text, 'Name');
                     });
 
-                    if (emailError == null &&
-                        passwordError == null &&
-                        nameError == null) {
-                      widget.onSignUpTap();
+                    if (emailError == null && passwordError == null) {
+                      widget.onLoginTap();
                     }
                   },
                   child: Container(
@@ -157,7 +132,7 @@ class SignupWidgetState extends State<SignupWidget> {
                     ),
                     child: const Center(
                       child: Text(
-                        "Sign Up",
+                        "Log In",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 22.0,
@@ -170,12 +145,38 @@ class SignupWidgetState extends State<SignupWidget> {
             ),
           ),
         ),
-        const SizedBox(height: 40.0),
+        const SizedBox(height: 20.0),
+        GestureDetector(
+          onTap: widget.onForgotPasswordTap,
+          child: const Text(
+            "Forgot Password?",
+            style: TextStyle(
+                color: Color(0xFF8c8e98),
+                fontSize: 18.0,
+                fontWeight: FontWeight.w500),
+          ),
+        ),
+        const SizedBox(height: 20.0),
+        const Text(
+          "or",
+          style: TextStyle(
+              color: Color(0xFF273671),
+              fontSize: 22.0,
+              fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 30.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GoogleSignInButton(onGoogleSignIn: widget.onGoogleSignIn),
+          ],
+        ),
+        const SizedBox(height: 30.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              "Already have an account?",
+              "Don't have an account?",
               style: TextStyle(
                   color: Color(0xFF8c8e98),
                   fontSize: 18.0,
@@ -183,9 +184,9 @@ class SignupWidgetState extends State<SignupWidget> {
             ),
             const SizedBox(width: 5.0),
             GestureDetector(
-              onTap: widget.onLogInTap,
+              onTap: widget.onSignUpTap,
               child: const Text(
-                "LogIn",
+                "SignUp",
                 style: TextStyle(
                     color: Color(0xFF273671),
                     fontSize: 20.0,

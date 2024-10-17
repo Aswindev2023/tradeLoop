@@ -3,7 +3,7 @@ import 'package:trade_loop/core/utils/input_field_utils.dart';
 
 class InputFieldWidget extends StatelessWidget {
   final TextEditingController controller;
-  final String hintText;
+  final String? hintText;
   final String? errorMessage;
   final bool obscureText;
   final VoidCallback? toggleVisibility;
@@ -11,7 +11,7 @@ class InputFieldWidget extends StatelessWidget {
   const InputFieldWidget({
     super.key,
     required this.controller,
-    required this.hintText,
+    this.hintText,
     this.errorMessage,
     this.obscureText = false,
     this.toggleVisibility,

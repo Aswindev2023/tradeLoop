@@ -4,9 +4,9 @@ import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/main.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
-import 'package:trade_loop/presentation/screens/forgot_password.dart';
-import 'package:trade_loop/presentation/screens/signup_screen.dart';
-import 'package:trade_loop/presentation/widgets/login_widget.dart';
+import 'package:trade_loop/presentation/authentication/screens/forgot_password.dart';
+import 'package:trade_loop/presentation/authentication/screens/signup_screen.dart';
+import 'package:trade_loop/presentation/authentication/widgets/login_widget.dart';
 
 class LogIn extends StatelessWidget {
   final String? successMessage;

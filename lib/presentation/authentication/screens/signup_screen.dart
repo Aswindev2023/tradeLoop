@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
-import 'package:trade_loop/presentation/screens/login_screen.dart';
-import 'package:trade_loop/presentation/widgets/signup_widget.dart';
+import 'package:trade_loop/presentation/authentication/screens/login_screen.dart';
+import 'package:trade_loop/presentation/authentication/widgets/signup_widget.dart';
 
 class Signup extends StatelessWidget {
   Signup({super.key});
