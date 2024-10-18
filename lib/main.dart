@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/presentation/authentication/widgets/auth_state_handler.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
-import 'package:trade_loop/presentation/authentication/screens/login_screen.dart';
 import 'package:trade_loop/repositories/auth_services.dart';
 
 void main() async {
@@ -19,23 +19,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthBlocBloc>(
-            create: (BuildContext context) => AuthBlocBloc(authServices),
-          ),
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-                seedColor: const Color.fromARGB(255, 30, 0, 255)),
-            useMaterial3: true,
-          ),
-          home: LogIn(
-            key: key,
-          ),
-        ));
+      providers: [
+        BlocProvider<AuthBlocBloc>(
+          create: (BuildContext context) => AuthBlocBloc(authServices),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 30, 0, 255)),
+          useMaterial3: true,
+        ),
+        home: const AuthStateHandler(),
+      ),
+    );
   }
 }
 

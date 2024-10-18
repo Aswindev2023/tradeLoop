@@ -32,16 +32,19 @@ class AuthServices {
       );
 
       return await _firebaseAuth.signInWithCredential(credential);
-    } catch (e) {
-      throw Exception(e);
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Google Sign-In failed: ${e.message}');
     }
   }
 
   Future<void> signOut() async {
     try {
       await _firebaseAuth.signOut();
+      if (await _googleSignIn.isSignedIn()) {
+        await _googleSignIn.signOut();
+      }
     } catch (e) {
-      throw Exception(e);
+      throw Exception('Logout failed: ${e.toString()}');
     }
   }
 }
