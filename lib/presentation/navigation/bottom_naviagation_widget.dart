@@ -12,8 +12,6 @@ class BottomNavigationBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final brightness = Theme.of(context).brightness;
-    // final isDarkTheme = brightness == Brightness.dark;
     return BottomNavigationBar(
       items: const [
         BottomNavigationBarItem(

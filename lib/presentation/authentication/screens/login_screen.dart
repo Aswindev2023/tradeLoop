@@ -40,7 +40,7 @@ class LogIn extends StatelessWidget {
             SnackbarUtils.showSnackbar(
               context,
               state.message,
-              backgroundColor: Colors.orangeAccent,
+              backgroundColor: const Color.fromARGB(255, 169, 35, 35),
             );
           }
         },

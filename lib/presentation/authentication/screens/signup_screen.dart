@@ -45,7 +45,7 @@ class Signup extends StatelessWidget {
               if (_formKey.currentState!.validate()) {
                 if (FormValidators.isValidEmail(_emailController.text) &&
                     FormValidators.isValidName(_nameController.text)) {
-                  context.read()<AuthBlocBloc>().add(SignUpButtonPressed(
+                  context.read<AuthBlocBloc>().add(SignUpButtonPressed(
                         email: _emailController.text,
                         password: _passwordController.text,
                         name: _nameController.text,
