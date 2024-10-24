@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/presentation/authentication/widgets/input_field_widget.dart';
+import 'package:trade_loop/presentation/authentication/widgets/loding_button.dart';
 
 class SignupWidget extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -8,7 +9,6 @@ class SignupWidget extends StatefulWidget {
   final TextEditingController passwordController;
   final TextEditingController nameController;
   final VoidCallback onSignUpTap;
-
   final VoidCallback onLogInTap;
 
   const SignupWidget({
@@ -30,6 +30,31 @@ class SignupWidgetState extends State<SignupWidget> {
   String? passwordError;
   String? nameError;
   bool _obscurePassword = true;
+  bool _isLoading = false;
+
+  Future<void> _handleSignin() async {
+    String? emailValidationError =
+        FormValidators.validateForm(widget.emailController.text, 'Email');
+    String? passwordValidationError =
+        FormValidators.validateForm(widget.passwordController.text, 'Password');
+    String? nameValidationError =
+        FormValidators.validateForm(widget.nameController.text, 'Name');
+
+    setState(() {
+      emailError = emailValidationError;
+      passwordError = passwordValidationError;
+      nameError = nameValidationError;
+    });
+
+    if (emailError == null && passwordError == null && nameError == null) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      await Future.delayed(const Duration(seconds: 1));
+      widget.onSignUpTap();
+    }
+  }
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -128,42 +153,10 @@ class SignupWidgetState extends State<SignupWidget> {
                   toggleVisibility: _togglePasswordVisibility,
                 ),
                 const SizedBox(height: 30.0),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      emailError = FormValidators.validateForm(
-                          widget.emailController.text, 'Email');
-                      passwordError = FormValidators.validateForm(
-                          widget.passwordController.text, 'Password');
-                      nameError = FormValidators.validateForm(
-                          widget.nameController.text, 'Name');
-                    });
-
-                    if (emailError == null &&
-                        passwordError == null &&
-                        nameError == null) {
-                      widget.onSignUpTap();
-                    }
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 13.0, horizontal: 30.0),
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 14, 58, 237),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        "Sign Up",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ),
-                ),
+                LoadingButton(
+                    isLoading: _isLoading,
+                    text: 'Sign Up',
+                    onTap: _handleSignin)
               ],
             ),
           ),

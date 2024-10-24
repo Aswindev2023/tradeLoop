@@ -26,7 +26,7 @@ class LogIn extends StatelessWidget {
     }
     return Scaffold(
       backgroundColor: Colors.white,
-      body: BlocListener<AuthBlocBloc, AuthBlocState>(
+      body: BlocConsumer<AuthBlocBloc, AuthBlocState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -44,42 +44,45 @@ class LogIn extends StatelessWidget {
             );
           }
         },
-        child: SingleChildScrollView(
-          child: LoginForm(
-            formKey: _formKey,
-            emailController: _emailController,
-            passwordController: _passwordController,
-            onLoginTap: () {
-              if (_formKey.currentState!.validate()) {
-                if (FormValidators.isValidEmail(_emailController.text)) {
-                  context.read<AuthBlocBloc>().add(LoginButtonPressed(
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                      ));
-                } else {
-                  SnackbarUtils.showSnackbar(context, 'Invalid Email Format');
+        builder: (context, state) {
+          return SingleChildScrollView(
+            child: LoginForm(
+              formKey: _formKey,
+              emailController: _emailController,
+              passwordController: _passwordController,
+              onLoginTap: () {
+                if (_formKey.currentState!.validate()) {
+                  if (FormValidators.isValidEmail(_emailController.text)) {
+                    context.read<AuthBlocBloc>().add(LoginButtonPressed(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                        ));
+                  } else {
+                    SnackbarUtils.showSnackbar(context, 'Invalid Email Format');
+                  }
                 }
-              }
-            },
-            onForgotPasswordTap: () {
-              Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ForgotPassword()))
-                  .then((result) {
-                if (result != null) {
-                  SnackbarUtils.showSnackbar(context, result);
-                }
-              });
-            },
-            onGoogleSignIn: () {
-              BlocProvider.of<AuthBlocBloc>(context)
-                  .add(GoogleSignInButtonPressed());
-            },
-            onSignUpTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Signup()));
-            },
-          ),
-        ),
+              },
+              onForgotPasswordTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ForgotPassword())).then((result) {
+                  if (result != null) {
+                    SnackbarUtils.showSnackbar(context, result);
+                  }
+                });
+              },
+              onGoogleSignIn: () {
+                BlocProvider.of<AuthBlocBloc>(context)
+                    .add(GoogleSignInButtonPressed());
+              },
+              onSignUpTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Signup()));
+              },
+            ),
+          );
+        },
       ),
     );
   }

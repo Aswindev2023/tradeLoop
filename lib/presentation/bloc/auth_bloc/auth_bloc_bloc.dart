@@ -1,14 +1,19 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:trade_loop/presentation/authentication/models/user_model.dart';
 import 'package:trade_loop/repositories/auth_services.dart';
+import 'package:trade_loop/repositories/user_repository.dart';
 
 part 'auth_bloc_event.dart';
 part 'auth_bloc_state.dart';
 
 class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
   final AuthServices _authServices;
-  AuthBlocBloc(this._authServices) : super(AuthBlocInitial()) {
+  final UserRepository _userRepository = UserRepository();
+  AuthBlocBloc(
+    this._authServices,
+  ) : super(AuthBlocInitial()) {
     //Log In Bloc
     on<LoginButtonPressed>((event, emit) async {
       emit(AuthLoading());
@@ -23,10 +28,19 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
     on<SignUpButtonPressed>((event, emit) async {
       emit(AuthLoading());
       try {
-        await _authServices.signUp(event.email, event.password);
+        UserCredential userCredential =
+            await _authServices.signUp(event.email, event.password);
+        final user = UserModel(
+          uid: userCredential.user?.uid,
+          email: event.email,
+          name: event.name,
+        );
+        await _userRepository.storeUser(user);
         emit(AuthSuccess());
       } on FirebaseAuthException catch (e) {
         emit(AuthFailure(message: e.message ?? 'Sign Up Failed'));
+      } catch (e) {
+        emit(AuthFailure(message: 'Error storing user data: ${e.toString()}'));
       }
     });
     //Password Reset Bloc
@@ -44,8 +58,14 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
     on<GoogleSignInButtonPressed>((event, emit) async {
       emit(AuthLoading());
       try {
-        final user = await _authServices.signInWithGoogle();
-        if (user != null) {
+        final userCredential = await _authServices.signInWithGoogle();
+        if (userCredential != null && userCredential.user != null) {
+          final user = UserModel(
+            uid: userCredential.user!.uid,
+            email: userCredential.user!.email!,
+            name: userCredential.user!.displayName!,
+          );
+          await _userRepository.storeUser(user);
           emit(AuthSuccess());
         } else {
           emit(const AuthFailure(message: 'Google Sign-In failed'));

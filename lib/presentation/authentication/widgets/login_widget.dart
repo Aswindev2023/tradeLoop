@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
+
 import 'package:trade_loop/presentation/authentication/widgets/google_signin_button.dart';
 import 'package:trade_loop/presentation/authentication/widgets/input_field_widget.dart';
+import 'package:trade_loop/presentation/authentication/widgets/loding_button.dart';
 
 class LoginForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -32,6 +34,27 @@ class LoginFormState extends State<LoginForm> {
   String? emailError;
   String? passwordError;
   bool _obscurePassword = true;
+  bool _isLoading = false;
+
+  Future<void> _handleLogin() async {
+    String? emailValidationError =
+        FormValidators.validateForm(widget.emailController.text, 'Email');
+    String? passwordValidationError =
+        FormValidators.validateForm(widget.passwordController.text, 'Password');
+
+    setState(() {
+      emailError = emailValidationError;
+      passwordError = passwordValidationError;
+    });
+
+    if (emailError == null && passwordError == null) {
+      setState(() {
+        _isLoading = true;
+      });
+      await Future.delayed(const Duration(seconds: 1));
+      widget.onLoginTap();
+    }
+  }
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -108,38 +131,8 @@ class LoginFormState extends State<LoginForm> {
                   toggleVisibility: _togglePasswordVisibility,
                 ),
                 const SizedBox(height: 30.0),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      emailError = FormValidators.validateForm(
-                          widget.emailController.text, 'Email');
-                      passwordError = FormValidators.validateForm(
-                          widget.passwordController.text, 'Password');
-                    });
-
-                    if (emailError == null && passwordError == null) {
-                      widget.onLoginTap();
-                    }
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 13.0, horizontal: 30.0),
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 14, 58, 237),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        "Log In",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ),
-                ),
+                LoadingButton(
+                    isLoading: _isLoading, text: 'Log In', onTap: _handleLogin),
               ],
             ),
           ),

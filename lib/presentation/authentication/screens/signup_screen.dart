@@ -18,7 +18,7 @@ class Signup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: BlocListener<AuthBlocBloc, AuthBlocState>(
+      body: BlocConsumer<AuthBlocBloc, AuthBlocState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -35,37 +35,39 @@ class Signup extends StatelessWidget {
                 backgroundColor: Colors.orangeAccent);
           }
         },
-        child: SingleChildScrollView(
-          child: SignupWidget(
-            formKey: _formKey,
-            emailController: _emailController,
-            passwordController: _passwordController,
-            nameController: _nameController,
-            onSignUpTap: () {
-              if (_formKey.currentState!.validate()) {
-                if (FormValidators.isValidEmail(_emailController.text) &&
-                    FormValidators.isValidName(_nameController.text)) {
-                  context.read<AuthBlocBloc>().add(SignUpButtonPressed(
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                        name: _nameController.text,
-                      ));
-                } else {
-                  SnackbarUtils.showSnackbar(
-                      context, 'Invalid Email/Name Format');
+        builder: (context, state) {
+          return SingleChildScrollView(
+            child: SignupWidget(
+              formKey: _formKey,
+              emailController: _emailController,
+              passwordController: _passwordController,
+              nameController: _nameController,
+              onSignUpTap: () {
+                if (_formKey.currentState!.validate()) {
+                  if (FormValidators.isValidEmail(_emailController.text) &&
+                      FormValidators.isValidName(_nameController.text)) {
+                    context.read<AuthBlocBloc>().add(SignUpButtonPressed(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                          name: _nameController.text,
+                        ));
+                  } else {
+                    SnackbarUtils.showSnackbar(
+                        context, 'Invalid Email/Name Format');
+                  }
                 }
-              }
-            },
-            onLogInTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context) => LogIn(),
-                ),
-              );
-            },
-          ),
-        ),
+              },
+              onLogInTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => LogIn(),
+                  ),
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }
