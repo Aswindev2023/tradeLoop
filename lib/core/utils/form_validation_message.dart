@@ -15,4 +15,14 @@ class FormValidators {
     final nameRegex = RegExp(r'^[a-zA-Z ]+$');
     return nameRegex.hasMatch(name);
   }
+
+  static bool isValidNumber(String number) {
+    final numberRegex = RegExp(r'^\d{10}$');
+    return numberRegex.hasMatch(number);
+  }
+
+  static bool isValidZip(String zipCode) {
+    final zipRegex = RegExp(r'^\d{6}$');
+    return zipRegex.hasMatch(zipCode);
+  }
 }

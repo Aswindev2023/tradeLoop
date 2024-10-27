@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class ProfileImage extends StatelessWidget {
   final String imageUrl;
-  final VoidCallback onEdit;
+  final VoidCallback? onPickImage;
 
   const ProfileImage({
     super.key,
     required this.imageUrl,
-    required this.onEdit,
+    required this.onPickImage,
   });
 
   @override
@@ -17,12 +17,29 @@ class ProfileImage extends StatelessWidget {
       child: Stack(
         children: [
           ClipOval(
-            child: Image.network(
-              imageUrl,
-              width: 200,
-              height: 200,
-              fit: BoxFit.cover,
-            ),
+            child: imageUrl.isNotEmpty
+                ? Image.network(
+                    imageUrl,
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: 200,
+                        height: 200,
+                        color: Colors.grey,
+                        child: const Icon(Icons.person,
+                            size: 100, color: Colors.white), // Placeholder icon
+                      );
+                    },
+                  )
+                : Container(
+                    width: 200,
+                    height: 200,
+                    color: Colors.grey,
+                    child: const Icon(Icons.person,
+                        size: 100, color: Colors.white), // Placeholder icon
+                  ),
           ),
           Positioned(
             right: 70,
@@ -32,10 +49,10 @@ class ProfileImage extends StatelessWidget {
                 color: const Color.fromARGB(255, 32, 81, 228),
                 child: IconButton(
                   icon: const Icon(
-                    Icons.edit,
+                    Icons.add_a_photo,
                     color: Colors.white,
                   ),
-                  onPressed: onEdit,
+                  onPressed: onPickImage,
                 ),
               ),
             ),
