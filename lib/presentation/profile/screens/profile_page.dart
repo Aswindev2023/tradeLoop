@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/presentation/authentication/screens/login_screen.dart';
 import 'package:trade_loop/presentation/authentication/widgets/logout_confirmation_dialog.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
+import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
 import 'package:trade_loop/presentation/profile/screens/view_and_edit_page.dart';
 
@@ -44,14 +45,7 @@ class ProfilePage extends StatelessWidget {
             ),
             Align(
               alignment: Alignment.topCenter,
-              child: ClipOval(
-                child: Image.network(
-                  'https://imgs.search.brave.com/lXARFlhuh5b05jTaVbYAR4Hkm6ej0pvCgysnSklYjr8/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTMz/ODI4OTgyNC9waG90/by9jbG9zZS11cC1p/bWFnZS1vZi1pbmRp/YW4tbWFuLXdpdGgt/YnV6ei1jdXQtaGFp/cnN0eWxlLXRvLWRp/c2d1aXNlLXJlY2Vk/aW5nLWhhaXJsaW5l/LXdlYXJpbmctdC53/ZWJwP2E9MSZiPTEm/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9X1pD/WlY5T1BSVmJvYUQy/TnhMVWI3RjFYZEtk/dnlOUVNZVzNleXFV/eHpVUT0',
-                  width: 200,
-                  height: 200,
-                  fit: BoxFit.cover,
-                ),
-              ),
+              child: _buildProfileImage(context),
             ),
             const SizedBox(
               height: 20,
@@ -94,6 +88,33 @@ class ProfilePage extends StatelessWidget {
         bottomNavigationBar:
             BottomNavigationBarWidget(selectedIndex: selectedIndex),
       ),
+    );
+  }
+
+  Widget _buildProfileImage(BuildContext context) {
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        if (state is ProfileLoaded) {
+          String? imageUrl = state.user.imagePath;
+          return ClipOval(
+            child: Image.network(
+              imageUrl ??
+                  'https://www.flaticon.com/free-icon/profile-user_64572', // Fallback image
+              width: 200,
+              height: 200,
+              fit: BoxFit.cover,
+            ),
+          );
+        } else {
+          return const ClipOval(
+            child: SizedBox(
+              width: 200,
+              height: 200,
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
     );
   }
 
