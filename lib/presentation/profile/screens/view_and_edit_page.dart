@@ -1,10 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trade_loop/core/utils/form_validation_message.dart';
-import 'package:trade_loop/core/utils/snackbar_utils.dart';
-
-import 'package:trade_loop/presentation/authentication/models/user_model.dart';
 import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:trade_loop/presentation/profile/widgets/custom_text_field.dart';
 import 'package:trade_loop/presentation/profile/widgets/edit_button.dart';
@@ -27,7 +23,6 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
   late TextEditingController stateController;
   late TextEditingController countryController;
   late TextEditingController postalController;
-  String? imagePath;
 
   @override
   void initState() {
@@ -53,6 +48,7 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
     nameController.dispose();
     emailController.dispose();
     mobileController.dispose();
+
     houseController.dispose();
     cityController.dispose();
     streetController.dispose();
@@ -60,25 +56,6 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
     countryController.dispose();
     postalController.dispose();
     super.dispose();
-  }
-
-  bool validation(String value, String fieldName) {
-    switch (fieldName) {
-      case 'name':
-        return FormValidators.isValidName(value) &&
-            FormValidators.validateForm(value, 'Name') == null;
-      case 'email':
-        return FormValidators.isValidEmail(value) &&
-            FormValidators.validateForm(value, 'Email') == null;
-      case 'number':
-        return FormValidators.isValidNumber(value) &&
-            FormValidators.validateForm(value, 'Phone number') == null;
-      case 'zipCode':
-        return FormValidators.isValidZip(value) &&
-            FormValidators.validateForm(value, 'Zip code') == null;
-      default:
-        return false;
-    }
   }
 
   @override
@@ -107,6 +84,10 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
       ),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
+          if (state is ProfileEditMode) {
+            print('In Edit Mode');
+          }
+
           if (state is ProfileLoaded) {
             nameController.text = state.user.name;
             emailController.text = state.user.email;
@@ -117,9 +98,6 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
             mobileController.text = state.user.phone ?? '';
             cityController.text = state.user.city ?? '';
             postalController.text = state.user.postalCode ?? '';
-            imagePath = state.user.imagePath ?? '';
-          } else if (state is ImageUploadFailureState) {
-            SnackbarUtils.showSnackbar(context, state.message);
           }
         },
         builder: (context, state) {
@@ -135,10 +113,16 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
                 children: [
                   const SizedBox(height: 15),
                   ProfileImage(
-                    imageUrl: imagePath ?? '',
-                    onPickImage: () {
-                      if (state is ProfileEditMode) {
-                        context.read<ProfileBloc>().add(PickImage());
+                    initialImageUrl:
+                        state is ProfileLoaded ? state.user.imagePath : null,
+                    isEditable: state is ProfileEditMode,
+                    onImagePicked: (path) {
+                      if (path != null) {
+                        print('Image picked: $path');
+
+                        context
+                            .read<ProfileBloc>()
+                            .add(ProfileImagePicked(imagePath: path));
                       }
                     },
                   ),
@@ -161,11 +145,6 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
                   CustomTextField(
                     label: 'Street Address',
                     controller: streetController,
-                    isEditable: state is ProfileEditMode,
-                  ),
-                  CustomTextField(
-                    label: 'Phone',
-                    controller: mobileController,
                     isEditable: state is ProfileEditMode,
                   ),
                   CustomTextField(
@@ -192,33 +171,28 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
                   EditButton(
                     isEditing: state is ProfileEditMode,
                     onPressed: () {
+                      print('Save button pressed');
+                      print('Current state: ${state.runtimeType}');
+
                       if (state is ProfileEditMode) {
-                        final name = nameController.text;
-                        final email = emailController.text;
-                        final phone = mobileController.text;
-                        final zipCode = postalController.text;
-                        if (validation(name, 'name') &&
-                            validation(email, 'email') &&
-                            validation(phone, 'number') &&
-                            validation(zipCode, 'zipCode')) {
-                          final updateUser = UserModel(
-                            uid: FirebaseAuth.instance.currentUser!.uid,
-                            name: nameController.text,
-                            email: emailController.text,
-                            city: cityController.text,
-                            state: stateController.text,
-                            street: streetController.text,
-                            postalCode: postalController.text,
-                            country: countryController.text,
-                            houseName: houseController.text,
-                            phone: mobileController.text,
-                            imagePath: imagePath,
-                          );
-                          context.read<ProfileBloc>().add(
-                                SaveProfileChanges(updatedUser: updateUser),
-                              );
-                        }
+                        print('In edit mode, saving changes...');
+                        final updateUser = (state).user.copyWith(
+                              uid: FirebaseAuth.instance.currentUser!.uid,
+                              name: nameController.text,
+                              email: emailController.text,
+                              city: cityController.text,
+                              state: stateController.text,
+                              street: streetController.text,
+                              postalCode: postalController.text,
+                              country: countryController.text,
+                              houseName: houseController.text,
+                              phone: mobileController.text,
+                            );
+                        context.read<ProfileBloc>().add(
+                              SaveProfileChanges(updatedUser: updateUser),
+                            );
                       } else {
+                        print('Switching to edit mode');
                         context.read<ProfileBloc>().add(EditProfilePressed());
                       }
                     },

@@ -51,8 +51,14 @@ class LoginFormState extends State<LoginForm> {
       setState(() {
         _isLoading = true;
       });
-      await Future.delayed(const Duration(seconds: 1));
-      widget.onLoginTap();
+      try {
+        await Future.delayed(const Duration(seconds: 1));
+        widget.onLoginTap();
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

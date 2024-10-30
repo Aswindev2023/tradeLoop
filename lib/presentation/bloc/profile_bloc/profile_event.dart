@@ -27,4 +27,8 @@ class SaveProfileChanges extends ProfileEvent {
   List<Object> get props => [updatedUser];
 }
 
-class PickImage extends ProfileEvent {}
+class ProfileImagePicked extends ProfileEvent {
+  final String imagePath;
+
+  const ProfileImagePicked({required this.imagePath});
+}

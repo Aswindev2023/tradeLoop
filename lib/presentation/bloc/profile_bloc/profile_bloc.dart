@@ -10,6 +10,7 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final UserRepository userRepository = UserRepository();
   final ImageUploadService imageUploadService = ImageUploadService();
+
   ProfileBloc() : super(ProfileInitial()) {
     on<ProfilePageLoaded>((event, emit) async {
       emit(ProfileLoading());
@@ -21,40 +22,50 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     });
     on<EditProfilePressed>((event, emit) {
+      print('Edit button pressed');
       if (state is ProfileLoaded) {
         final user = (state as ProfileLoaded).user;
         emit(ProfileEditMode(user: user));
       }
     });
-    on<PickImage>((event, emit) async {
-      if (state is! ProfileEditMode) return;
 
-      emit(ImageUploading());
-      final imagePath = await imageUploadService.pickImage();
-      if (imagePath != null) {
-        final user = (state as ProfileEditMode).user;
-        final updatedUser = user..imagePath = imagePath;
-        emit(ProfileEditMode(user: updatedUser));
-      } else {
-        emit(const ImageUploadFailureState(message: 'No image selected.'));
+    on<ProfileImagePicked>((event, emit) {
+      if (state is ProfileEditMode) {
+        final currentState = state as ProfileEditMode;
+        print('profile image picked bloc : ${event.imagePath}');
+        emit(currentState.copyWith(pickedImagePath: event.imagePath));
       }
     });
 
     on<SaveProfileChanges>((event, emit) async {
-      emit(ProfileSaving());
+      print('calling saveprofile changes bloc');
+
       try {
         String? imageUrl;
-        if (event.updatedUser.imagePath != null) {
+        final currentState = state as ProfileEditMode;
+        print('this is the current sate${currentState.pickedImagePath}');
+        emit(ProfileSaving());
+        if (currentState.pickedImagePath != null &&
+            currentState.pickedImagePath!.isNotEmpty) {
+          print('Uploading image...');
+          print('Uploading image from: ${currentState.pickedImagePath}');
           imageUrl = await imageUploadService
-              .uploadImage(event.updatedUser.imagePath!);
-          if (imageUrl != null) {
-            event.updatedUser.imagePath = imageUrl;
-          }
+              .uploadImage(currentState.pickedImagePath!);
         }
+        print('this is the retrived image url after storing:$imageUrl');
+        final updatingUser = event.updatedUser.copyWith(
+          imagePath: imageUrl ?? event.updatedUser.imagePath,
+        );
+        print('Attempting to update user: ${updatingUser.uid}');
         await userRepository.updateUser(
-            event.updatedUser.uid!, event.updatedUser.toJson());
-        emit(ProfileSaved(user: event.updatedUser));
+          updatingUser.uid!,
+          updatingUser.toJson(),
+        );
+
+        emit(ProfileLoaded(user: updatingUser));
+        print('profile updated sucessfully');
       } catch (e) {
+        print('save profile bloc failed$e');
         emit(ProfileError(message: 'Failed to save changes: ${e.toString()}'));
       }
     });

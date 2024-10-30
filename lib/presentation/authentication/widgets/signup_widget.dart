@@ -51,8 +51,14 @@ class SignupWidgetState extends State<SignupWidget> {
         _isLoading = true;
       });
 
-      await Future.delayed(const Duration(seconds: 1));
-      widget.onSignUpTap();
+      try {
+        await Future.delayed(const Duration(seconds: 1));
+        widget.onSignUpTap();
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

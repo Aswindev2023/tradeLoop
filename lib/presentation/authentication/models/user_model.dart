@@ -29,6 +29,38 @@ class UserModel {
     this.country,
   });
 
+  UserModel copyWith({
+    String? uid,
+    String? name,
+    String? email,
+    String? imagePath,
+    String? phone,
+    double? latitude,
+    double? longitude,
+    String? houseName,
+    String? street,
+    String? city,
+    String? state,
+    String? postalCode,
+    String? country,
+  }) {
+    return UserModel(
+      uid: uid ?? this.uid,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      imagePath: imagePath ?? this.imagePath,
+      phone: phone ?? this.phone,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      houseName: houseName ?? this.houseName,
+      street: street ?? this.street,
+      city: city ?? this.city,
+      state: state ?? this.state,
+      postalCode: postalCode ?? this.postalCode,
+      country: country ?? this.country,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'uid': uid,

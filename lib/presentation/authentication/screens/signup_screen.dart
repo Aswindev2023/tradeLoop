@@ -45,7 +45,9 @@ class Signup extends StatelessWidget {
               onSignUpTap: () {
                 if (_formKey.currentState!.validate()) {
                   if (FormValidators.isValidEmail(_emailController.text) &&
-                      FormValidators.isValidName(_nameController.text)) {
+                      FormValidators.isValidName(_nameController.text) &&
+                      FormValidators.isValidPassword(
+                          _passwordController.text)) {
                     context.read<AuthBlocBloc>().add(SignUpButtonPressed(
                           email: _emailController.text,
                           password: _passwordController.text,
@@ -53,7 +55,7 @@ class Signup extends StatelessWidget {
                         ));
                   } else {
                     SnackbarUtils.showSnackbar(
-                        context, 'Invalid Email/Name Format');
+                        context, 'Invalid Email/Name/Password Format');
                   }
                 }
               },

@@ -25,4 +25,9 @@ class FormValidators {
     final zipRegex = RegExp(r'^\d{6}$');
     return zipRegex.hasMatch(zipCode);
   }
+
+  static bool isValidPassword(String password) {
+    final passwordRegex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d).{6,}$');
+    return passwordRegex.hasMatch(password);
+  }
 }
