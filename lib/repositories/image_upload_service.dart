@@ -23,4 +23,15 @@ class ImageUploadService {
       return null;
     }
   }
+
+  Future<void> deleteImage(String imageUrl) async {
+    try {
+      print('Deleting old image: $imageUrl');
+      Reference ref = _storage.refFromURL(imageUrl);
+      await ref.delete();
+      print('Old image deleted successfully.');
+    } catch (e) {
+      print('Error deleting old image: $e');
+    }
+  }
 }
