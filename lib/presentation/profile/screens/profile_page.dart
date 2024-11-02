@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/presentation/authentication/screens/login_screen.dart';
@@ -14,6 +15,9 @@ class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
   @override
   Widget build(BuildContext context) {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    context.read<ProfileBloc>().add(ProfilePageLoaded(userId: userId!));
+
     return BlocListener<AuthBlocBloc, AuthBlocState>(
       listener: (context, state) {
         if (state is AuthLoggedOut) {
@@ -92,30 +96,35 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildProfileImage(BuildContext context) {
-    return BlocBuilder<ProfileBloc, ProfileState>(
-      builder: (context, state) {
-        if (state is ProfileLoaded) {
-          String? imageUrl = state.user.imagePath;
-          return ClipOval(
-            child: Image.network(
-              imageUrl ??
-                  'https://www.flaticon.com/free-icon/profile-user_64572', // Fallback image
-              width: 200,
-              height: 200,
-              fit: BoxFit.cover,
-            ),
-          );
-        } else {
-          return const ClipOval(
-            child: SizedBox(
-              width: 200,
-              height: 200,
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-      },
-    );
+    return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+      if (state is ProfileLoaded) {
+        String? imageUrl = state.user.imagePath;
+        return ClipOval(
+          child: Image.network(
+            imageUrl ?? 'https://www.flaticon.com/free-icon/profile-user_64572',
+            width: 200,
+            height: 200,
+            fit: BoxFit.cover,
+          ),
+        );
+      } else if (state is ProfileLoading) {
+        return const ClipOval(
+          child: SizedBox(
+            width: 200,
+            height: 200,
+            child: CircularProgressIndicator(),
+          ),
+        );
+      } else {
+        return const ClipOval(
+          child: SizedBox(
+            width: 200,
+            height: 200,
+            child: Icon(Icons.error, color: Colors.red),
+          ),
+        );
+      }
+    });
   }
 
   void _showLogoutDialog(BuildContext context) {

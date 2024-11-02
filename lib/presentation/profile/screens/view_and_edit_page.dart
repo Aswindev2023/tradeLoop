@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:trade_loop/presentation/profile/widgets/custom_text_field.dart';
 import 'package:trade_loop/presentation/profile/widgets/edit_button.dart';
 import 'package:trade_loop/presentation/profile/widgets/profile_image_widget.dart';
+import 'package:trade_loop/presentation/profile/widgets/profile_page_validation.dart';
 
 class ViewAndEditPage extends StatefulWidget {
   const ViewAndEditPage({super.key});
@@ -175,22 +177,39 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
                       print('Current state: ${state.runtimeType}');
 
                       if (state is ProfileEditMode) {
+                        final validation = ProfilePageValidation(
+                          emailController.text,
+                          nameController.text,
+                          mobileController.text,
+                          postalController.text,
+                        );
                         print('In edit mode, saving changes...');
-                        final updateUser = (state).user.copyWith(
-                              uid: FirebaseAuth.instance.currentUser!.uid,
-                              name: nameController.text,
-                              email: emailController.text,
-                              city: cityController.text,
-                              state: stateController.text,
-                              street: streetController.text,
-                              postalCode: postalController.text,
-                              country: countryController.text,
-                              houseName: houseController.text,
-                              phone: mobileController.text,
-                            );
-                        context.read<ProfileBloc>().add(
-                              SaveProfileChanges(updatedUser: updateUser),
-                            );
+                        if (validation.isValidEdit(
+                          emailController.text,
+                          nameController.text,
+                          mobileController.text,
+                          postalController.text,
+                        )) {
+                          final updateUser = (state).user.copyWith(
+                                uid: FirebaseAuth.instance.currentUser!.uid,
+                                name: nameController.text,
+                                email: emailController.text,
+                                city: cityController.text,
+                                state: stateController.text,
+                                street: streetController.text,
+                                postalCode: postalController.text,
+                                country: countryController.text,
+                                houseName: houseController.text,
+                                phone: mobileController.text,
+                              );
+                          context.read<ProfileBloc>().add(
+                                SaveProfileChanges(updatedUser: updateUser),
+                              );
+                          SnackbarUtils.showSnackbar(context, 'Profile Saved');
+                        } else {
+                          SnackbarUtils.showSnackbar(
+                              context, 'Invalid input in one or more fields');
+                        }
                       } else {
                         print('Switching to edit mode');
                         context.read<ProfileBloc>().add(EditProfilePressed());

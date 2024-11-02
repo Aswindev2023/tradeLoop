@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trade_loop/main.dart';
+import 'package:trade_loop/presentation/products/screens/view_listings.dart';
 import 'package:trade_loop/presentation/profile/screens/profile_page.dart';
 
 class NavigationService {
@@ -23,7 +24,7 @@ class NavigationService {
   static void navigateToListingPage(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const Placeholder()),
+      MaterialPageRoute(builder: (context) => ViewListings()),
     );
   }
 
