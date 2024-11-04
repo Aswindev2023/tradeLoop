@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
-import 'package:trade_loop/main.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
 import 'package:trade_loop/presentation/authentication/screens/forgot_password.dart';
 import 'package:trade_loop/presentation/authentication/screens/signup_screen.dart';
 import 'package:trade_loop/presentation/authentication/widgets/login_widget.dart';
+import 'package:trade_loop/presentation/home/screens/home_page.dart';
 
 class LogIn extends StatelessWidget {
   final String? successMessage;
@@ -32,8 +32,7 @@ class LogIn extends StatelessWidget {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const MyHomePage(title: 'HOME')),
+                MaterialPageRoute(builder: (context) => const HomePage()),
               );
             });
           } else if (state is AuthFailure) {

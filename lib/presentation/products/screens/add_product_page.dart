@@ -32,7 +32,7 @@ class _AddProductPageState extends State<AddProductPage> {
       listener: (context, state) {
         if (state is ProductAddedSuccess) {
           SnackbarUtils.showSnackbar(context, 'Product added successfully');
-          Navigator.pop(context);
+          Navigator.pop(context, true);
           setState(() {
             _isLoading = false;
           });
@@ -203,6 +203,9 @@ class _AddProductPageState extends State<AddProductPage> {
 
   void _saveProduct() {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       final newProduct = ProductModel(
         name: _nameController.text,
         description: _descriptionController.text,
@@ -216,7 +219,6 @@ class _AddProductPageState extends State<AddProductPage> {
       );
 
       context.read<ProductBloc>().add(ProductAdded(newProduct: newProduct));
-      _formKey.currentState!.reset();
     }
   }
 }

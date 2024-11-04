@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:trade_loop/main.dart';
+import 'package:trade_loop/presentation/home/screens/home_page.dart';
+
 import 'package:trade_loop/presentation/products/screens/view_listings.dart';
 import 'package:trade_loop/presentation/profile/screens/profile_page.dart';
 
@@ -7,10 +8,7 @@ class NavigationService {
   static void navigateToHomePage(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-          builder: (context) => const MyHomePage(
-                title: 'Home',
-              )),
+      MaterialPageRoute(builder: (context) => const HomePage()),
     );
   }
 

@@ -101,7 +101,7 @@ class ProfilePage extends StatelessWidget {
         String? imageUrl = state.user.imagePath;
         return ClipOval(
           child: Image.network(
-            imageUrl ?? 'https://www.flaticon.com/free-icon/profile-user_64572',
+            imageUrl ?? 'https://robohash.org/username?set=set5&size=200x200',
             width: 200,
             height: 200,
             fit: BoxFit.cover,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:trade_loop/main.dart';
 import 'package:trade_loop/presentation/authentication/screens/login_screen.dart';
+import 'package:trade_loop/presentation/home/screens/home_page.dart';
 
 class AuthStateHandler extends StatefulWidget {
   const AuthStateHandler({super.key});
@@ -31,7 +31,7 @@ class _AuthStateHandlerState extends State<AuthStateHandler> {
     if (_user == null) {
       return LogIn();
     } else {
-      return const MyHomePage(title: 'HOME');
+      return const HomePage();
     }
   }
 }

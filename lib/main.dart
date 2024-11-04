@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/presentation/authentication/widgets/auth_state_handler.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
 import 'package:trade_loop/presentation/bloc/category_bloc/category_bloc.dart';
+import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
-import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
 import 'package:trade_loop/repositories/auth_services.dart';
 
 void main() async {
@@ -34,6 +34,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<CategoryBloc>(
           create: (context) => CategoryBloc(),
+        ),
+        BlocProvider<HomeBloc>(
+          create: (context) => HomeBloc(),
         )
       ],
       child: MaterialApp(
@@ -45,42 +48,6 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         home: const AuthStateHandler(),
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final int selectedIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBarWidget(
-        selectedIndex: selectedIndex,
       ),
     );
   }

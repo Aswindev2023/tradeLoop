@@ -14,7 +14,7 @@ class ViewListings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('this is the user id from viewListing page:$userId');
-    BlocProvider.of<ProductBloc>(context).add(LoadProducts(userId: userId!));
+    context.read<ProductBloc>().add(LoadProducts(userId: userId!));
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -70,9 +70,12 @@ class ViewListings extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
+        onPressed: () async {
+          final result = await Navigator.push(context,
               MaterialPageRoute(builder: (context) => const AddProductPage()));
+          if (result == true) {
+            context.read<ProductBloc>().add(LoadProducts(userId: userId!));
+          }
         },
         backgroundColor: const Color.fromARGB(255, 62, 28, 255),
         child: const Icon(
