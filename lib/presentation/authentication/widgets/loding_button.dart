@@ -19,7 +19,7 @@ class LoadingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: isLoading ? null : onTap, // Disable tap if loading
+      onTap: isLoading ? null : onTap,
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(vertical: 13.0, horizontal: 30.0),

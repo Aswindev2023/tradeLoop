@@ -5,19 +5,26 @@ class ProductsService {
   final CollectionReference _productCollection =
       FirebaseFirestore.instance.collection('products');
 
-  Future<void> addProduct(ProductModel product) async {
+  Future<ProductModel> addProduct(ProductModel product) async {
+    print('add product is being called with this product model:$product');
+
     try {
-      assert(product.productId != null, 'User ID cannot be null.');
       final jsonMap = product.toJson();
-      await _productCollection.doc(product.productId).set(jsonMap);
+      DocumentReference docRef = await _productCollection.add(jsonMap);
+      print('this is the prodcut id:$docRef');
+      final generatedId = docRef.id;
+      await docRef.update({'productId': generatedId});
+
+      return product.copyWith(productId: generatedId);
     } catch (e) {
-      print('Error storing user data: $e');
+      print('Error storing product: $e');
       rethrow;
     }
   }
 
   Future<List<ProductModel>> getProductsByUserId(String userId) async {
     try {
+      print('this is the passed userId in getproduct by id:$userId');
       QuerySnapshot querySnapshot =
           await _productCollection.where('sellerId', isEqualTo: userId).get();
 

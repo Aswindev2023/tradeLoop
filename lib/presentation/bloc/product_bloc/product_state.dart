@@ -46,3 +46,23 @@ class ProductError extends ProductState {
   @override
   List<Object> get props => [message];
 }
+
+class ProductFormState extends ProductState {
+  final String name;
+  final String description;
+  final String price;
+  final String condition;
+  final List<String> imageUrls;
+  final List<String> tags;
+  final bool isAvailable;
+
+  const ProductFormState({
+    this.name = '',
+    this.description = '',
+    this.price = '',
+    this.condition = '',
+    this.imageUrls = const [],
+    this.tags = const [],
+    this.isAvailable = true,
+  });
+}

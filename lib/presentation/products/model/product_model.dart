@@ -9,8 +9,6 @@ class ProductModel {
   final List<String> imageUrls;
   final List<String> tags;
   final String sellerId;
-  final double latitude;
-  final double longitude;
 
   ProductModel({
     this.productId,
@@ -23,8 +21,6 @@ class ProductModel {
     required this.imageUrls,
     required this.tags,
     required this.sellerId,
-    required this.latitude,
-    required this.longitude,
   });
   ProductModel copyWith({
     String? productId,
@@ -37,8 +33,6 @@ class ProductModel {
     List<String>? imageUrls,
     List<String>? tags,
     String? sellerId,
-    double? latitude,
-    double? longitude,
   }) {
     return ProductModel(
       productId: productId ?? this.productId,
@@ -51,8 +45,6 @@ class ProductModel {
       imageUrls: imageUrls ?? this.imageUrls,
       tags: tags ?? this.tags,
       sellerId: sellerId ?? this.sellerId,
-      latitude: latitude ?? this.latitude,
-      longitude: longitude ?? this.longitude,
     );
   }
 
@@ -65,10 +57,9 @@ class ProductModel {
       'condition': condition,
       'datePosted': datePosted,
       'isAvailable': isAvailable,
+      'imageUrls': imageUrls,
       'tags': tags,
       'sellerId': sellerId,
-      'latitude': latitude,
-      'longitude': longitude,
     };
   }
 
@@ -81,11 +72,15 @@ class ProductModel {
       price: json['price'] as String,
       datePosted: json['datePosted'] as String,
       isAvailable: json['isAvailable'] as bool,
-      imageUrls: json['imageUrls'] as List<String>,
-      tags: json['tags'] as List<String>,
+      imageUrls: (json['imageUrls'] as List<dynamic>?)
+              ?.map((url) => url as String)
+              .toList() ??
+          [],
+      tags: (json['tags'] as List<dynamic>?)
+              ?.map((tag) => tag as String)
+              .toList() ??
+          [],
       sellerId: json['sellerId'] as String,
-      latitude: json['latitude'] as double,
-      longitude: json['longitude'] as double,
     );
   }
 }

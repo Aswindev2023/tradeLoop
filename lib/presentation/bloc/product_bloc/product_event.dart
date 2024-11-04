@@ -56,3 +56,5 @@ class ProductLoadFailed extends ProductEvent {
   final String errorMessage;
   const ProductLoadFailed({required this.errorMessage});
 }
+
+class ClearFormEvent extends ProductEvent {}

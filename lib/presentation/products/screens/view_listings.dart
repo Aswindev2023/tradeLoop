@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
+import 'package:trade_loop/presentation/products/screens/add_product_page.dart';
 
 class ViewListings extends StatelessWidget {
   final int selectedIndex = 2;
   final userId = FirebaseAuth.instance.currentUser?.uid;
+
   ViewListings({super.key});
 
   @override
   Widget build(BuildContext context) {
+    print('this is the user id from viewListing page:$userId');
     BlocProvider.of<ProductBloc>(context).add(LoadProducts(userId: userId!));
     return Scaffold(
       appBar: AppBar(
@@ -26,7 +29,8 @@ class ViewListings extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding:
+            const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0, top: 15),
         child: BlocBuilder<ProductBloc, ProductState>(
           builder: (context, state) {
             if (state is ProductLoading) {
@@ -66,7 +70,10 @@ class ViewListings extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const AddProductPage()));
+        },
         backgroundColor: const Color.fromARGB(255, 62, 28, 255),
         child: const Icon(
           Icons.add,
