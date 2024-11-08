@@ -35,82 +35,89 @@ class ForgotPassword extends StatelessWidget {
           }
         },
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Image.asset(
-                  "images/car (1).PNG",
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 5.0),
-                            child: Text(
-                              "Email",
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+          child: Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width > 600
+                  ? 600
+                  : double.infinity,
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: Image.asset(
+                      "images/car (1).PNG",
+                      fit: BoxFit.cover,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(left: 5.0),
+                              child: Text(
+                                "Email",
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        InputFieldWidget(
-                          controller: _emailController,
-                          hintText: 'Email',
-                        ),
-                        const SizedBox(height: 20.0),
-                        SizedBox(
-                          width: 250,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (FormValidators.isValidEmail(
-                                  _emailController.text)) {
-                                context
-                                    .read()<AuthBlocBloc>()
-                                    .add(ForgotPasswordEvent(
-                                      email: _emailController.text,
-                                    ));
-                                Navigator.pop(context, 'Email Sent');
-                              } else {
-                                SnackbarUtils.showSnackbar(
-                                    context, 'Invalid Email Format');
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 13.0, horizontal: 30.0),
-                              backgroundColor: authButtonColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
+                            const SizedBox(height: 8.0),
+                            InputFieldWidget(
+                              controller: _emailController,
+                              hintText: 'Email',
+                            ),
+                            const SizedBox(height: 20.0),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (FormValidators.isValidEmail(
+                                      _emailController.text)) {
+                                    context
+                                        .read()<AuthBlocBloc>()
+                                        .add(ForgotPasswordEvent(
+                                          email: _emailController.text,
+                                        ));
+                                    Navigator.pop(context, 'Email Sent');
+                                  } else {
+                                    SnackbarUtils.showSnackbar(
+                                        context, 'Invalid Email Format');
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 13.0, horizontal: 30.0),
+                                  backgroundColor: authButtonColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Sent Email",
+                                  style: TextStyle(
+                                      color: authButtonTextColor,
+                                      fontSize: 22.0,
+                                      fontWeight: FontWeight.w500),
+                                ),
                               ),
                             ),
-                            child: const Text(
-                              "Sent Email",
-                              style: TextStyle(
-                                  color: authButtonTextColor,
-                                  fontSize: 22.0,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )),
+                          ],
+                        )),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

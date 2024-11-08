@@ -6,6 +6,7 @@ import 'package:trade_loop/presentation/authentication/widgets/logout_confirmati
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
 import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
+import 'package:trade_loop/presentation/profile/screens/about_page.dart';
 import 'package:trade_loop/presentation/profile/screens/view_and_edit_page.dart';
 
 import 'package:trade_loop/presentation/profile/widgets/custom_tile_widget.dart';
@@ -76,7 +77,13 @@ class ProfilePage extends StatelessWidget {
             ),
             CustomTileWidget(
               title: 'About',
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AboutPage(),
+                    ));
+              },
             ),
             const SizedBox(
               height: 5,

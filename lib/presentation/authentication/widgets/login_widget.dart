@@ -12,7 +12,6 @@ class LoginForm extends StatefulWidget {
   final VoidCallback onLoginTap;
   final VoidCallback onForgotPasswordTap;
   final VoidCallback onGoogleSignIn;
-
   final VoidCallback onSignUpTap;
 
   const LoginForm({
@@ -77,10 +76,15 @@ class LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    double labelFontSize = screenWidth < 400 ? 16.0 : 18.0;
+    double paddingHorizontal = screenWidth * 0.05;
+
     return Column(
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width,
+          width: screenWidth,
           child: Image.asset(
             "images/car (1).PNG",
             fit: BoxFit.cover,
@@ -88,19 +92,19 @@ class LoginFormState extends State<LoginForm> {
         ),
         const SizedBox(height: 30.0),
         Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+          padding: EdgeInsets.symmetric(horizontal: paddingHorizontal),
           child: Form(
             key: widget.formKey,
             child: Column(
               children: [
-                const Align(
+                Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding: EdgeInsets.only(left: 5.0),
+                    padding: const EdgeInsets.only(left: 5.0),
                     child: Text(
                       "Email",
                       style: TextStyle(
-                        fontSize: 18.0,
+                        fontSize: labelFontSize,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
@@ -114,14 +118,14 @@ class LoginFormState extends State<LoginForm> {
                   errorMessage: emailError,
                 ),
                 const SizedBox(height: 30.0),
-                const Align(
+                Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding: EdgeInsets.only(left: 5.0),
                     child: Text(
                       "Password",
                       style: TextStyle(
-                        fontSize: 18.0,
+                        fontSize: labelFontSize,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
@@ -146,20 +150,20 @@ class LoginFormState extends State<LoginForm> {
         const SizedBox(height: 20.0),
         GestureDetector(
           onTap: widget.onForgotPasswordTap,
-          child: const Text(
+          child: Text(
             "Forgot Password?",
             style: TextStyle(
-                color: Color(0xFF8c8e98),
-                fontSize: 18.0,
+                color: const Color(0xFF8c8e98),
+                fontSize: screenWidth < 400 ? 16.0 : 18.0,
                 fontWeight: FontWeight.w500),
           ),
         ),
         const SizedBox(height: 20.0),
-        const Text(
+        Text(
           "or",
           style: TextStyle(
-              color: Color(0xFF273671),
-              fontSize: 22.0,
+              color: const Color(0xFF273671),
+              fontSize: screenWidth < 400 ? 16.0 : 22.0,
               fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 30.0),
@@ -173,21 +177,21 @@ class LoginFormState extends State<LoginForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               "Don't have an account?",
               style: TextStyle(
-                  color: Color(0xFF8c8e98),
-                  fontSize: 18.0,
+                  color: const Color(0xFF8c8e98),
+                  fontSize: screenWidth < 400 ? 16.0 : 18.0,
                   fontWeight: FontWeight.w500),
             ),
             const SizedBox(width: 5.0),
             GestureDetector(
               onTap: widget.onSignUpTap,
-              child: const Text(
+              child: Text(
                 "SignUp",
                 style: TextStyle(
-                    color: Color(0xFF273671),
-                    fontSize: 20.0,
+                    color: const Color(0xFF273671),
+                    fontSize: screenWidth < 400 ? 16.0 : 20.0,
                     fontWeight: FontWeight.w500),
               ),
             ),
