@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
+import 'package:trade_loop/presentation/products/model/category_model.dart';
 import 'package:trade_loop/presentation/products/model/product_model.dart';
 import 'package:trade_loop/presentation/products/widgets/category_dropdown.dart';
+import 'package:trade_loop/presentation/products/widgets/custom_textformfield.dart';
 import 'package:trade_loop/presentation/products/widgets/product_image_picker.dart';
 import 'package:trade_loop/presentation/products/widgets/tag_dropdown_field.dart';
 
@@ -25,6 +27,7 @@ class _AddProductPageState extends State<AddProductPage> {
   bool _isAvailable = true;
   List<String> _tags = [];
   bool _isLoading = false;
+  CategoryModel? _selectedCategory;
 
   @override
   Widget build(BuildContext context) {
@@ -86,59 +89,48 @@ class _AddProductPageState extends State<AddProductPage> {
                   ),
                   const SizedBox(height: 24),
                   // Product name field
-                  TextFormField(
+                  CustomTextFormField(
                     controller: _nameController,
-                    decoration: InputDecoration(
-                      labelText: "Product Name",
-                      labelStyle: const TextStyle(fontSize: 16),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                    ),
+                    label: "Product Name",
                     validator: (value) =>
                         value!.isEmpty ? "Enter product name" : null,
                   ),
+
                   const SizedBox(height: 16),
-                  const CategoryDropdown(),
+                  CategoryDropdown(
+                    onCategorySelected: (category) {
+                      setState(() {
+                        _selectedCategory = category;
+                      });
+                    },
+                  ),
                   const SizedBox(height: 16),
                   // Description field
-                  TextFormField(
+                  CustomTextFormField(
                     controller: _descriptionController,
-                    decoration: InputDecoration(
-                      labelText: "Description",
-                      labelStyle: const TextStyle(fontSize: 16),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                    ),
+                    label: "Description",
                     maxLines: 3,
                     validator: (value) =>
                         value!.isEmpty ? "Enter product description" : null,
                   ),
+
                   const SizedBox(height: 16),
                   // Price field
-                  TextFormField(
+                  CustomTextFormField(
                     controller: _priceController,
-                    decoration: InputDecoration(
-                      labelText: "Price",
-                      labelStyle: const TextStyle(fontSize: 16),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                    ),
-                    keyboardType: TextInputType.number,
+                    label: "Price",
                     validator: (value) => value!.isEmpty ? "Enter price" : null,
                   ),
+
                   const SizedBox(height: 16),
                   // Condition field
-                  TextFormField(
+                  CustomTextFormField(
                     controller: _conditionController,
-                    decoration: InputDecoration(
-                      labelText: "Condition (e.g., New, Used)",
-                      labelStyle: const TextStyle(fontSize: 16),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                    ),
+                    label: "Condition (e.g., New, Used)",
                     validator: (value) =>
                         value!.isEmpty ? "Specify condition" : null,
                   ),
+
                   const SizedBox(
                     height: 16,
                   ),
@@ -150,8 +142,8 @@ class _AddProductPageState extends State<AddProductPage> {
                       });
                     },
                   ),
-
                   const SizedBox(height: 16),
+
                   // Availability switch
                   SwitchListTile(
                     title: const Text("Available"),
@@ -202,7 +194,7 @@ class _AddProductPageState extends State<AddProductPage> {
   }
 
   void _saveProduct() {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() && _selectedCategory != null) {
       setState(() {
         _isLoading = true;
       });
@@ -216,6 +208,8 @@ class _AddProductPageState extends State<AddProductPage> {
         imageUrls: _pickedImages,
         tags: _tags,
         sellerId: FirebaseAuth.instance.currentUser!.uid,
+        categoryId: _selectedCategory!.id!,
+        categoryName: _selectedCategory!.name,
       );
 
       context.read<ProductBloc>().add(ProductAdded(newProduct: newProduct));

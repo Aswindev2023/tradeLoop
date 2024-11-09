@@ -4,7 +4,8 @@ import 'package:trade_loop/presentation/bloc/category_bloc/category_bloc.dart';
 import 'package:trade_loop/presentation/products/model/category_model.dart';
 
 class CategoryDropdown extends StatefulWidget {
-  const CategoryDropdown({super.key});
+  final Function(CategoryModel?) onCategorySelected;
+  const CategoryDropdown({super.key, required this.onCategorySelected});
 
   @override
   State<CategoryDropdown> createState() => _CategoryDropdownState();
@@ -45,6 +46,7 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
                 setState(() {
                   _selectedCategory = selectedCategory;
                 });
+                widget.onCategorySelected(selectedCategory);
 
                 print('Selected category ID: ${selectedCategory?.id}');
               },

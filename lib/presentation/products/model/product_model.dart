@@ -9,6 +9,8 @@ class ProductModel {
   final List<String> imageUrls;
   final List<String> tags;
   final String sellerId;
+  final String categoryId;
+  final String categoryName;
 
   ProductModel({
     this.productId,
@@ -21,6 +23,8 @@ class ProductModel {
     required this.imageUrls,
     required this.tags,
     required this.sellerId,
+    required this.categoryId,
+    required this.categoryName,
   });
   ProductModel copyWith({
     String? productId,
@@ -33,6 +37,8 @@ class ProductModel {
     List<String>? imageUrls,
     List<String>? tags,
     String? sellerId,
+    String? categoryId,
+    String? categoryName,
   }) {
     return ProductModel(
       productId: productId ?? this.productId,
@@ -45,6 +51,8 @@ class ProductModel {
       imageUrls: imageUrls ?? this.imageUrls,
       tags: tags ?? this.tags,
       sellerId: sellerId ?? this.sellerId,
+      categoryId: categoryId ?? this.categoryId,
+      categoryName: categoryName ?? this.categoryName,
     );
   }
 
@@ -60,6 +68,8 @@ class ProductModel {
       'imageUrls': imageUrls,
       'tags': tags,
       'sellerId': sellerId,
+      'categoryId': categoryId,
+      'categoryName': categoryName,
     };
   }
 
@@ -81,6 +91,8 @@ class ProductModel {
               .toList() ??
           [],
       sellerId: json['sellerId'] as String,
+      categoryId: json['categoryId'] as String,
+      categoryName: json['categoryName'] as String,
     );
   }
 }
