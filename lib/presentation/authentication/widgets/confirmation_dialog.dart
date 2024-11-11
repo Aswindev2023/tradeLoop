@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 
-class LogoutConfirmationDialog extends StatelessWidget {
+class ConfirmationDialog extends StatelessWidget {
   final VoidCallback onConfirm;
+  final String text;
+  final String content;
 
-  const LogoutConfirmationDialog({
+  const ConfirmationDialog({
     super.key,
     required this.onConfirm,
+    required this.text,
+    required this.content,
   });
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Logout'),
-      content: const Text('Are you sure you want to log out?'),
+      title: Text(text),
+      content: Text(content),
       actions: [
         TextButton(
           onPressed: () {
