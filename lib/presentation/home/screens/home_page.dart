@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
+import 'package:trade_loop/presentation/home/widgets/category_row_widget.dart';
 import 'package:trade_loop/presentation/home/widgets/product_grid.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
 
@@ -55,6 +56,8 @@ class HomePageState extends State<HomePage> {
                 suffixIcon: const Icon(Icons.search),
               ),
             ),
+            const SizedBox(height: 10),
+            CategoryRowWidget(),
             const SizedBox(height: 20), // Space between search bar and heading
             // Heading
             const Text(

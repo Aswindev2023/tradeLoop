@@ -1,37 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:trade_loop/presentation/authentication/screens/login_screen.dart';
-import 'package:trade_loop/presentation/home/screens/home_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
 
 class AuthStateHandler extends StatefulWidget {
-  const AuthStateHandler({super.key});
+  final Widget homePage; // Page shown when the user is authenticated
+  final Widget loginPage; // Page shown when the user is not authenticated
+
+  const AuthStateHandler({
+    required this.homePage,
+    required this.loginPage,
+    super.key,
+  });
 
   @override
   State<AuthStateHandler> createState() => _AuthStateHandlerState();
 }
 
 class _AuthStateHandlerState extends State<AuthStateHandler> {
-  User? _user;
-
   @override
   void initState() {
     super.initState();
-    _checkUserLoggedIn();
-  }
-
-  Future<void> _checkUserLoggedIn() async {
-    final user = FirebaseAuth.instance.currentUser;
-    setState(() {
-      _user = user;
-    });
+    // Trigger check of authentication status on init
+    context.read<AuthBlocBloc>().add(CheckAuthStatus());
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_user == null) {
-      return LogIn();
-    } else {
-      return const HomePage();
-    }
+    return BlocBuilder<AuthBlocBloc, AuthBlocState>(
+      builder: (context, state) {
+        if (state is AuthLoading) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        } else if (state is Authenticated) {
+          return widget.homePage;
+        } else {
+          return widget.loginPage;
+        }
+      },
+    );
   }
 }

@@ -34,3 +34,10 @@ class PasswordResetFailure extends AuthBlocState {
 }
 
 class AuthLoggedOut extends AuthBlocState {}
+
+class Authenticated extends AuthBlocState {
+  final User? user;
+  const Authenticated(this.user);
+  @override
+  List<Object> get props => [user!];
+}

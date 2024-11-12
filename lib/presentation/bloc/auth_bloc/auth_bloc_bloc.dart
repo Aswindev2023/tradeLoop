@@ -11,6 +11,7 @@ part 'auth_bloc_state.dart';
 class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
   final AuthServices _authServices;
   final UserRepository _userRepository = UserRepository();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   AuthBlocBloc(
     this._authServices,
   ) : super(AuthBlocInitial()) {
@@ -82,6 +83,16 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
         emit(AuthLoggedOut());
       } catch (e) {
         emit(AuthFailure(message: 'Logout Failed: ${e.toString()}'));
+      }
+    });
+
+    on<CheckAuthStatus>((event, emit) async {
+      emit(AuthLoading());
+      final user = _firebaseAuth.currentUser;
+      if (user != null) {
+        emit(Authenticated(user));
+      } else {
+        emit(AuthLoggedOut());
       }
     });
   }

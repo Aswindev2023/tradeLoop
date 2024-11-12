@@ -36,6 +36,7 @@ class LoginFormState extends State<LoginForm> {
   bool _isLoading = false;
 
   Future<void> _handleLogin() async {
+    if (!mounted) return;
     String? emailValidationError =
         FormValidators.validateForm(widget.emailController.text, 'Email');
     String? passwordValidationError =
@@ -52,8 +53,10 @@ class LoginFormState extends State<LoginForm> {
       });
       try {
         await Future.delayed(const Duration(seconds: 1));
+        if (!mounted) return;
         widget.onLoginTap();
       } finally {
+        if (!mounted) return;
         setState(() {
           _isLoading = false;
         });

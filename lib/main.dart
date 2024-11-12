@@ -1,12 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/presentation/authentication/screens/login_screen.dart';
 import 'package:trade_loop/presentation/authentication/widgets/auth_state_handler.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
 import 'package:trade_loop/presentation/bloc/category_bloc/category_bloc.dart';
 import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
+import 'package:trade_loop/presentation/home/screens/home_page.dart';
 import 'package:trade_loop/repositories/auth_services.dart';
 
 void main() async {
@@ -47,7 +49,10 @@ class MyApp extends StatelessWidget {
               seedColor: const Color.fromARGB(255, 30, 0, 255)),
           useMaterial3: true,
         ),
-        home: const AuthStateHandler(),
+        home: AuthStateHandler(
+          homePage: const HomePage(),
+          loginPage: LogIn(),
+        ),
       ),
     );
   }
