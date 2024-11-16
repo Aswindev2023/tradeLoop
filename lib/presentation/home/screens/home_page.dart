@@ -16,11 +16,12 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   final int selectedIndex = 0;
+  late String userId;
 
   @override
   void initState() {
     super.initState();
-    final userId = FirebaseAuth.instance.currentUser!.uid;
+    userId = FirebaseAuth.instance.currentUser!.uid;
     context.read<HomeBloc>().add(LoadProductsEvent(userId));
   }
 
@@ -57,8 +58,10 @@ class HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(height: 10),
-            CategoryRowWidget(),
-            const SizedBox(height: 20), // Space between search bar and heading
+            CategoryRowWidget(
+              userId: userId,
+            ),
+            const SizedBox(height: 20),
             // Heading
             const Text(
               'New Products',
@@ -67,7 +70,7 @@ class HomePageState extends State<HomePage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 10), // Space between heading and grid
+            const SizedBox(height: 10),
             // Product Grid
             Expanded(
               child: BlocConsumer<HomeBloc, HomeState>(
@@ -82,12 +85,22 @@ class HomePageState extends State<HomePage> {
                   if (state is HomePageLoading) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is HomePageLoaded) {
-                    return ProductGrid(products: state.products);
+                    if (state.products.isEmpty) {
+                      return const Center(
+                          child: Text("No products available."));
+                    } else {
+                      return ProductGrid(products: state.products);
+                    }
+                  } else if (state is HomePageError) {
+                    return Center(
+                        child:
+                            Text("Failed to load products: ${state.message}"));
                   } else {
+                    // Default state if none of the above match
                     return const Center(child: Text("No products available."));
                   }
                 },
-              ), // Pass your product list here
+              ),
             ),
           ],
         ),

@@ -8,6 +8,7 @@ class HomePageProductModel {
   final List<String> imageUrls;
   final List<String> tags;
   final String sellerId;
+  final String categoryId;
 
   HomePageProductModel({
     required this.productId,
@@ -19,6 +20,7 @@ class HomePageProductModel {
     required this.imageUrls,
     required this.tags,
     required this.sellerId,
+    required this.categoryId,
   });
 
   factory HomePageProductModel.fromFirestore(Map<String, dynamic> data) {
@@ -32,6 +34,7 @@ class HomePageProductModel {
       imageUrls: List<String>.from(data['imageUrls'] ?? []),
       tags: List<String>.from(data['tags'] ?? []),
       sellerId: data['sellerId'] ?? '',
+      categoryId: data['categoryId'] ?? '',
     );
   }
 }

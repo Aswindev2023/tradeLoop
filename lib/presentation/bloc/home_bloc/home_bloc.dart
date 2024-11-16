@@ -20,5 +20,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         print('homepage error: $e');
       }
     });
+    on<LoadCategoryProductsEvent>((event, emit) async {
+      emit(HomePageLoading());
+      try {
+        final products = await homeServices.getCategorywiseProducts(
+            event.userId, event.categoryId);
+        emit(HomePageLoaded(products));
+      } catch (e) {
+        emit(HomePageError('Failed to load products by category: $e'));
+        print('Category page error: $e');
+      }
+    });
   }
 }

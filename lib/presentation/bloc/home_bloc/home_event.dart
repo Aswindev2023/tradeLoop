@@ -15,3 +15,13 @@ class LoadProductsEvent extends HomeEvent {
   @override
   List<Object> get props => [userId];
 }
+
+class LoadCategoryProductsEvent extends HomeEvent {
+  final String userId;
+  final String categoryId;
+
+  const LoadCategoryProductsEvent(this.userId, this.categoryId);
+
+  @override
+  List<Object> get props => [userId, categoryId];
+}

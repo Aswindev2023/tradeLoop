@@ -15,7 +15,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         final categories = await categoryService.getCategories();
         emit(CategoryLoaded(categories));
       } catch (e) {
-        emit(CategoryError('Failed to fetch categories'));
+        emit(const CategoryError('Failed to fetch categories'));
       }
     });
   }
