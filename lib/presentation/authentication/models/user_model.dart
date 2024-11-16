@@ -4,8 +4,6 @@ class UserModel {
   final String email;
   String? imagePath;
   final String? phone;
-  final double? latitude;
-  final double? longitude;
   final String? houseName;
   final String? street;
   final String? city;
@@ -19,8 +17,6 @@ class UserModel {
     required this.name,
     this.imagePath,
     this.phone,
-    this.latitude,
-    this.longitude,
     this.houseName,
     this.street,
     this.city,
@@ -50,8 +46,6 @@ class UserModel {
       email: email ?? this.email,
       imagePath: imagePath ?? this.imagePath,
       phone: phone ?? this.phone,
-      latitude: latitude ?? this.latitude,
-      longitude: longitude ?? this.longitude,
       houseName: houseName ?? this.houseName,
       street: street ?? this.street,
       city: city ?? this.city,
@@ -68,8 +62,6 @@ class UserModel {
       'email': email,
       if (imagePath != null) 'imagePath': imagePath,
       if (phone != null) 'phone': phone,
-      if (latitude != null) 'latitude': latitude,
-      if (longitude != null) 'longitude': longitude,
       if (houseName != null) 'houseName': houseName,
       if (street != null) 'street': street,
       if (city != null) 'city': city,
@@ -86,8 +78,6 @@ class UserModel {
       email: json['email'] as String,
       imagePath: json['imagePath'] as String?,
       phone: json['phone'] as String?,
-      latitude: (json['latitude'] as num?)?.toDouble(),
-      longitude: (json['longitude'] as num?)?.toDouble(),
       houseName: json['houseName'] as String?,
       street: json['street'] as String?,
       city: json['city'] as String?,

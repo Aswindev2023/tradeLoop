@@ -1,14 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/products/model/category_model.dart';
 import 'package:trade_loop/presentation/products/model/product_model.dart';
+import 'package:trade_loop/presentation/products/screens/location_picker_page.dart';
 import 'package:trade_loop/presentation/products/widgets/category_dropdown.dart';
 import 'package:trade_loop/presentation/products/widgets/custom_textformfield.dart';
 import 'package:trade_loop/presentation/products/widgets/product_image_picker.dart';
 import 'package:trade_loop/presentation/products/widgets/tag_dropdown_field.dart';
+import 'package:trade_loop/presentation/profile/widgets/custom_tile_widget.dart';
 
 class AddProductPage extends StatefulWidget {
   const AddProductPage({super.key});
@@ -28,6 +32,42 @@ class _AddProductPageState extends State<AddProductPage> {
   List<String> _tags = [];
   bool _isLoading = false;
   CategoryModel? _selectedCategory;
+  LatLng? _pickedLocation;
+  String? _locationName;
+
+  Future<void> _selectLocation() async {
+    final LatLng? pickedLocation = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LocationPickerPage(),
+      ),
+    );
+
+    if (pickedLocation != null) {
+      setState(() {
+        _pickedLocation = pickedLocation;
+      });
+
+      // Convert coordinates to human-readable address
+      try {
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+          pickedLocation.latitude,
+          pickedLocation.longitude,
+        );
+        if (placemarks.isNotEmpty) {
+          Placemark place = placemarks.first;
+          setState(() {
+            _locationName =
+                "${place.locality}, ${place.administrativeArea}, ${place.country}";
+          });
+        }
+      } catch (e) {
+        setState(() {
+          _locationName = "Unknown Location";
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +194,14 @@ class _AddProductPageState extends State<AddProductPage> {
                       });
                     },
                   ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  //location picker
+                  CustomTileWidget(
+                    title: _locationName ?? "Pick a location",
+                    onTap: _selectLocation,
+                  ),
                   const SizedBox(height: 24),
                   //  buttons
 
@@ -195,6 +243,15 @@ class _AddProductPageState extends State<AddProductPage> {
 
   void _saveProduct() {
     if (_formKey.currentState!.validate() && _selectedCategory != null) {
+      if (_pickedLocation == null) {
+        SnackbarUtils.showSnackbar(context, 'Please select a location');
+        return;
+      }
+      if (_pickedImages.isEmpty) {
+        SnackbarUtils.showSnackbar(
+            context, 'Please select a atleast one image');
+        return;
+      }
       setState(() {
         _isLoading = true;
       });
@@ -210,9 +267,13 @@ class _AddProductPageState extends State<AddProductPage> {
         sellerId: FirebaseAuth.instance.currentUser!.uid,
         categoryId: _selectedCategory!.id!,
         categoryName: _selectedCategory!.name,
+        location: _pickedLocation,
+        locationName: _locationName!,
       );
 
       context.read<ProductBloc>().add(ProductAdded(newProduct: newProduct));
+    } else {
+      SnackbarUtils.showSnackbar(context, 'Please fill all  fields');
     }
   }
 }

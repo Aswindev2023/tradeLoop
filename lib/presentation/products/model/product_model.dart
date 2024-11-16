@@ -1,3 +1,5 @@
+import 'package:latlong2/latlong.dart';
+
 class ProductModel {
   final String? productId;
   final String name;
@@ -11,6 +13,8 @@ class ProductModel {
   final String sellerId;
   final String categoryId;
   final String categoryName;
+  final LatLng? location;
+  final String locationName;
 
   ProductModel({
     this.productId,
@@ -25,6 +29,8 @@ class ProductModel {
     required this.sellerId,
     required this.categoryId,
     required this.categoryName,
+    required this.location,
+    required this.locationName,
   });
   ProductModel copyWith({
     String? productId,
@@ -39,21 +45,24 @@ class ProductModel {
     String? sellerId,
     String? categoryId,
     String? categoryName,
+    LatLng? location,
+    String? locationName,
   }) {
     return ProductModel(
-      productId: productId ?? this.productId,
-      name: name ?? this.name,
-      description: description ?? this.description,
-      price: price ?? this.price,
-      condition: condition ?? this.condition,
-      datePosted: datePosted ?? this.datePosted,
-      isAvailable: isAvailable ?? this.isAvailable,
-      imageUrls: imageUrls ?? this.imageUrls,
-      tags: tags ?? this.tags,
-      sellerId: sellerId ?? this.sellerId,
-      categoryId: categoryId ?? this.categoryId,
-      categoryName: categoryName ?? this.categoryName,
-    );
+        productId: productId ?? this.productId,
+        name: name ?? this.name,
+        description: description ?? this.description,
+        price: price ?? this.price,
+        condition: condition ?? this.condition,
+        datePosted: datePosted ?? this.datePosted,
+        isAvailable: isAvailable ?? this.isAvailable,
+        imageUrls: imageUrls ?? this.imageUrls,
+        tags: tags ?? this.tags,
+        sellerId: sellerId ?? this.sellerId,
+        categoryId: categoryId ?? this.categoryId,
+        categoryName: categoryName ?? this.categoryName,
+        location: location ?? this.location,
+        locationName: locationName ?? this.locationName);
   }
 
   Map<String, dynamic> toJson() {
@@ -70,6 +79,10 @@ class ProductModel {
       'sellerId': sellerId,
       'categoryId': categoryId,
       'categoryName': categoryName,
+      'locationName': locationName,
+      'location': location != null
+          ? {'latitude': location!.latitude, 'longitude': location!.longitude}
+          : null,
     };
   }
 
@@ -93,6 +106,13 @@ class ProductModel {
       sellerId: json['sellerId'] as String,
       categoryId: json['categoryId'] as String,
       categoryName: json['categoryName'] as String,
+      locationName: json['locationName'] as String,
+      location: json['location'] != null
+          ? LatLng(
+              (json['location']['latitude'] as num).toDouble(),
+              (json['location']['longitude'] as num).toDouble(),
+            )
+          : null,
     );
   }
 }
