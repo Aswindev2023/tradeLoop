@@ -46,7 +46,7 @@ class ProductGrid extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
-                  '\$${product.price}',
+                  '\$${product.price.toStringAsFixed(2)}',
                   style: const TextStyle(fontSize: 14, color: Colors.grey),
                 ),
               ),

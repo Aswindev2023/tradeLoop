@@ -24,11 +24,17 @@ class HomePageProductModel {
   });
 
   factory HomePageProductModel.fromFirestore(Map<String, dynamic> data) {
+    double parsedPrice = 0.0;
+    if (data['price'] is String) {
+      parsedPrice = double.tryParse(data['price']) ?? 0.0;
+    } else {
+      parsedPrice = 0.0;
+    }
     return HomePageProductModel(
       productId: data['productId'] ?? '',
       name: data['name'] ?? '',
       description: data['description'] ?? '',
-      price: data['price'] ?? 0.0,
+      price: parsedPrice,
       condition: data['condition'] ?? 'Unknown',
       isAvailable: data['isAvailable'] ?? true,
       imageUrls: List<String>.from(data['imageUrls'] ?? []),

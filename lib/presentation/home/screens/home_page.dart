@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
 import 'package:trade_loop/presentation/home/widgets/category_row_widget.dart';
+import 'package:trade_loop/presentation/home/widgets/filter_bottom_sheet.dart';
 import 'package:trade_loop/presentation/home/widgets/product_grid.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
 
@@ -17,12 +18,49 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   final int selectedIndex = 0;
   late String userId;
+  final TextEditingController _searchController = TextEditingController();
+  bool _isSearching = false;
 
   @override
   void initState() {
     super.initState();
     userId = FirebaseAuth.instance.currentUser!.uid;
-    context.read<HomeBloc>().add(LoadProductsEvent(userId));
+
+    _searchController.addListener(() {
+      final query = _searchController.text;
+      print("Search Query: $query, Is Searching: $_isSearching");
+      if (query.isNotEmpty) {
+        setState(() {
+          _isSearching = true;
+        });
+
+        context.read<HomeBloc>().add(SearchProductsEvent(
+              query: query,
+              userId: userId,
+            ));
+      } else {
+        setState(() {
+          _isSearching = false;
+        });
+        context.read<HomeBloc>().add(LoadProductsEvent(userId));
+      }
+    });
+  }
+
+  void _openFilters() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => FilterBottomSheet(
+        onApplyFilters: (filters) {
+          context.read<HomeBloc>().add(SearchProductsEvent(
+                query: _searchController.text,
+                userId: userId,
+                categoryId: filters['categoryId'],
+                tags: filters['tags'],
+              ));
+        },
+      ),
+    );
   }
 
   @override
@@ -40,6 +78,16 @@ class HomePageState extends State<HomePage> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          if (_isSearching)
+            IconButton(
+              icon: const Icon(
+                Icons.filter_list,
+                color: Colors.white,
+              ),
+              onPressed: _openFilters,
+            ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -48,6 +96,7 @@ class HomePageState extends State<HomePage> {
           children: <Widget>[
             // Search Bar
             TextField(
+              controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Search products...',
                 border: OutlineInputBorder(
@@ -58,18 +107,20 @@ class HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(height: 10),
-            CategoryRowWidget(
-              userId: userId,
-            ),
-            const SizedBox(height: 20),
-            // Heading
-            const Text(
-              'New Products',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+            if (!_isSearching) ...[
+              CategoryRowWidget(
+                userId: userId,
               ),
-            ),
+              const SizedBox(height: 20),
+              // Heading
+              const Text(
+                'New Products',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
             const SizedBox(height: 10),
             // Product Grid
             Expanded(
