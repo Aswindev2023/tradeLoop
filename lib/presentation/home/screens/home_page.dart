@@ -96,7 +96,6 @@ class HomePageState extends State<HomePage> {
                         child:
                             Text("Failed to load products: ${state.message}"));
                   } else {
-                    // Default state if none of the above match
                     return const Center(child: Text("No products available."));
                   }
                 },

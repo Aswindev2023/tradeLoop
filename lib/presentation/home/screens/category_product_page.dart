@@ -31,7 +31,10 @@ class CategoryProductsPage extends StatelessWidget {
             if (state.products.isEmpty) {
               return const Center(child: Text('No Products Available'));
             } else {
-              return ProductGrid(products: state.products);
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ProductGrid(products: state.products),
+              );
             }
           } else if (state is HomePageError) {
             return Center(child: Text(state.message));

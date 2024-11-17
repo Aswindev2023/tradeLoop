@@ -31,5 +31,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         print('Category page error: $e');
       }
     });
+    on<SearchProductsEvent>((event, emit) async {
+      emit(HomePageLoading());
+      try {
+        final products = await homeServices.searchProducts(
+          query: event.query,
+          userId: event.userId,
+          categoryId: event.categoryId,
+          tags: event.tags,
+        );
+        emit(HomePageLoaded(products));
+      } catch (e) {
+        emit(HomePageError('Failed to search products: $e'));
+        print('Search error: $e');
+      }
+    });
   }
 }

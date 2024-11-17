@@ -2,7 +2,7 @@ class HomePageProductModel {
   final String productId;
   final String name;
   final String description;
-  final String price;
+  final double price;
   final String condition;
   final bool isAvailable;
   final List<String> imageUrls;

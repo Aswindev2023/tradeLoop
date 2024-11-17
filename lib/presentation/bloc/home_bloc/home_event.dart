@@ -25,3 +25,20 @@ class LoadCategoryProductsEvent extends HomeEvent {
   @override
   List<Object> get props => [userId, categoryId];
 }
+
+class SearchProductsEvent extends HomeEvent {
+  final String query;
+  final String userId;
+  final String? categoryId;
+  final List<String>? tags;
+
+  const SearchProductsEvent({
+    required this.query,
+    required this.userId,
+    this.categoryId,
+    this.tags,
+  });
+
+  @override
+  List<Object> get props => [query, userId, categoryId!, tags!];
+}

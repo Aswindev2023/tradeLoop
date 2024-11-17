@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/presentation/bloc/category_bloc/category_bloc.dart';
+import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
 import 'package:trade_loop/presentation/home/screens/category_list.dart';
 import 'package:trade_loop/presentation/home/screens/category_product_page.dart';
 
@@ -41,7 +42,11 @@ class _CategoryRowWidgetState extends State<CategoryRowWidget> {
                             builder: (context) => CategoryList(
                               userId: widget.userId,
                             ),
-                          ));
+                          )).then((_) {
+                        context
+                            .read<HomeBloc>()
+                            .add(LoadProductsEvent(widget.userId));
+                      });
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -87,7 +92,11 @@ class _CategoryRowWidgetState extends State<CategoryRowWidget> {
                           categoryName: category.name,
                         ),
                       ),
-                    );
+                    ).then((_) {
+                      context
+                          .read<HomeBloc>()
+                          .add(LoadProductsEvent(widget.userId));
+                    });
                   },
                 );
               },

@@ -11,7 +11,7 @@ class TagDropdownField extends StatefulWidget {
 
 class _TagDropdownFieldState extends State<TagDropdownField> {
   final List<String> _popularTags = [
-    "Electronics",
+    "Vintage",
     "Furniture",
     "Books",
     "Fashion",
@@ -19,6 +19,8 @@ class _TagDropdownFieldState extends State<TagDropdownField> {
     "Home Appliances",
     "Sports",
     "Toys",
+    "Mobiles"
+        "Laptops"
   ];
   final List<String> _selectedTags = [];
 
