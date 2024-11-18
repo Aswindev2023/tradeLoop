@@ -56,30 +56,49 @@ class HomeServices {
       print('Searching products for query: $query');
       Query queryRef = _productCollection;
 
-      // Search by name
-      queryRef = queryRef.where('name', isGreaterThanOrEqualTo: query);
-      queryRef = queryRef.where('name', isLessThanOrEqualTo: '$query\uf8ff');
-
-      // Apply category filter if provided
-      if (categoryId != null) {
-        queryRef = queryRef.where('categoryId', isEqualTo: categoryId);
+      // Search by name (partial matching)
+      if (query.isNotEmpty) {
+        queryRef = queryRef
+            .where('name', isGreaterThanOrEqualTo: query)
+            .where('name', isLessThanOrEqualTo: '$query\uf8ff');
       }
 
-      // Apply tags filter if provided
-      if (tags != null && tags.isNotEmpty) {
-        queryRef = queryRef.where('tags', arrayContainsAny: tags);
-      }
-
+      // Execute the query to fetch products by name
       QuerySnapshot querySnapshot = await queryRef.get();
+      print(
+          'Query Snapshot: ${querySnapshot.docs.map((doc) => doc.data()).toList()}');
 
-      // Filter out products belonging to the current user
-      return querySnapshot.docs
+      // Map the fetched products into the HomePageProductModel
+      List<HomePageProductModel> products = querySnapshot.docs
           .map((doc) => HomePageProductModel.fromFirestore(
               doc.data() as Map<String, dynamic>))
-          .where((product) => product.sellerId != userId)
+          .where((product) =>
+              product.sellerId !=
+              userId) // Filter out the current user's products
           .toList();
+
+      // Apply category and tag filters if provided
+      if (categoryId != null || (tags != null && tags.isNotEmpty)) {
+        print('Applying filters: categoryId = $categoryId, tags = $tags');
+
+        // Filter by category if provided
+        if (categoryId != null) {
+          products = products
+              .where((product) => product.categoryId == categoryId)
+              .toList();
+        }
+
+        // Filter by tags if provided
+        if (tags != null && tags.isNotEmpty) {
+          products = products
+              .where((product) => product.tags.any((tag) => tags.contains(tag)))
+              .toList();
+        }
+      }
+
+      return products;
     } catch (e) {
-      print('Error searching products: $e');
+      print('Error during searchProducts: $e');
       return [];
     }
   }

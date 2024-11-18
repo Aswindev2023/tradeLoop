@@ -14,7 +14,6 @@ class FilterBottomSheet extends StatefulWidget {
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
   String? selectedCategoryId;
   final List<String> selectedTags = [];
-  RangeValues priceRange = const RangeValues(0, 1000);
 
   final List<String> hardcodedTags = [
     "Vintage",
@@ -93,39 +92,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             }).toList(),
           ),
           const SizedBox(height: 16),
-          // Price Range Selector
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text("Price Range"),
-              RangeSlider(
-                values: priceRange,
-                min: 0,
-                max: 5000,
-                divisions: 100,
-                labels: RangeLabels(
-                  "\$${priceRange.start.round()}",
-                  "\$${priceRange.end.round()}",
-                ),
-                onChanged: (values) {
-                  setState(() {
-                    priceRange = values;
-                  });
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
+
           // Apply Button
           ElevatedButton(
             onPressed: () {
               widget.onApplyFilters({
                 'categoryId': selectedCategoryId,
                 'tags': selectedTags,
-                'priceRange': {
-                  'min': priceRange.start.round(),
-                  'max': priceRange.end.round(),
-                },
               });
               Navigator.pop(context);
             },

@@ -25,7 +25,7 @@ class HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     userId = FirebaseAuth.instance.currentUser!.uid;
-
+    context.read<HomeBloc>().add(LoadProductsEvent(userId));
     _searchController.addListener(() {
       final query = _searchController.text;
       print("Search Query: $query, Is Searching: $_isSearching");
