@@ -57,4 +57,33 @@ class ProductLoadFailed extends ProductEvent {
   const ProductLoadFailed({required this.errorMessage});
 }
 
-class ClearFormEvent extends ProductEvent {}
+class ProductFormUpdated extends ProductEvent {
+  final ProductFormState formState;
+
+  const ProductFormUpdated({required this.formState});
+
+  @override
+  List<Object> get props => [formState];
+}
+
+class ToggleLoading extends ProductEvent {
+  final bool isLoading;
+
+  const ToggleLoading({required this.isLoading});
+
+  @override
+  List<Object> get props => [isLoading];
+}
+
+class UpdatePickedLocation extends ProductEvent {
+  final LatLng pickedLocation;
+  final String locationName;
+
+  const UpdatePickedLocation({
+    required this.pickedLocation,
+    required this.locationName,
+  });
+
+  @override
+  List<Object> get props => [pickedLocation, locationName];
+}

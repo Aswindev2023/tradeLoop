@@ -198,7 +198,7 @@ class FAQItem extends StatefulWidget {
   const FAQItem({super.key, required this.question, required this.answer});
 
   @override
-  _FAQItemState createState() => _FAQItemState();
+  State<FAQItem> createState() => _FAQItemState();
 }
 
 class _FAQItemState extends State<FAQItem> {

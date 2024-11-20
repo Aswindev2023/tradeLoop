@@ -33,7 +33,6 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
 
   Future<void> requestLocationPermission() async {
     if (await Permission.location.request().isGranted && mounted) {
-      // Permission granted
     } else {
       SnackbarUtils.showSnackbar(
           context, 'Location permission is required to pick a location.');
@@ -44,7 +43,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Check if location services are enabled
+    // location service enable or not
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled && mounted) {
       SnackbarUtils.showSnackbar(
@@ -97,10 +96,14 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
         });
         _mapController.move(searchedLocation, 14.0);
       } else {
-        SnackbarUtils.showSnackbar(context, 'No results found for "$query".');
+        if (mounted) {
+          SnackbarUtils.showSnackbar(context, 'No results found for "$query".');
+        }
       }
     } catch (e) {
-      SnackbarUtils.showSnackbar(context, 'Error searching for location: $e');
+      if (mounted) {
+        SnackbarUtils.showSnackbar(context, 'Error searching for location: $e');
+      }
     }
   }
 

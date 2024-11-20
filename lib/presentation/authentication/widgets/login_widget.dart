@@ -124,7 +124,7 @@ class LoginFormState extends State<LoginForm> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding: EdgeInsets.only(left: 5.0),
+                    padding: const EdgeInsets.only(left: 5.0),
                     child: Text(
                       "Password",
                       style: TextStyle(

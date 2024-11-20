@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/products/model/category_model.dart';
@@ -48,7 +49,7 @@ class _AddProductPageState extends State<AddProductPage> {
         _pickedLocation = pickedLocation;
       });
 
-      // Convert coordinates to human-readable address
+      // coordinates to human-readable address
       try {
         List<Placemark> placemarks = await placemarkFromCoordinates(
           pickedLocation.latitude,
@@ -201,6 +202,7 @@ class _AddProductPageState extends State<AddProductPage> {
                   CustomTileWidget(
                     title: _locationName ?? "Pick a location",
                     onTap: _selectLocation,
+                    customFontWeight: FontWeight.w400,
                   ),
                   const SizedBox(height: 24),
                   //  buttons
@@ -251,6 +253,9 @@ class _AddProductPageState extends State<AddProductPage> {
         SnackbarUtils.showSnackbar(
             context, 'Please select a atleast one image');
         return;
+      }
+      if (FormValidators.isValidPrice(_priceController.text)) {
+        SnackbarUtils.showSnackbar(context, 'Please enter valid price');
       }
       setState(() {
         _isLoading = true;

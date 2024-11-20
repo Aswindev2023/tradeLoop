@@ -123,11 +123,12 @@ class ProfilePage extends StatelessWidget {
           ),
         );
       } else {
-        return const ClipOval(
-          child: SizedBox(
+        return ClipOval(
+          child: Image.network(
+            'https://robohash.org/username?set=set5&size=200x200',
             width: 200,
             height: 200,
-            child: Icon(Icons.error, color: Colors.red),
+            fit: BoxFit.cover,
           ),
         );
       }

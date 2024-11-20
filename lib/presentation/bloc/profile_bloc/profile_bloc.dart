@@ -46,11 +46,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         print('this is the current sate${currentState.pickedImagePath}');
         emit(ProfileSaving());
-        // If a new image is picked, upload it.
         if (currentState.pickedImagePath != null &&
             currentState.pickedImagePath!.isNotEmpty) {
           print('Uploading image from: ${currentState.pickedImagePath}');
-          // Delete the old image if it exists.
+          // Deleting  old image
           if (event.updatedUser.imagePath != null &&
               event.updatedUser.imagePath!.isNotEmpty) {
             await imageUploadService.deleteImage(event.updatedUser.imagePath!);
@@ -58,7 +57,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
           print('Uploading image...');
 
-          // Upload the new image.
+          // Upload  new image.
           newImageUrl = await imageUploadService
               .uploadImage(currentState.pickedImagePath!);
         }

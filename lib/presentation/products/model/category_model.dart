@@ -20,7 +20,6 @@ class CategoryModel {
     };
   }
 
-  // CopyWith method for CategoryModel
   CategoryModel copyWith({
     String? id,
     String? name,

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:latlong2/latlong.dart';
 
 import 'package:trade_loop/presentation/products/model/product_model.dart';
 import 'package:trade_loop/repositories/product_image_upload_service.dart';
@@ -48,9 +49,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       } catch (e) {
         emit(ProductError(message: 'Failed to load products: $e'));
       }
-    });
-    on<ClearFormEvent>((event, emit) {
-      emit(const ProductFormState());
     });
   }
 }

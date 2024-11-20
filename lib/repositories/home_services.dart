@@ -56,39 +56,37 @@ class HomeServices {
       print('Searching products for query: $query');
       Query queryRef = _productCollection;
 
-      // Search by name (partial matching)
+      // Search by name
       if (query.isNotEmpty) {
         queryRef = queryRef
             .where('name', isGreaterThanOrEqualTo: query)
             .where('name', isLessThanOrEqualTo: '$query\uf8ff');
       }
 
-      // Execute the query to fetch products by name
+      //  fetch products by name
       QuerySnapshot querySnapshot = await queryRef.get();
       print(
           'Query Snapshot: ${querySnapshot.docs.map((doc) => doc.data()).toList()}');
 
-      // Map the fetched products into the HomePageProductModel
+      // Maping products into the HomePageProductModel
       List<HomePageProductModel> products = querySnapshot.docs
           .map((doc) => HomePageProductModel.fromFirestore(
               doc.data() as Map<String, dynamic>))
-          .where((product) =>
-              product.sellerId !=
-              userId) // Filter out the current user's products
+          .where((product) => product.sellerId != userId)
           .toList();
 
-      // Apply category and tag filters if provided
+      // Applying category and tag filters
       if (categoryId != null || (tags != null && tags.isNotEmpty)) {
         print('Applying filters: categoryId = $categoryId, tags = $tags');
 
-        // Filter by category if provided
+        // Filter by category
         if (categoryId != null) {
           products = products
               .where((product) => product.categoryId == categoryId)
               .toList();
         }
 
-        // Filter by tags if provided
+        // Filter by tags
         if (tags != null && tags.isNotEmpty) {
           products = products
               .where((product) => product.tags.any((tag) => tags.contains(tag)))

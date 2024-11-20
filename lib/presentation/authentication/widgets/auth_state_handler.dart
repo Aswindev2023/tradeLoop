@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
 
 class AuthStateHandler extends StatefulWidget {
-  final Widget homePage; // Page shown when the user is authenticated
-  final Widget loginPage; // Page shown when the user is not authenticated
+  final Widget homePage;
+  final Widget loginPage;
 
   const AuthStateHandler({
     required this.homePage,
@@ -20,7 +20,7 @@ class _AuthStateHandlerState extends State<AuthStateHandler> {
   @override
   void initState() {
     super.initState();
-    // Trigger check of authentication status on init
+
     context.read<AuthBlocBloc>().add(CheckAuthStatus());
   }
 

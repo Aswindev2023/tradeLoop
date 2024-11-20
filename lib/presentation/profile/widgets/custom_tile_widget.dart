@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class CustomTileWidget extends StatelessWidget {
   final String title;
   final VoidCallback? onTap;
-  const CustomTileWidget({super.key, required this.title, this.onTap});
+  final FontWeight? customFontWeight;
+  const CustomTileWidget(
+      {super.key, required this.title, this.onTap, this.customFontWeight});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +22,8 @@ class CustomTileWidget extends StatelessWidget {
         child: ListTile(
           title: Text(
             title,
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
+            style: TextStyle(
+              fontWeight: customFontWeight ?? FontWeight.w500,
               fontSize: 20,
             ),
           ),

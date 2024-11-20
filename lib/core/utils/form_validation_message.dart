@@ -30,4 +30,9 @@ class FormValidators {
     final passwordRegex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d).{6,}$');
     return passwordRegex.hasMatch(password);
   }
+
+  static bool isValidPrice(String number) {
+    final numberRegex = RegExp(r'^\d+(\.\d+)?$');
+    return numberRegex.hasMatch(number);
+  }
 }
