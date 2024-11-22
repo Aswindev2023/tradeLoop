@@ -57,33 +57,59 @@ class ProductLoadFailed extends ProductEvent {
   const ProductLoadFailed({required this.errorMessage});
 }
 
-class ProductFormUpdated extends ProductEvent {
-  final ProductFormState formState;
+//add product page events:
+class InitializeProductForm extends ProductEvent {}
 
-  const ProductFormUpdated({required this.formState});
-
-  @override
-  List<Object> get props => [formState];
-}
-
-class ToggleLoading extends ProductEvent {
-  final bool isLoading;
-
-  const ToggleLoading({required this.isLoading});
-
-  @override
-  List<Object> get props => [isLoading];
-}
-
-class UpdatePickedLocation extends ProductEvent {
+class UpdateLocation extends ProductEvent {
   final LatLng pickedLocation;
   final String locationName;
 
-  const UpdatePickedLocation({
-    required this.pickedLocation,
-    required this.locationName,
-  });
+  const UpdateLocation(
+      {required this.pickedLocation, required this.locationName});
 
   @override
   List<Object> get props => [pickedLocation, locationName];
+}
+
+class UpdateImages extends ProductEvent {
+  final List<String> imagePaths;
+
+  const UpdateImages({required this.imagePaths});
+
+  @override
+  List<Object> get props => [imagePaths];
+}
+
+class UpdateTags extends ProductEvent {
+  final List<String> tags;
+
+  const UpdateTags({required this.tags});
+
+  @override
+  List<Object> get props => [tags];
+}
+
+class UpdateCategory extends ProductEvent {
+  final CategoryModel selectedCategory;
+
+  const UpdateCategory({required this.selectedCategory});
+
+  @override
+  List<Object> get props => [selectedCategory];
+}
+
+class UpdateFormFields extends ProductEvent {
+  final Map<String, dynamic> formFields;
+
+  const UpdateFormFields({required this.formFields});
+
+  @override
+  List<Object> get props => [formFields];
+}
+
+class UpdateAvailability extends ProductEvent {
+  final bool isAvailable;
+  const UpdateAvailability({required this.isAvailable});
+  @override
+  List<Object> get props => [isAvailable];
 }

@@ -47,22 +47,54 @@ class ProductError extends ProductState {
   List<Object> get props => [message];
 }
 
+//add product page state:
 class ProductFormState extends ProductState {
-  final String name;
-  final String description;
-  final String price;
-  final String condition;
-  final List<String> imageUrls;
-  final List<String> tags;
   final bool isAvailable;
+  final LatLng? pickedLocation;
+  final String? locationName;
+  final List<String> pickedImages;
+  final List<String> tags;
+  final CategoryModel? selectedCategory;
+  final Map<String, dynamic> formFields;
 
   const ProductFormState({
-    this.name = '',
-    this.description = '',
-    this.price = '',
-    this.condition = '',
-    this.imageUrls = const [],
+    this.isAvailable = false,
+    this.pickedLocation,
+    this.locationName,
+    this.pickedImages = const [],
     this.tags = const [],
-    this.isAvailable = true,
+    this.selectedCategory,
+    this.formFields = const {},
   });
+
+  ProductFormState copyWith({
+    bool? isAvailable,
+    LatLng? pickedLocation,
+    String? locationName,
+    List<String>? pickedImages,
+    List<String>? tags,
+    CategoryModel? selectedCategory,
+    Map<String, dynamic>? formFields,
+  }) {
+    return ProductFormState(
+      isAvailable: isAvailable ?? this.isAvailable,
+      pickedLocation: pickedLocation ?? this.pickedLocation,
+      locationName: locationName ?? this.locationName,
+      pickedImages: pickedImages ?? this.pickedImages,
+      tags: tags ?? this.tags,
+      selectedCategory: selectedCategory ?? this.selectedCategory,
+      formFields: formFields ?? this.formFields,
+    );
+  }
+
+  @override
+  List<Object> get props => [
+        isAvailable,
+        pickedLocation ?? const LatLng(10.850516, 76.271080),
+        locationName ?? '',
+        pickedImages,
+        tags,
+        selectedCategory ?? CategoryModel(id: null, name: ''),
+        formFields,
+      ];
 }

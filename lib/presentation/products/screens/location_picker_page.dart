@@ -72,11 +72,15 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
       desiredAccuracy: LocationAccuracy.high,
     );
 
-    setState(() {
-      _currentLocation = LatLng(position.latitude, position.longitude);
-      _selectedLocation = _currentLocation;
-    });
-    _mapController.move(_currentLocation, 10.0);
+    if (mounted) {
+      setState(() {
+        _currentLocation = LatLng(position.latitude, position.longitude);
+        _selectedLocation = _currentLocation;
+      });
+    }
+    if (mounted) {
+      _mapController.move(_currentLocation, 10.0);
+    }
   }
 
   Future<void> _searchLocation(String query) async {
@@ -90,11 +94,15 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
       if (locations.isNotEmpty) {
         LatLng searchedLocation =
             LatLng(locations[0].latitude, locations[0].longitude);
-        setState(() {
-          _currentLocation = searchedLocation;
-          _selectedLocation = searchedLocation;
-        });
-        _mapController.move(searchedLocation, 14.0);
+        if (mounted) {
+          setState(() {
+            _currentLocation = searchedLocation;
+            _selectedLocation = searchedLocation;
+          });
+        }
+        if (mounted) {
+          _mapController.move(searchedLocation, 14.0);
+        }
       } else {
         if (mounted) {
           SnackbarUtils.showSnackbar(context, 'No results found for "$query".');

@@ -6,7 +6,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
-import 'package:trade_loop/presentation/products/model/category_model.dart';
 import 'package:trade_loop/presentation/products/model/product_model.dart';
 import 'package:trade_loop/presentation/products/screens/location_picker_page.dart';
 import 'package:trade_loop/presentation/products/widgets/category_dropdown.dart';
@@ -28,72 +27,76 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _conditionController = TextEditingController();
-  List<String> _pickedImages = [];
-  bool _isAvailable = true;
-  List<String> _tags = [];
   bool _isLoading = false;
-  CategoryModel? _selectedCategory;
-  LatLng? _pickedLocation;
-  String? _locationName;
 
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProductBloc>().add(InitializeProductForm());
+  }
+
+// Location Picker
   Future<void> _selectLocation() async {
     final LatLng? pickedLocation = await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => const LocationPickerPage(),
-      ),
+      MaterialPageRoute(builder: (context) => const LocationPickerPage()),
     );
 
     if (pickedLocation != null) {
-      setState(() {
-        _pickedLocation = pickedLocation;
-      });
-
-      // coordinates to human-readable address
       try {
         List<Placemark> placemarks = await placemarkFromCoordinates(
           pickedLocation.latitude,
           pickedLocation.longitude,
         );
-        if (placemarks.isNotEmpty) {
-          Placemark place = placemarks.first;
-          setState(() {
-            _locationName =
-                "${place.locality}, ${place.administrativeArea}, ${place.country}";
-          });
+
+        final locationName = placemarks.isNotEmpty
+            ? "${placemarks.first.locality}, ${placemarks.first.administrativeArea}, ${placemarks.first.country}"
+            : "Unknown Location";
+        if (mounted) {
+          context.read<ProductBloc>().add(UpdateLocation(
+                pickedLocation: pickedLocation,
+                locationName: locationName,
+              ));
         }
+        print("Selected Location Name: $locationName");
       } catch (e) {
-        setState(() {
-          _locationName = "Unknown Location";
-        });
+        if (mounted) {
+          context.read<ProductBloc>().add(UpdateLocation(
+                pickedLocation: pickedLocation,
+                locationName: "Unknown Location",
+              ));
+        }
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ProductBloc, ProductState>(
-      listener: (context, state) {
-        if (state is ProductAddedSuccess) {
-          SnackbarUtils.showSnackbar(context, 'Product added successfully');
-          Navigator.pop(context, true);
-          setState(() {
-            _isLoading = false;
-          });
-        } else if (state is ProductError) {
-          SnackbarUtils.showSnackbar(context, 'Error:${state.message}');
-          setState(() {
-            _isLoading = false;
-          });
-          print('${state.message}');
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Add Product"),
-          centerTitle: true,
-        ),
-        body: Padding(
+    final state = context.watch<ProductBloc>().state;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Add Product"),
+        centerTitle: true,
+      ),
+      body: BlocListener<ProductBloc, ProductState>(
+        listener: (context, state) {
+          if (state is ProductAddedSuccess) {
+            setState(() {
+              _isLoading = false;
+            });
+            SnackbarUtils.showSnackbar(context, 'Product added successfully');
+            context.read<ProductBloc>().add(InitializeProductForm());
+            Navigator.pop(context, true);
+          } else if (state is ProductError) {
+            SnackbarUtils.showSnackbar(context, 'Error:${state.message}');
+            setState(() {
+              _isLoading = false;
+            });
+            print(state.message);
+          }
+        },
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: SingleChildScrollView(
             child: Form(
@@ -120,9 +123,9 @@ class _AddProductPageState extends State<AddProductPage> {
                         const SizedBox(height: 8),
                         ProductImagePicker(
                           onImagesPicked: (images) {
-                            setState(() {
-                              _pickedImages = images;
-                            });
+                            context
+                                .read<ProductBloc>()
+                                .add(UpdateImages(imagePaths: images));
                           },
                         ),
                       ],
@@ -140,9 +143,9 @@ class _AddProductPageState extends State<AddProductPage> {
                   const SizedBox(height: 16),
                   CategoryDropdown(
                     onCategorySelected: (category) {
-                      setState(() {
-                        _selectedCategory = category;
-                      });
+                      context
+                          .read<ProductBloc>()
+                          .add(UpdateCategory(selectedCategory: category!));
                     },
                   ),
                   const SizedBox(height: 16),
@@ -158,10 +161,14 @@ class _AddProductPageState extends State<AddProductPage> {
                   const SizedBox(height: 16),
                   // Price field
                   CustomTextFormField(
-                    controller: _priceController,
-                    label: "Price",
-                    validator: (value) => value!.isEmpty ? "Enter price" : null,
-                  ),
+                      controller: _priceController,
+                      label: "Price",
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a price";
+                        }
+                        return null;
+                      }),
 
                   const SizedBox(height: 16),
                   // Condition field
@@ -178,9 +185,7 @@ class _AddProductPageState extends State<AddProductPage> {
                   //Tag field
                   TagDropdownField(
                     onTagsChanged: (tags) {
-                      setState(() {
-                        _tags = tags;
-                      });
+                      context.read<ProductBloc>().add(UpdateTags(tags: tags));
                     },
                   ),
                   const SizedBox(height: 16),
@@ -188,52 +193,66 @@ class _AddProductPageState extends State<AddProductPage> {
                   // Availability switch
                   SwitchListTile(
                     title: const Text("Available"),
-                    value: _isAvailable,
+                    value:
+                        (context.watch<ProductBloc>().state is ProductFormState)
+                            ? (state as ProductFormState).isAvailable
+                            : false,
                     onChanged: (value) {
-                      setState(() {
-                        _isAvailable = value;
-                      });
+                      context
+                          .read<ProductBloc>()
+                          .add(UpdateAvailability(isAvailable: value));
                     },
                   ),
                   const SizedBox(
                     height: 16,
                   ),
                   //location picker
-                  CustomTileWidget(
-                    title: _locationName ?? "Pick a location",
-                    onTap: _selectLocation,
-                    customFontWeight: FontWeight.w400,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomTileWidget(
+                      title: (context.watch<ProductBloc>().state
+                              is ProductFormState)
+                          ? ((state as ProductFormState).locationName ??
+                              "No location selected")
+                          : "No location selected",
+                      onTap: () async {
+                        await _selectLocation();
+                        print("UI Rebuilt with new location");
+                      },
+                      customFontWeight: FontWeight.w400,
+                    ),
                   ),
+
                   const SizedBox(height: 24),
                   //  buttons
 
                   Container(
-                    width: double.infinity,
-                    padding:
-                        const EdgeInsets.only(left: 10, right: 10, bottom: 20),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 11, 185, 17),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 12),
-                      ),
-                      onPressed: _isLoading ? null : _saveProduct,
-                      child: _isLoading
-                          ? const SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
+                      width: double.infinity,
+                      padding: const EdgeInsets.only(
+                          left: 10, right: 10, bottom: 20),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 11, 185, 17),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 12),
+                        ),
+                        onPressed: _isLoading ? null : _saveProduct,
+                        child: _isLoading
+                            ? const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text(
+                                "Save",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white),
                               ),
-                            )
-                          : const Text(
-                              "Save",
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white),
-                            ),
-                    ),
-                  ),
+                      )),
                 ],
               ),
             ),
@@ -244,41 +263,51 @@ class _AddProductPageState extends State<AddProductPage> {
   }
 
   void _saveProduct() {
-    if (_formKey.currentState!.validate() && _selectedCategory != null) {
-      if (_pickedLocation == null) {
-        SnackbarUtils.showSnackbar(context, 'Please select a location');
-        return;
-      }
-      if (_pickedImages.isEmpty) {
-        SnackbarUtils.showSnackbar(
-            context, 'Please select a atleast one image');
-        return;
-      }
-      if (FormValidators.isValidPrice(_priceController.text)) {
-        SnackbarUtils.showSnackbar(context, 'Please enter valid price');
-      }
-      setState(() {
-        _isLoading = true;
-      });
-      final newProduct = ProductModel(
-        name: _nameController.text,
-        description: _descriptionController.text,
-        price: _priceController.text,
-        condition: _conditionController.text,
-        datePosted: DateTime.now().toIso8601String(),
-        isAvailable: _isAvailable,
-        imageUrls: _pickedImages,
-        tags: _tags,
-        sellerId: FirebaseAuth.instance.currentUser!.uid,
-        categoryId: _selectedCategory!.id!,
-        categoryName: _selectedCategory!.name,
-        location: _pickedLocation,
-        locationName: _locationName!,
-      );
+    final bloc = context.read<ProductBloc>();
+    final state = bloc.state;
+    if (state is ProductFormState) {
+      if (_formKey.currentState!.validate()) {
+        setState(() {
+          _isLoading = true;
+        });
+        if (state.selectedCategory == null) {
+          SnackbarUtils.showSnackbar(context, 'Please select a category');
+          return;
+        }
+        if (state.pickedLocation == null) {
+          SnackbarUtils.showSnackbar(context, 'Please select a location');
+          return;
+        }
+        if (state.pickedImages.isEmpty) {
+          SnackbarUtils.showSnackbar(
+              context, 'Please select at least one image');
+          return;
+        }
+        if (!FormValidators.isValidPrice(_priceController.text)) {
+          SnackbarUtils.showSnackbar(context, 'Please enter valid price');
+          return;
+        }
 
-      context.read<ProductBloc>().add(ProductAdded(newProduct: newProduct));
-    } else {
-      SnackbarUtils.showSnackbar(context, 'Please fill all  fields');
+        final newProduct = ProductModel(
+          name: _nameController.text,
+          description: _descriptionController.text,
+          price: _priceController.text,
+          condition: _conditionController.text,
+          datePosted: DateTime.now().toIso8601String(),
+          isAvailable: state.formFields['isAvailable'] ?? true,
+          imageUrls: state.pickedImages,
+          tags: state.tags,
+          sellerId: FirebaseAuth.instance.currentUser!.uid,
+          categoryId: state.selectedCategory!.id!,
+          categoryName: state.selectedCategory!.name,
+          location: state.pickedLocation,
+          locationName: state.locationName!,
+        );
+
+        bloc.add(ProductAdded(newProduct: newProduct));
+      } else {
+        SnackbarUtils.showSnackbar(context, 'Please fill all fields');
+      }
     }
   }
 }
