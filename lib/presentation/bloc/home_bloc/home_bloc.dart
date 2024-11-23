@@ -10,10 +10,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeServices homeServices = HomeServices();
   HomeBloc() : super(HomeInitial()) {
     on<LoadProductsEvent>((event, emit) async {
+      print('Loading products for userId: ${event.userId}');
       emit(HomePageLoading());
       try {
         final products =
             await homeServices.getProductsExcludingUserId(event.userId);
+        print('Products loaded: ${products.length}');
         emit(HomePageLoaded(products));
       } catch (e) {
         emit(HomePageError('Failed to load products: $e'));

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/presentation/bloc/category_bloc/category_bloc.dart';
 import 'package:trade_loop/presentation/home/screens/category_product_page.dart';
+import 'package:trade_loop/presentation/home/screens/home_page.dart';
 
 class CategoryList extends StatefulWidget {
   final String userId;
@@ -22,6 +23,15 @@ class _CategoryListState extends State<CategoryList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          },
+        ),
         title: const Text(
           'Categories',
           style: TextStyle(

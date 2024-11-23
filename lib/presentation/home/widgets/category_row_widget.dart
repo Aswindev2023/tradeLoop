@@ -36,28 +36,26 @@ class _CategoryRowWidgetState extends State<CategoryRowWidget> {
                 if (index == state.categories.length) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => CategoryList(
                               userId: widget.userId,
                             ),
-                          )).then((_) {
-                        context
-                            .read<HomeBloc>()
-                            .add(LoadProductsEvent(widget.userId));
-                      });
+                          ));
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
-                        color: Colors.grey[300],
+                        color: const Color.fromARGB(255, 255, 255, 255),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       alignment: Alignment.center,
                       child: const Text(
                         'All Categories',
-                        style: TextStyle(fontSize: 14, color: Colors.blue),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color.fromARGB(255, 57, 26, 255)),
                       ),
                     ),
                   );
@@ -70,14 +68,15 @@ class _CategoryRowWidgetState extends State<CategoryRowWidget> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
-                        color: Colors.blue[100],
+                        color: const Color.fromARGB(255, 255, 255, 255),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         category!.name,
-                        style:
-                            const TextStyle(fontSize: 14, color: Colors.black),
+                        style: const TextStyle(
+                            fontSize: 14,
+                            color: Color.fromARGB(255, 57, 26, 255)),
                       ),
                     ),
                   ),
