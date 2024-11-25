@@ -36,4 +36,19 @@ class ProductsService {
       return [];
     }
   }
+
+  Future<ProductModel?> getProductDetailsById(String productId) async {
+    try {
+      DocumentSnapshot doc = await _productCollection.doc(productId).get();
+      if (doc.exists) {
+        return ProductModel.fromJson(doc.data() as Map<String, dynamic>);
+      } else {
+        print('product do not exist');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching product by ID: $e');
+      return null;
+    }
+  }
 }

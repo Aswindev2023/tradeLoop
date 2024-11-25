@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trade_loop/presentation/home/model/home_page_product_model.dart';
+import 'package:trade_loop/presentation/product_Details/screens/product_details_page.dart';
 
 class ProductGrid extends StatelessWidget {
   final List<HomePageProductModel> products;
@@ -18,40 +19,49 @@ class ProductGrid extends StatelessWidget {
       itemCount: products.length,
       itemBuilder: (context, index) {
         final product = products[index];
-        return Card(
-          elevation: 3,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Product Image
-              Expanded(
-                child: Image.network(
-                  product.imageUrls[0],
-                  fit: BoxFit.cover,
-                  width: double.infinity,
+        return GestureDetector(
+          child: Card(
+            elevation: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Product Image
+                Expanded(
+                  child: Image.network(
+                    product.imageUrls[0],
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
                 ),
-              ),
-              // Product Name
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                child: Text(
-                  product.name,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
-                  overflow: TextOverflow.ellipsis,
+                // Product Name
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 8.0),
+                  child: Text(
+                    product.name,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-              ),
-              // Product Price
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
-                  '\$${product.price.toStringAsFixed(2)}',
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                // Product Price
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    '₹${product.price.toStringAsFixed(2)}',
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ProductDetailsPage(productId: product.productId)));
+          },
         );
       },
     );

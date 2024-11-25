@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomAppbar extends StatelessWidget {
+class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Icon? leading;
   final Color? backgroundColor;
@@ -23,7 +23,21 @@ class CustomAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title),
+      leading: leading,
+      backgroundColor: backgroundColor ?? Theme.of(context).primaryColor,
+      foregroundColor:
+          foregroundColor ?? Theme.of(context).colorScheme.onPrimary,
+      centerTitle: centerTitle ?? true,
+      title: Text(
+        title,
+        style: TextStyle(
+          fontWeight: fontWeight ?? FontWeight.bold,
+          color: fontColor ?? Colors.white,
+        ),
+      ),
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

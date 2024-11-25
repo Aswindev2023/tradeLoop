@@ -107,11 +107,16 @@ class HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(height: 10),
+            const Divider(),
             if (!_isSearching) ...[
               CategoryRowWidget(
                 userId: userId,
               ),
-              const SizedBox(height: 20),
+              const Divider(
+                thickness: 2,
+              ),
+              const SizedBox(height: 10),
+
               // Heading
               const Text(
                 'New Products',
