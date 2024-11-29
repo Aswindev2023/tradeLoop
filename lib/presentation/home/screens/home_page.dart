@@ -53,12 +53,13 @@ class HomePageState extends State<HomePage> {
       context: context,
       builder: (context) => FilterBottomSheet(
         onApplyFilters: (filters) {
+          print('_openFilters: Received filters: ${filters.toString()}');
           print(
-              '_openFilters:choosed category:${filters['categoryId']}&&tags:${filters['tags']}');
+              '_openFilters:choosed category:${filters['categories']}&&tags:${filters['tags']}');
           context.read<HomeBloc>().add(SearchProductsEvent(
                 query: _searchController.text,
                 userId: userId,
-                categoryId: filters['categoryId'],
+                categoryId: filters['categories'],
                 tags: filters['tags'],
               ));
         },

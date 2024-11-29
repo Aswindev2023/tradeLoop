@@ -39,7 +39,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         final products = await homeServices.searchProducts(
           query: event.query,
           userId: event.userId,
-          categoryId: event.categoryId,
+          categoryIds: event.categoryId,
           tags: event.tags,
         );
         print(

@@ -12,7 +12,7 @@ class FilterBottomSheet extends StatefulWidget {
 }
 
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
-  String? selectedCategoryId;
+  final List<String> selectedCategoryIds = [];
   final List<String> selectedTags = [];
 
   final List<String> hardcodedTags = [
@@ -38,6 +38,18 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
     });
   }
 
+  void toggleCategory(String categoryId) {
+    setState(() {
+      if (selectedCategoryIds.contains(categoryId)) {
+        print('filter bottomsheet: current categories$selectedCategoryIds');
+        selectedCategoryIds.remove(categoryId);
+      } else {
+        selectedCategoryIds.add(categoryId);
+        print('filter bottomsheet: selected categories$selectedCategoryIds');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -51,28 +63,31 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
-          // Category Dropdown
+          // Categories Selector
           BlocBuilder<CategoryBloc, CategoryState>(
             builder: (context, state) {
               if (state is CategoryLoading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state is CategoryLoaded) {
-                return DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(
-                    labelText: "Category",
-                    border: OutlineInputBorder(),
-                  ),
-                  items: state.categories
-                      .map((category) => DropdownMenuItem(
-                            value: category!.id,
-                            child: Text(category.name),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedCategoryId = value;
-                    });
-                  },
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Categories",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    ),
+                    Wrap(
+                      spacing: 8,
+                      children: state.categories.map((category) {
+                        return FilterChip(
+                          label: Text(category!.name),
+                          selected: selectedCategoryIds.contains(category.id),
+                          onSelected: (_) => toggleCategory(category.id!),
+                        );
+                      }).toList(),
+                    ),
+                  ],
                 );
               } else {
                 return const Text("Failed to load categories");
@@ -81,6 +96,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           ),
           const SizedBox(height: 16),
           // Tags Selector
+          const Text(
+            "Tags",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
           Wrap(
             spacing: 8,
             children: hardcodedTags.map((tag) {
@@ -92,12 +111,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             }).toList(),
           ),
           const SizedBox(height: 16),
-
           // Apply Button
           ElevatedButton(
             onPressed: () {
+              print(
+                  'fillter bottomsheet:populating filter with categories:$selectedCategoryIds ');
               widget.onApplyFilters({
-                'categoryId': selectedCategoryId,
+                'categories': selectedCategoryIds,
                 'tags': selectedTags,
               });
               Navigator.pop(context);

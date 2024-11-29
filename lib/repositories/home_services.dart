@@ -49,7 +49,7 @@ class HomeServices {
   Future<List<HomePageProductModel>> searchProducts({
     required String query,
     required String userId,
-    String? categoryId,
+    List<String>? categoryIds,
     List<String>? tags,
   }) async {
     try {
@@ -76,15 +76,16 @@ class HomeServices {
           .toList();
 
       // Applying category and tag filters
-      if (categoryId != null || (tags != null && tags.isNotEmpty)) {
-        print('Applying filters: categoryId = $categoryId, tags = $tags');
+      if ((categoryIds != null && categoryIds.isNotEmpty) ||
+          (tags != null && tags.isNotEmpty)) {
+        print('Applying filters: categoryId = $categoryIds, tags = $tags');
 
         // Filter by category
-        if (categoryId != null) {
+        if (categoryIds != null && categoryIds.isNotEmpty) {
           products = products
-              .where((product) => product.categoryId == categoryId)
+              .where((product) => categoryIds.contains(product.categoryId))
               .toList();
-          print(' filter by category with : categoryId = $categoryId');
+          print(' filter by category with : categoryId = $categoryIds');
         }
 
         // Filter by tags

@@ -29,7 +29,7 @@ class LoadCategoryProductsEvent extends HomeEvent {
 class SearchProductsEvent extends HomeEvent {
   final String query;
   final String userId;
-  final String? categoryId;
+  final List<String>? categoryId;
   final List<String>? tags;
 
   const SearchProductsEvent({
