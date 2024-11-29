@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -5,6 +6,8 @@ import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/custom_button.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/presentation/bloc/product_details_bloc/product_details_bloc.dart';
+import 'package:trade_loop/presentation/bloc/recently_viewed_bloc/recently_viewed_bloc.dart';
+import 'package:trade_loop/presentation/home/widgets/recently_viewed_row.dart';
 import 'package:trade_loop/presentation/product_Details/widgets/image_slider_widget.dart';
 import 'package:trade_loop/presentation/product_Details/widgets/location_map_widget.dart';
 import 'package:trade_loop/presentation/products/model/product_model.dart';
@@ -12,8 +15,9 @@ import 'package:trade_loop/presentation/profile/widgets/custom_tile_widget.dart'
 
 class ProductDetailsPage extends StatelessWidget {
   final String productId;
+  final userId = FirebaseAuth.instance.currentUser!.uid;
 
-  const ProductDetailsPage({
+  ProductDetailsPage({
     super.key,
     required this.productId,
   });
@@ -23,6 +27,7 @@ class ProductDetailsPage extends StatelessWidget {
     double parsedPrice = 0.0;
 
     context.read<ProductDetailsBloc>().add(FetchProductDetailsEvent(productId));
+    context.read<RecentlyViewedBloc>().add(FetchRecentlyViewed(userId));
 
     return Scaffold(
       appBar: const CustomAppbar(
@@ -233,7 +238,8 @@ class ProductDetailsPage extends StatelessWidget {
                       customFontWeight: FontWeight.w600,
                     ),
                   ),
-
+                  const SizedBox(height: 16.0),
+                  RecentlyViewedRow(userId: userId),
                   const SizedBox(height: 16.0),
 
                   // Contact Seller Button

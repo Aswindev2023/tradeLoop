@@ -62,7 +62,7 @@ class HomeServices {
             .where('name', isGreaterThanOrEqualTo: query)
             .where('name', isLessThanOrEqualTo: '$query\uf8ff');
       }
-
+      print('search products results:$queryRef');
       //  fetch products by name
       QuerySnapshot querySnapshot = await queryRef.get();
       print(
@@ -84,6 +84,7 @@ class HomeServices {
           products = products
               .where((product) => product.categoryId == categoryId)
               .toList();
+          print(' filter by category with : categoryId = $categoryId');
         }
 
         // Filter by tags
@@ -91,9 +92,10 @@ class HomeServices {
           products = products
               .where((product) => product.tags.any((tag) => tags.contains(tag)))
               .toList();
+          print('filtering by tags with: tags = $tags');
         }
       }
-
+      print('search result from search product function:$products');
       return products;
     } catch (e) {
       print('Error during searchProducts: $e');

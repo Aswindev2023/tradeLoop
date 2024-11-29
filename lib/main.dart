@@ -9,6 +9,7 @@ import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/bloc/product_details_bloc/product_details_bloc.dart';
 import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
+import 'package:trade_loop/presentation/bloc/recently_viewed_bloc/recently_viewed_bloc.dart';
 import 'package:trade_loop/presentation/home/screens/home_page.dart';
 import 'package:trade_loop/repositories/auth_services.dart';
 
@@ -43,6 +44,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ProductDetailsBloc>(
           create: (context) => ProductDetailsBloc(),
+        ),
+        BlocProvider<RecentlyViewedBloc>(
+          create: (context) => RecentlyViewedBloc(),
         )
       ],
       child: MaterialApp(

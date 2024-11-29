@@ -26,6 +26,7 @@ class HomePageState extends State<HomePage> {
     super.initState();
     userId = FirebaseAuth.instance.currentUser!.uid;
     context.read<HomeBloc>().add(LoadProductsEvent(userId));
+
     _searchController.addListener(() {
       final query = _searchController.text;
       print("Search Query: $query, Is Searching: $_isSearching");
@@ -52,6 +53,8 @@ class HomePageState extends State<HomePage> {
       context: context,
       builder: (context) => FilterBottomSheet(
         onApplyFilters: (filters) {
+          print(
+              '_openFilters:choosed category:${filters['categoryId']}&&tags:${filters['tags']}');
           context.read<HomeBloc>().add(SearchProductsEvent(
                 query: _searchController.text,
                 userId: userId,
@@ -115,7 +118,9 @@ class HomePageState extends State<HomePage> {
               const Divider(
                 thickness: 2,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(
+                height: 10,
+              ),
 
               // Heading
               const Text(

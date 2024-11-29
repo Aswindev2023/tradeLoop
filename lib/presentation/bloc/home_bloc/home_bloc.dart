@@ -42,6 +42,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           categoryId: event.categoryId,
           tags: event.tags,
         );
+        print(
+            'categoryId and tags from search bloc:${event.categoryId}and ${event.tags}');
         emit(HomePageLoaded(products));
       } catch (e) {
         emit(HomePageError('Failed to search products: $e'));
