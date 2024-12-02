@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:trade_loop/core/utils/custom_appbar.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -10,8 +11,8 @@ class AboutPage extends StatelessWidget {
     final isSmallScreen = screenWidth < 600;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("About Us"),
+      appBar: const CustomAppbar(
+        title: 'About Us',
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),

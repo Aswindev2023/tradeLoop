@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/presentation/authentication/screens/login_screen.dart';
 import 'package:trade_loop/presentation/authentication/widgets/logout_confirmation_dialog.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
 import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
-import 'package:trade_loop/presentation/profile/screens/about_page.dart';
+import 'package:trade_loop/presentation/profile/screens/settings_page.dart';
 import 'package:trade_loop/presentation/profile/screens/view_and_edit_page.dart';
 
 import 'package:trade_loop/presentation/profile/widgets/custom_tile_widget.dart';
@@ -31,17 +32,13 @@ class ProfilePage extends StatelessWidget {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 17, 28, 233),
+        appBar: const CustomAppbar(
           centerTitle: true,
-          title: const Text(
-            'Profile',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          title: 'Profile',
+          fontColor: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 30,
+          backgroundColor: Color.fromARGB(255, 17, 28, 233),
         ),
         body: Column(
           children: [
@@ -76,12 +73,12 @@ class ProfilePage extends StatelessWidget {
               height: 5,
             ),
             CustomTileWidget(
-              title: 'About',
+              title: 'Settings',
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const AboutPage(),
+                      builder: (context) => const SettingsPage(),
                     ));
               },
             ),
