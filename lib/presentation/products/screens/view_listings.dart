@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
 import 'package:trade_loop/presentation/products/screens/add_product_page.dart';
@@ -16,17 +17,13 @@ class ViewListings extends StatelessWidget {
     print('this is the user id from viewListing page:$userId');
     context.read<ProductBloc>().add(LoadProducts(userId: userId!));
     return Scaffold(
-      appBar: AppBar(
+      appBar: const CustomAppbar(
+        title: 'My listings',
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 17, 28, 233),
-        title: const Text(
-          'My listings',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        fontColor: Colors.white,
+        fontSize: 30,
+        fontWeight: FontWeight.bold,
+        backgroundColor: Color.fromARGB(255, 17, 28, 233),
       ),
       body: Padding(
         padding:

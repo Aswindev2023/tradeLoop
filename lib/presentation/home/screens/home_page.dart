@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
 import 'package:trade_loop/presentation/home/widgets/category_row_widget.dart';
 import 'package:trade_loop/presentation/home/widgets/filter_bottom_sheet.dart';
@@ -138,9 +139,7 @@ class HomePageState extends State<HomePage> {
               child: BlocConsumer<HomeBloc, HomeState>(
                 listener: (context, state) {
                   if (state is HomePageError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(state.message)),
-                    );
+                    SnackbarUtils.showSnackbar(context, state.message);
                   }
                 },
                 builder: (context, state) {

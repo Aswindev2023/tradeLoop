@@ -9,6 +9,7 @@ import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
 import 'package:trade_loop/presentation/profile/screens/settings_page.dart';
 import 'package:trade_loop/presentation/profile/screens/view_and_edit_page.dart';
+import 'package:trade_loop/presentation/profile/screens/wishlisted_product_page.dart';
 
 import 'package:trade_loop/presentation/profile/widgets/custom_tile_widget.dart';
 
@@ -67,7 +68,15 @@ class ProfilePage extends StatelessWidget {
             ),
             CustomTileWidget(
               title: 'My Wishlist',
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WishlistedProductsPage(
+                        userId: userId,
+                      ),
+                    ));
+              },
             ),
             const SizedBox(
               height: 5,

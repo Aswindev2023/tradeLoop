@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/presentation/bloc/recently_viewed_bloc/recently_viewed_bloc.dart';
 import 'package:trade_loop/presentation/home/model/home_page_product_model.dart';
+import 'package:trade_loop/presentation/home/widgets/fav_icon.dart';
 import 'package:trade_loop/presentation/product_Details/screens/product_details_page.dart';
 
 class ProductGrid extends StatelessWidget {
@@ -64,21 +65,9 @@ class ProductGrid extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      top: 8,
-                      right: 8,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.7),
-                          shape: BoxShape.circle,
-                        ),
-                        child: IconButton(
-                          icon: const Icon(Icons.favorite_border),
-                          color: Colors.red,
-                          iconSize: 24,
-                          onPressed: () {},
-                        ),
-                      ),
-                    ),
+                        top: 8,
+                        right: 8,
+                        child: FavIcon(product: product, userId: userId)),
                   ],
                 ),
                 // Product Details

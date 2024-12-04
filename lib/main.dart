@@ -10,6 +10,7 @@ import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/bloc/product_details_bloc/product_details_bloc.dart';
 import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:trade_loop/presentation/bloc/recently_viewed_bloc/recently_viewed_bloc.dart';
+import 'package:trade_loop/presentation/bloc/wishlist_bloc/wish_list_bloc.dart';
 import 'package:trade_loop/presentation/home/screens/home_page.dart';
 import 'package:trade_loop/repositories/auth_services.dart';
 
@@ -47,7 +48,10 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<RecentlyViewedBloc>(
           create: (context) => RecentlyViewedBloc(),
-        )
+        ),
+        BlocProvider<WishListBloc>(
+          create: (context) => WishListBloc(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

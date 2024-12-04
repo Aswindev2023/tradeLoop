@@ -32,24 +32,14 @@ class RecentlyViewedService {
       print('Fetched product IDs: $productIds');
 
       if (productIds.isNotEmpty) {
-        final products = await Future.wait(productIds.map((id) async {
-          try {
-            final productSnapshot =
-                await _firestore.collection('products').doc(id).get();
-            if (productSnapshot.exists) {
-              final product =
-                  HomePageProductModel.fromFirestore(productSnapshot.data()!);
-              print('Fetched product: $product');
-              return product;
-            } else {
-              print('Product not found for ID: $id');
-            }
-          } catch (e) {
-            print('Error fetching product for ID: $id - $e');
-          }
-          return null;
-        }));
-        return products.whereType<HomePageProductModel>().toList();
+        final productsQuery = await _firestore
+            .collection('products')
+            .where('productId', whereIn: productIds)
+            .get();
+
+        return productsQuery.docs.map((doc) {
+          return HomePageProductModel.fromFirestore(doc.data());
+        }).toList();
       }
     } else {
       print('No recently viewed products found for user: $userId');
