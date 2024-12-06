@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
+import 'package:trade_loop/core/utils/snackbar_utils.dart';
+import 'package:trade_loop/presentation/authentication/widgets/confirmation_dialog.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
 import 'package:trade_loop/presentation/products/screens/add_product_page.dart';
@@ -52,8 +54,28 @@ class ViewListings extends StatelessWidget {
                     ),
                     title: Text(product.name),
                     trailing: IconButton(
-                      icon: const Icon(Icons.arrow_forward),
-                      onPressed: () {},
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return ConfirmationDialog(
+                              title: 'Delete Product',
+                              content:
+                                  'Are you sure you want to delete this product?',
+                              onConfirm: () {
+                                context.read<ProductBloc>().add(DeleteProduct(
+                                      productId: product.productId!,
+                                      imageUrls: product.imageUrls,
+                                      userId: userId!,
+                                    ));
+                                SnackbarUtils.showSnackbar(
+                                    context, 'Product Deleted');
+                              },
+                            );
+                          },
+                        );
+                      },
                     ),
                   );
                 },

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/presentation/authentication/screens/login_screen.dart';
-import 'package:trade_loop/presentation/authentication/widgets/logout_confirmation_dialog.dart';
+import 'package:trade_loop/presentation/authentication/widgets/confirmation_dialog.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
 import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
@@ -146,7 +146,9 @@ class ProfilePage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
-        return LogoutConfirmationDialog(
+        return ConfirmationDialog(
+          title: 'Logout',
+          content: 'Are you sure you want to log out?',
           onConfirm: () {
             rootContext.read<AuthBlocBloc>().add(LogoutEvent());
           },

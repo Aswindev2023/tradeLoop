@@ -118,7 +118,7 @@ class ProductDetailsPage extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: CustomTextWidget(
                       text:
-                          'Posted on ${DateFormat('yyyy-MM-dd').format(DateTime.parse(product.datePosted))}',
+                          'Posted on ${DateFormat('d MMM yyyy').format(DateTime.parse(product.datePosted))}',
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),

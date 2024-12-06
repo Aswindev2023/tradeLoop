@@ -29,15 +29,6 @@ class ProductAddedSuccess extends ProductState {
   List<Object> get props => [newProduct];
 }
 
-class ProductDeletedSuccess extends ProductState {
-  final String productId;
-
-  const ProductDeletedSuccess({required this.productId});
-
-  @override
-  List<Object> get props => [productId];
-}
-
 class ProductError extends ProductState {
   final String message;
 

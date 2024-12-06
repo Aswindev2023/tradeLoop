@@ -128,5 +128,18 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         print('in image picking the state is not product form state:$state');
       }
     });
+
+    //deletion
+
+    on<DeleteProduct>((event, emit) async {
+      try {
+        await _productsService.deleteProduct(event.productId, event.imageUrls);
+        final updatedProducts =
+            await _productsService.getProductsByUserId(event.userId);
+        emit(ProductsLoaded(products: updatedProducts));
+      } catch (e) {
+        emit(ProductError(message: 'Failed to delete product: $e'));
+      }
+    });
   }
 }

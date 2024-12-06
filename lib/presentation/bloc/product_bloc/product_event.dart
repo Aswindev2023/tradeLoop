@@ -48,8 +48,15 @@ class ProductImagePicked extends ProductEvent {
 }
 
 class DeleteProduct extends ProductEvent {
+  final String userId;
   final String productId;
-  const DeleteProduct({required this.productId});
+  final List<String> imageUrls;
+
+  const DeleteProduct(
+      {required this.productId, required this.imageUrls, required this.userId});
+
+  @override
+  List<Object> get props => [productId, imageUrls];
 }
 
 class ProductLoadFailed extends ProductEvent {

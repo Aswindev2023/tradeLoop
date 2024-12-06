@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:trade_loop/presentation/products/model/product_model.dart';
+import 'package:trade_loop/repositories/product_image_upload_service.dart';
 
 class ProductsService {
   final CollectionReference _productCollection =
@@ -49,6 +50,16 @@ class ProductsService {
     } catch (e) {
       print('Error fetching product by ID: $e');
       return null;
+    }
+  }
+
+  Future<void> deleteProduct(String productId, List<String> imageUrls) async {
+    try {
+      ProductImageUploadService().deleteImages(imageUrls);
+      await _productCollection.doc(productId).delete();
+    } catch (e) {
+      print('Error deleting product: $e');
+      rethrow;
     }
   }
 }
