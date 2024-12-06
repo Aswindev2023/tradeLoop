@@ -10,6 +10,7 @@ import 'package:trade_loop/presentation/bloc/recently_viewed_bloc/recently_viewe
 import 'package:trade_loop/presentation/home/widgets/recently_viewed_row.dart';
 import 'package:trade_loop/presentation/product_Details/widgets/image_slider_widget.dart';
 import 'package:trade_loop/presentation/product_Details/widgets/location_map_widget.dart';
+import 'package:trade_loop/presentation/product_Details/widgets/share_product_widget.dart';
 import 'package:trade_loop/presentation/products/model/product_model.dart';
 import 'package:trade_loop/presentation/profile/widgets/custom_tile_widget.dart';
 
@@ -48,7 +49,16 @@ class ProductDetailsPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Image Slider
-                  ImageSliderWidget(imageUrls: product.imageUrls),
+                  Stack(children: [
+                    ImageSliderWidget(imageUrls: product.imageUrls),
+                    Positioned(
+                        top: 8,
+                        right: 8,
+                        child: ShareProductWidget(
+                          productId: productId,
+                          productName: product.name,
+                        )),
+                  ]),
 
                   const SizedBox(height: 16.0),
 
