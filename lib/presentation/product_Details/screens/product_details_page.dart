@@ -13,6 +13,7 @@ import 'package:trade_loop/presentation/product_Details/widgets/location_map_wid
 import 'package:trade_loop/presentation/product_Details/widgets/share_product_widget.dart';
 import 'package:trade_loop/presentation/products/model/product_model.dart';
 import 'package:trade_loop/presentation/profile/widgets/custom_tile_widget.dart';
+import 'package:trade_loop/presentation/seller_profile/screens/seller_profile_page.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   final String productId;
@@ -33,7 +34,7 @@ class ProductDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppbar(
         title: 'Product Details',
-        backgroundColor: Color.fromARGB(255, 35, 17, 239),
+        backgroundColor: const Color.fromARGB(255, 35, 17, 239),
       ),
       body: BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
         builder: (context, state) {
@@ -243,7 +244,10 @@ class ProductDetailsPage extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const Placeholder()));
+                                builder: (context) => SellerProfilePage(
+                                      currentUser: userId,
+                                      sellerId: product.sellerId,
+                                    )));
                       },
                       customFontWeight: FontWeight.w600,
                     ),

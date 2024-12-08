@@ -7,12 +7,12 @@ class CustomButton extends StatelessWidget {
   final double fontSize;
 
   const CustomButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.onTap,
     this.backgroundColor = const Color.fromARGB(255, 55, 227, 21),
     this.fontSize = 22.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
