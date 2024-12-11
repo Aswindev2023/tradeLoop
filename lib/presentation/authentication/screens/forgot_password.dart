@@ -46,7 +46,7 @@ class ForgotPassword extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: Image.asset(
-                      "images/car (1).PNG",
+                      "images/AnyConv.com__screenimage.jpg",
                       fit: BoxFit.cover,
                       height: MediaQuery.of(context).size.height * 0.3,
                     ),

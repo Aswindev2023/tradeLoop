@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/presentation/chat/screens/chat_list_page.dart';
 import 'package:trade_loop/presentation/home/screens/home_page.dart';
 
 import 'package:trade_loop/presentation/products/screens/view_listings.dart';
@@ -29,7 +30,7 @@ class NavigationService {
   static void navigateToChatPage(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const Placeholder()),
+      MaterialPageRoute(builder: (context) => const ChatListPage()),
     );
   }
 }

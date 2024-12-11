@@ -34,7 +34,7 @@ class ProductDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppbar(
         title: 'Product Details',
-        backgroundColor: const Color.fromARGB(255, 35, 17, 239),
+        backgroundColor: Color.fromARGB(255, 35, 17, 239),
       ),
       body: BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
         builder: (context, state) {

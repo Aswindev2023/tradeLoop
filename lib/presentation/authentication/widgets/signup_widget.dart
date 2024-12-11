@@ -83,7 +83,7 @@ class SignupWidgetState extends State<SignupWidget> {
         SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Image.asset(
-            "images/car (1).PNG",
+            "images/AnyConv.com__screenimage.jpg",
             fit: BoxFit.cover,
           ),
         ),

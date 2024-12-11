@@ -19,8 +19,8 @@ class _TagDropdownFieldState extends State<TagDropdownField> {
     "Home Appliances",
     "Sports",
     "Toys",
-    "Mobiles"
-        "Laptops"
+    "Mobiles",
+    "Laptops"
   ];
   final List<String> _selectedTags = [];
 
