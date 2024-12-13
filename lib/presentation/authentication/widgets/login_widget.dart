@@ -72,8 +72,6 @@ class LoginFormState extends State<LoginForm> {
 
   @override
   void dispose() {
-    widget.emailController.dispose();
-    widget.passwordController.dispose();
     super.dispose();
   }
 

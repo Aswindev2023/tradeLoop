@@ -8,33 +8,46 @@ import 'package:trade_loop/presentation/authentication/screens/signup_screen.dar
 import 'package:trade_loop/presentation/authentication/widgets/login_widget.dart';
 import 'package:trade_loop/presentation/home/screens/home_page.dart';
 
-class LogIn extends StatelessWidget {
+class LogIn extends StatefulWidget {
   final String? successMessage;
 
-  LogIn({super.key, this.successMessage});
+  const LogIn({super.key, this.successMessage});
 
+  @override
+  State<LogIn> createState() => _LogInState();
+}
+
+class _LogInState extends State<LogIn> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (successMessage != null) {
+    if (widget.successMessage != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        SnackbarUtils.showSnackbar(context, successMessage!);
+        SnackbarUtils.showSnackbar(context, widget.successMessage!);
       });
     }
     double screenWidth = MediaQuery.of(context).size.width;
     double padding = screenWidth * 0.001;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocConsumer<AuthBlocBloc, AuthBlocState>(
         listener: (context, state) {
+          print('current state of login page is:$state');
           if (state is AuthSuccess) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
+            Future.microtask(() {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) => const HomePage()),
               );
             });
           } else if (state is AuthFailure) {
@@ -46,6 +59,9 @@ class LogIn extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          if (state is AuthLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
           return SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: padding),

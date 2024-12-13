@@ -17,11 +17,17 @@ class FormValidators {
   }
 
   static bool isValidNumber(String number) {
+    if (number.isEmpty) {
+      return true;
+    }
     final numberRegex = RegExp(r'^\d{10}$');
     return numberRegex.hasMatch(number);
   }
 
   static bool isValidZip(String zipCode) {
+    if (zipCode.isEmpty) {
+      return true;
+    }
     final zipRegex = RegExp(r'^\d{6}$');
     return zipRegex.hasMatch(zipCode);
   }
