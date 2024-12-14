@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
+import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/message_bloc/message_bloc.dart';
 import 'package:trade_loop/presentation/chat/models/message_model.dart';
 
@@ -56,22 +57,45 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
                     final message = messages[index];
                     final isSentByUser =
                         message.senderId == widget.currentUserId;
-                    return Align(
-                      alignment: isSentByUser
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 5),
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: isSentByUser
-                              ? Colors.blue[100]
-                              : Colors.grey[200],
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          message.content,
-                          style: const TextStyle(fontSize: 16),
+                    return Dismissible(
+                      key: Key(message.messageId),
+                      direction: isSentByUser
+                          ? DismissDirection
+                              .endToStart // Allow delete only for user's messages
+                          : DismissDirection
+                              .none, // No swipe for other users' messages
+                      onDismissed: (direction) {
+                        context.read<MessageBloc>().add(
+                              DeleteMessagesEvent(
+                                widget.chatId,
+                                message.messageId,
+                              ),
+                            );
+                        SnackbarUtils.showSnackbar(context, 'Message deleted');
+                      },
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: const Icon(Icons.delete, color: Colors.white),
+                      ),
+                      child: Align(
+                        alignment: isSentByUser
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: isSentByUser
+                                ? Colors.blue[100]
+                                : Colors.grey[200],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            message.content,
+                            style: const TextStyle(fontSize: 16),
+                          ),
                         ),
                       ),
                     );

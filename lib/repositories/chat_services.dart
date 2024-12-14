@@ -115,4 +115,21 @@ class ChatServices {
       throw Exception("Failed to fetch chats with user details: $e");
     }
   }
+
+  /// Deletes a message in a specific chat.
+  Future<void> deleteMessage(String chatId, String messageId) async {
+    try {
+      // Reference to the specific message document
+      final messageRef = _firestore
+          .collection('chats')
+          .doc(chatId)
+          .collection('messages')
+          .doc(messageId);
+
+      // Delete the message from Firestore
+      await messageRef.delete();
+    } catch (e) {
+      throw Exception("Failed to delete message: $e");
+    }
+  }
 }

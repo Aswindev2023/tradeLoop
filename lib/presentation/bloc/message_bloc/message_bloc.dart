@@ -36,5 +36,14 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         emit(MessageError("Failed to send message: $e"));
       }
     });
+
+    on<DeleteMessagesEvent>((event, emit) async {
+      emit(MessagesLoading());
+      try {
+        await chatService.deleteMessage(event.chatId, event.messageIds);
+      } catch (e) {
+        emit(MessageError("Failed to delete messages: $e"));
+      }
+    });
   }
 }
