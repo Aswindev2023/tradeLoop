@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:trade_loop/presentation/profile/widgets/custom_text_field.dart';
@@ -64,7 +65,7 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 17, 28, 233),
+        backgroundColor: appbarColor,
         centerTitle: true,
         leading: IconButton(
           onPressed: () {

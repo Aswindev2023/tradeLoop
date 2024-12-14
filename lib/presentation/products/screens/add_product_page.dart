@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
@@ -75,8 +76,9 @@ class _AddProductPageState extends State<AddProductPage> {
     final state = context.watch<ProductBloc>().state;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Add Product"),
+      appBar: const CustomAppbar(
+        title: 'Add Product',
+        fontSize: 15,
         centerTitle: true,
       ),
       body: BlocListener<ProductBloc, ProductState>(
@@ -274,6 +276,7 @@ class _AddProductPageState extends State<AddProductPage> {
           SnackbarUtils.showSnackbar(context, 'Please select a category');
           return;
         }
+        print('this is the selected category id:${state.selectedCategory!.id}');
         if (state.pickedLocation == null) {
           SnackbarUtils.showSnackbar(context, 'Please select a location');
           return;

@@ -2,11 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/custom_button.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/presentation/bloc/product_details_bloc/product_details_bloc.dart';
 import 'package:trade_loop/presentation/bloc/recently_viewed_bloc/recently_viewed_bloc.dart';
+import 'package:trade_loop/presentation/chat/screens/chat_page.dart';
 import 'package:trade_loop/presentation/home/widgets/recently_viewed_row.dart';
 import 'package:trade_loop/presentation/product_Details/widgets/image_slider_widget.dart';
 import 'package:trade_loop/presentation/product_Details/widgets/location_map_widget.dart';
@@ -34,7 +36,7 @@ class ProductDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppbar(
         title: 'Product Details',
-        backgroundColor: Color.fromARGB(255, 35, 17, 239),
+        backgroundColor: appbarColor,
       ),
       body: BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
         builder: (context, state) {
@@ -44,6 +46,8 @@ class ProductDetailsPage extends StatelessWidget {
             );
           } else if (state is ProductDetailsLoaded) {
             final ProductModel product = state.product;
+            print(
+                'current user id is:$userId && seller id is ${product.sellerId}');
             parsedPrice = double.tryParse(product.price) ?? 0.0;
             return SingleChildScrollView(
               child: Column(
@@ -257,7 +261,17 @@ class ProductDetailsPage extends StatelessWidget {
                   const SizedBox(height: 16.0),
 
                   // Contact Seller Button
-                  CustomButton(label: 'Contact Seller', onTap: () {})
+                  CustomButton(
+                      label: 'Contact Seller',
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChatPage(
+                                  sellerId: state.product.sellerId,
+                                  currentUserId: userId)),
+                        );
+                      })
                 ],
               ),
             );

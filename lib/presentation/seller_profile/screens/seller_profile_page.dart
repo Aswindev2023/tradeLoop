@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/custom_button.dart';
 import 'package:trade_loop/presentation/bloc/seller_profile_bloc/seller_profile_bloc.dart';
+import 'package:trade_loop/presentation/chat/screens/chat_page.dart';
 import 'package:trade_loop/presentation/seller_profile/widgets/product_list_view.dart';
 import 'package:trade_loop/presentation/seller_profile/widgets/seller_profile_img.dart';
 
@@ -34,7 +36,7 @@ class _SellerProfilePageState extends State<SellerProfilePage> {
     return Scaffold(
       appBar: CustomAppbar(
         title: 'Seller Profile',
-        backgroundColor: const Color.fromARGB(255, 35, 17, 239),
+        backgroundColor: appbarColor,
         actions: [
           PopupMenuButton<String>(
             onSelected: (value) {
@@ -59,6 +61,8 @@ class _SellerProfilePageState extends State<SellerProfilePage> {
             if (state is SellerProfileLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is SellerProfileLoaded) {
+              print(
+                  'current user id is:${widget.currentUser} && seller id is ${widget.sellerId}');
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,7 +98,17 @@ class _SellerProfilePageState extends State<SellerProfilePage> {
                     const SizedBox(height: 16.0),
 
                     // Contact Seller Button
-                    CustomButton(label: 'Contact Seller', onTap: () {}),
+                    CustomButton(
+                        label: 'Contact Seller',
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ChatPage(
+                                    sellerId: widget.sellerId,
+                                    currentUserId: widget.currentUser)),
+                          );
+                        }),
                     const SizedBox(height: 16.0),
 
                     // Divider

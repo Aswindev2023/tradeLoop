@@ -7,6 +7,7 @@ import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
 import 'package:trade_loop/presentation/bloc/category_bloc/category_bloc.dart';
 import 'package:trade_loop/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
+import 'package:trade_loop/presentation/bloc/message_bloc/message_bloc.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/bloc/product_details_bloc/product_details_bloc.dart';
 import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
@@ -59,6 +60,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ChatBloc>(
           create: (context) => ChatBloc(),
+        ),
+        BlocProvider<MessageBloc>(
+          create: (context) => MessageBloc(),
         ),
       ],
       child: MaterialApp(

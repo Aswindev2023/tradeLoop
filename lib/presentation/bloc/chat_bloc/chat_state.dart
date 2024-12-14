@@ -20,25 +20,6 @@ final class ChatsWithDetailsLoaded extends ChatState {
   List<Object> get props => [chatsWithDetails];
 }
 
-final class MessagesLoading extends ChatState {}
-
-final class MessagesLoaded extends ChatState {
-  final List<MessageModel> messages;
-  final bool isFirstTime;
-  final DateTime timestamp;
-
-  const MessagesLoaded({
-    required this.messages,
-    this.isFirstTime = false,
-    required this.timestamp,
-  });
-
-  @override
-  List<Object> get props => [messages, isFirstTime, timestamp];
-}
-
-final class ChatOperationSuccess extends ChatState {}
-
 final class ChatError extends ChatState {
   final String message;
 
@@ -46,4 +27,23 @@ final class ChatError extends ChatState {
 
   @override
   List<Object> get props => [message];
+}
+
+final class ChatPageDataLoaded extends ChatState {
+  final String chatId;
+  final String sellerName;
+  final String? sellerImage;
+
+  const ChatPageDataLoaded({
+    required this.chatId,
+    required this.sellerName,
+    this.sellerImage,
+  });
+
+  @override
+  List<Object> get props => [
+        chatId,
+        sellerName,
+        sellerImage ?? 'https://robohash.org/placeholder?set=set4&size=200x200',
+      ];
 }

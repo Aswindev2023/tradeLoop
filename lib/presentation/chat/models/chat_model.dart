@@ -1,9 +1,9 @@
 class ChatModel {
-  final String chatId; // Unique ID for the chat
-  final List<String> participants; // List of user IDs in the chat
-  final String? lastMessage; // The content of the last message
-  final DateTime lastMessageTime; // Timestamp of the last message
-  final DateTime chatCreated; // Timestamp when the chat was created
+  final String chatId;
+  final List<String> participants;
+  final String? lastMessage;
+  final DateTime lastMessageTime;
+  final DateTime chatCreated;
 
   ChatModel({
     required this.chatId,
@@ -24,7 +24,7 @@ class ChatModel {
     );
   }
 
-  // Method to convert a Chat object into Firestore-compatible JSON
+  // Method to convert a Chat object into  JSON
   Map<String, dynamic> toJson() {
     return {
       'participants': participants,

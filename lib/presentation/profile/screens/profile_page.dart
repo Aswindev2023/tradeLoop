@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/presentation/authentication/screens/login_screen.dart';
 import 'package:trade_loop/presentation/authentication/widgets/confirmation_dialog.dart';
@@ -39,7 +40,7 @@ class ProfilePage extends StatelessWidget {
           fontColor: Colors.white,
           fontWeight: FontWeight.bold,
           fontSize: 30,
-          backgroundColor: Color.fromARGB(255, 17, 28, 233),
+          backgroundColor: appbarColor,
         ),
         body: Column(
           children: [
