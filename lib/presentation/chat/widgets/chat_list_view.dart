@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:trade_loop/core/utils/format_timestamp.dart';
+
 import 'package:trade_loop/presentation/authentication/models/user_model.dart';
 import 'package:trade_loop/presentation/chat/models/chat_model.dart';
-import 'package:trade_loop/presentation/chat/screens/chat_page.dart';
+import 'package:trade_loop/presentation/chat/widgets/chat_list_tile.dart';
 
 class ChatListView extends StatelessWidget {
   final List<Map<String, dynamic>> chatsWithDetails;
   final String currentUserId;
+  final Function(String chatId) onDeleteChat;
 
   const ChatListView({
     required this.chatsWithDetails,
     required this.currentUserId,
+    required this.onDeleteChat,
     super.key,
   });
 
@@ -35,34 +37,11 @@ class ChatListView extends StatelessWidget {
         final otherUser =
             participants.firstWhere((user) => user!.uid != currentUserId);
 
-        return ListTile(
-          leading: CircleAvatar(
-            radius: 25,
-            backgroundImage: NetworkImage(otherUser!.imagePath ??
-                'https://robohash.org/placeholder?set=set4&size=200x200'),
-          ),
-          title: Text(
-            otherUser.name,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(
-            chat.lastMessage ?? 'No messages yet',
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: const TextStyle(color: Colors.grey),
-          ),
-          trailing: Text(formatTimestamp(chat.lastMessageTime)),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ChatPage(
-                  sellerId: otherUser.uid!,
-                  currentUserId: currentUserId,
-                ),
-              ),
-            );
-          },
+        return ChatListTile(
+          chat: chat,
+          otherUser: otherUser!,
+          currentUserId: currentUserId,
+          onDeleteChat: onDeleteChat,
         );
       },
     );

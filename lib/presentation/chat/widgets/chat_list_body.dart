@@ -17,6 +17,9 @@ class ChatListBody extends StatelessWidget {
           return ChatListView(
             chatsWithDetails: state.chatsWithDetails,
             currentUserId: currentUserId,
+            onDeleteChat: (String chatId) {
+              context.read<ChatBloc>().add(DeleteChatEvent(chatId));
+            },
           );
         } else if (state is ChatError) {
           return const Center(

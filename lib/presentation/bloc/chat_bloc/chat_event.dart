@@ -39,3 +39,12 @@ final class LoadChatPageDataEvent extends ChatEvent {
   @override
   List<Object> get props => [currentUserId, sellerId];
 }
+
+class DeleteChatEvent extends ChatEvent {
+  final String chatId;
+
+  const DeleteChatEvent(this.chatId);
+
+  @override
+  List<Object> get props => [chatId];
+}

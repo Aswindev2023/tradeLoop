@@ -59,5 +59,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(ChatError("Failed to load chat page data: $e"));
       }
     });
+    on<DeleteChatEvent>((event, emit) async {
+      try {
+        emit(ChatsLoading());
+        await chatService.deleteChat(event.chatId);
+        print('Chat deleted successfully');
+        // You can fetch the updated chats list to reflect the changes
+        final updatedChats =
+            await chatService.fetchChatsWithUserDetails(event.chatId);
+        emit(ChatsWithDetailsLoaded(updatedChats));
+      } catch (e) {
+        emit(ChatError("Failed to delete chat: $e"));
+      }
+    });
   }
 }

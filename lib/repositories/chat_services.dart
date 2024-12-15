@@ -132,4 +132,30 @@ class ChatServices {
       throw Exception("Failed to delete message: $e");
     }
   }
+
+  /// Deletes an entire chat and its associated messages.
+  Future<void> deleteChat(String chatId) async {
+    try {
+      // Reference to the chat document
+      final chatRef = _firestore.collection('chats').doc(chatId);
+      print('chat id in delete chat function is:$chatId');
+
+      // Get all messages in the chat
+      final messagesSnapshot = await chatRef.collection('messages').get();
+
+      // Batch delete all messages
+      final batch = _firestore.batch();
+      for (var doc in messagesSnapshot.docs) {
+        batch.delete(doc.reference);
+      }
+
+      // Commit the batch deletion
+      await batch.commit();
+
+      // Delete the chat document
+      await chatRef.delete();
+    } catch (e) {
+      throw Exception("Failed to delete chat: $e");
+    }
+  }
 }
