@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/presentation/authentication/screens/login_screen.dart';
 import 'package:trade_loop/presentation/authentication/widgets/auth_state_handler.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
+import 'package:trade_loop/presentation/bloc/account_deletion_bloc/account_deletion_bloc.dart';
 import 'package:trade_loop/presentation/bloc/category_bloc/category_bloc.dart';
 import 'package:trade_loop/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
@@ -64,6 +65,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<MessageBloc>(
           create: (context) => MessageBloc(),
         ),
+        BlocProvider<AccountDeletionBloc>(
+          create: (context) => AccountDeletionBloc(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -73,8 +77,8 @@ class MyApp extends StatelessWidget {
               seedColor: const Color.fromARGB(255, 30, 0, 255)),
           useMaterial3: true,
         ),
-        home: AuthStateHandler(
-          homePage: const HomePage(),
+        home: const AuthStateHandler(
+          homePage: HomePage(),
           loginPage: LogIn(),
         ),
       ),
