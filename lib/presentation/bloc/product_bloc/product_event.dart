@@ -31,8 +31,6 @@ class LoadProducts extends ProductEvent {
   List<Object> get props => [userId];
 }
 
-class EditProductPressed extends ProductEvent {}
-
 class SaveProductChanges extends ProductEvent {
   final ProductModel updatedProduct;
 
@@ -119,4 +117,12 @@ class UpdateAvailability extends ProductEvent {
   const UpdateAvailability({required this.isAvailable});
   @override
   List<Object> get props => [isAvailable];
+}
+//update product page:
+
+class InitializeProductFormWithData extends ProductEvent {
+  final ProductModel product;
+  const InitializeProductFormWithData(this.product);
+  @override
+  List<Object> get props => [product];
 }

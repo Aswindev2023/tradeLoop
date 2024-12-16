@@ -52,9 +52,35 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(ProductError(message: 'Failed to load products: $e'));
       }
     });
+    on<SaveProductChanges>((event, emit) async {
+      emit(ProductLoading());
+      try {
+        final updatedProduct =
+            await _productsService.updateProduct(event.updatedProduct);
+
+        emit(ProductAddedSuccess(newProduct: updatedProduct));
+      } catch (e) {
+        emit(ProductError(message: 'Failed to update product: $e'));
+      }
+    });
+    //edit product page form:
+    on<InitializeProductFormWithData>((event, emit) {
+      final product = event.product;
+
+      emit(ProductFormState(
+        pickedLocation: product.location,
+        locationName: product.locationName,
+        tags: event.product.tags,
+        selectedCategory: CategoryModel(
+            id: event.product.categoryId, name: event.product.categoryName),
+        formFields: {'isAvailable': product.isAvailable},
+        isAvailable: product.isAvailable,
+        pickedImages: event.product.imageUrls,
+      ));
+    });
+
     //addproduct page form
     on<InitializeProductForm>((event, emit) {
-      // Emit the ProductFormState when the page is loaded
       emit(const ProductFormState(
         pickedLocation: null,
         locationName: 'Pick a Location',

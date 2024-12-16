@@ -8,6 +8,7 @@ import 'package:trade_loop/presentation/authentication/widgets/confirmation_dial
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
 import 'package:trade_loop/presentation/products/screens/add_product_page.dart';
+import 'package:trade_loop/presentation/products/screens/user_product_details_page.dart';
 
 class ViewListings extends StatelessWidget {
   final int selectedIndex = 2;
@@ -46,37 +47,47 @@ class ViewListings extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final product = products[index];
 
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: product.imageUrls.isNotEmpty
-                          ? NetworkImage(product.imageUrls.first)
-                          : const AssetImage('images/profile-user.png')
-                              as ImageProvider,
-                    ),
-                    title: Text(product.name),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return ConfirmationDialog(
-                              title: 'Delete Product',
-                              content:
-                                  'Are you sure you want to delete this product?',
-                              onConfirm: () {
-                                context.read<ProductBloc>().add(DeleteProduct(
-                                      productId: product.productId!,
-                                      imageUrls: product.imageUrls,
-                                      userId: userId!,
-                                    ));
-                                SnackbarUtils.showSnackbar(
-                                    context, 'Product Deleted');
-                              },
-                            );
-                          },
-                        );
-                      },
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UserProductDetailsPage(
+                                productId: product.productId!)),
+                      );
+                    },
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: product.imageUrls.isNotEmpty
+                            ? NetworkImage(product.imageUrls.first)
+                            : const AssetImage('images/profile-user.png')
+                                as ImageProvider,
+                      ),
+                      title: Text(product.name),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ConfirmationDialog(
+                                title: 'Delete Product',
+                                content:
+                                    'Are you sure you want to delete this product?',
+                                onConfirm: () {
+                                  context.read<ProductBloc>().add(DeleteProduct(
+                                        productId: product.productId!,
+                                        imageUrls: product.imageUrls,
+                                        userId: userId!,
+                                      ));
+                                  SnackbarUtils.showSnackbar(
+                                      context, 'Product Deleted');
+                                },
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ),
                   );
                 },

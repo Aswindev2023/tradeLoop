@@ -62,4 +62,45 @@ class ProductsService {
       rethrow;
     }
   }
+
+  Future<ProductModel> updateProduct(ProductModel product) async {
+    try {
+      // Get the product ID from the product model
+      if (product.productId == null) {
+        throw Exception('Product ID is required');
+      }
+
+      // If the product has new images, upload them
+      List<String?> newImageUrls = [];
+      if (product.imageUrls.isNotEmpty) {
+        newImageUrls =
+            await ProductImageUploadService().uploadImages(product.imageUrls);
+      }
+
+      // If the image URLs were updated, delete old images from Firebase Storage
+      if (newImageUrls.isNotEmpty && newImageUrls != product.imageUrls) {
+        await ProductImageUploadService().deleteImages(product.imageUrls);
+      }
+      List<String> validImageUrls = newImageUrls.whereType<String>().toList();
+      // Create a new product map with updated fields, including new image URLs if any
+      final updatedProduct = product.copyWith(imageUrls: validImageUrls);
+
+      // Convert the updated product model to a map
+      final jsonMap = updatedProduct.toJson();
+
+      // Get the document reference of the product
+      DocumentReference docRef = _productCollection.doc(product.productId);
+
+      // Update the product document with the new data
+      await docRef.update(jsonMap);
+
+      print('Product updated successfully with ID: ${product.productId}');
+
+      // Return the updated product model
+      return updatedProduct;
+    } catch (e) {
+      print('Error updating product: $e');
+      rethrow;
+    }
+  }
 }

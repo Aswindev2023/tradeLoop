@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 class TagDropdownField extends StatefulWidget {
   final Function(List<String>) onTagsChanged;
+  final List<String>
+      initialTags; // Added an optional parameter for initial tags
 
-  const TagDropdownField({super.key, required this.onTagsChanged});
+  const TagDropdownField(
+      {super.key, required this.onTagsChanged, this.initialTags = const []});
 
   @override
   State<TagDropdownField> createState() => _TagDropdownFieldState();
@@ -22,7 +25,13 @@ class _TagDropdownFieldState extends State<TagDropdownField> {
     "Mobiles",
     "Laptops"
   ];
-  final List<String> _selectedTags = [];
+  List<String> _selectedTags = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedTags = widget.initialTags; // Initialize with the initial tags
+  }
 
   void _addTag(String tag) {
     if (!_selectedTags.contains(tag)) {

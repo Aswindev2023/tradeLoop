@@ -4,8 +4,13 @@ import 'package:image_picker/image_picker.dart';
 
 class ProductImagePicker extends StatefulWidget {
   final Function(List<String>) onImagesPicked;
+  final List<String> initialImages; // Can be URLs or local file paths
 
-  const ProductImagePicker({super.key, required this.onImagesPicked});
+  const ProductImagePicker({
+    super.key,
+    required this.onImagesPicked,
+    this.initialImages = const [],
+  });
 
   @override
   State<ProductImagePicker> createState() => _ProductImagePickerState();
@@ -13,17 +18,24 @@ class ProductImagePicker extends StatefulWidget {
 
 class _ProductImagePickerState extends State<ProductImagePicker> {
   final ImagePicker _picker = ImagePicker();
-  List<File> _pickedImages = [];
+  List<String> _pickedImages = []; // Stores both URLs and file paths
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize with the provided initial images (URLs or file paths)
+    if (widget.initialImages.isNotEmpty) {
+      _pickedImages = List.from(widget.initialImages);
+    }
+  }
 
   Future<void> _pickImages() async {
     final List<XFile> pickedFiles = await _picker.pickMultiImage();
     if (pickedFiles.isNotEmpty) {
       setState(() {
-        _pickedImages = pickedFiles.map((file) => File(file.path)).toList();
+        _pickedImages.addAll(pickedFiles.map((file) => file.path).toList());
       });
-      print('Picked Images: $_pickedImages');
-
-      widget.onImagesPicked(pickedFiles.map((file) => file.path).toList());
+      widget.onImagesPicked(_pickedImages);
     }
   }
 
@@ -42,14 +54,37 @@ class _ProductImagePickerState extends State<ProductImagePicker> {
         child: _pickedImages.isNotEmpty
             ? PageView.builder(
                 itemCount: _pickedImages.length,
-                itemBuilder: (context, index) => ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.file(
-                    _pickedImages[index],
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                  ),
-                ),
+                itemBuilder: (context, index) {
+                  final image = _pickedImages[index];
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: image.startsWith('http') // Check if it's a URL
+                        ? Image.network(
+                            image,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Center(
+                              child: Icon(
+                                Icons.broken_image,
+                                color: Colors.grey,
+                                size: 50,
+                              ),
+                            ),
+                          )
+                        : Image.file(
+                            File(image),
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ),
+                  );
+                },
               )
             : const Center(
                 child: Column(
