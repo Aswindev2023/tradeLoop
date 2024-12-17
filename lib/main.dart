@@ -13,6 +13,7 @@ import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/bloc/product_details_bloc/product_details_bloc.dart';
 import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:trade_loop/presentation/bloc/recently_viewed_bloc/recently_viewed_bloc.dart';
+import 'package:trade_loop/presentation/bloc/report_bloc/report_bloc.dart';
 import 'package:trade_loop/presentation/bloc/seller_profile_bloc/seller_profile_bloc.dart';
 import 'package:trade_loop/presentation/bloc/wishlist_bloc/wish_list_bloc.dart';
 import 'package:trade_loop/presentation/home/screens/home_page.dart';
@@ -67,6 +68,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<AccountDeletionBloc>(
           create: (context) => AccountDeletionBloc(),
+        ),
+        BlocProvider<ReportBloc>(
+          create: (context) => ReportBloc(),
         ),
       ],
       child: MaterialApp(

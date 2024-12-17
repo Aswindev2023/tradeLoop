@@ -5,6 +5,7 @@ import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/custom_button.dart';
 import 'package:trade_loop/presentation/bloc/seller_profile_bloc/seller_profile_bloc.dart';
 import 'package:trade_loop/presentation/chat/screens/chat_page.dart';
+import 'package:trade_loop/presentation/report/screen/report_type_page.dart';
 import 'package:trade_loop/presentation/seller_profile/widgets/product_list_view.dart';
 import 'package:trade_loop/presentation/seller_profile/widgets/seller_profile_img.dart';
 
@@ -41,7 +42,14 @@ class _SellerProfilePageState extends State<SellerProfilePage> {
           PopupMenuButton<String>(
             onSelected: (value) {
               if (value == 'report') {
-                // Handle "Report User" action
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ReportTypePage(
+                            sellerId: widget.sellerId,
+                            currentUserId: widget.currentUser,
+                          )),
+                );
               }
             },
             itemBuilder: (BuildContext context) => [
