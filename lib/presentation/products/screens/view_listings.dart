@@ -32,7 +32,12 @@ class ViewListings extends StatelessWidget {
       body: Padding(
         padding:
             const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0, top: 15),
-        child: BlocBuilder<ProductBloc, ProductState>(
+        child: BlocConsumer<ProductBloc, ProductState>(
+          listener: (context, state) {
+            if (state is ProductAddedSuccess) {
+              context.read<ProductBloc>().add(LoadProducts(userId: userId!));
+            }
+          },
           builder: (context, state) {
             if (state is ProductLoading) {
               return const Center(child: CircularProgressIndicator());
@@ -105,7 +110,9 @@ class ViewListings extends StatelessWidget {
           final result = await Navigator.push(context,
               MaterialPageRoute(builder: (context) => const AddProductPage()));
           if (result == true) {
-            context.read<ProductBloc>().add(LoadProducts(userId: userId!));
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.read<ProductBloc>().add(LoadProducts(userId: userId!));
+            });
           }
         },
         backgroundColor: const Color.fromARGB(255, 62, 28, 255),

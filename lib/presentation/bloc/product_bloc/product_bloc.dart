@@ -73,7 +73,13 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         tags: event.product.tags,
         selectedCategory: CategoryModel(
             id: event.product.categoryId, name: event.product.categoryName),
-        formFields: {'isAvailable': product.isAvailable},
+        formFields: {
+          'isAvailable': product.isAvailable,
+          'name': product.name,
+          'description': product.description,
+          'price': product.price,
+          'condition': product.condition,
+        },
         isAvailable: product.isAvailable,
         pickedImages: event.product.imageUrls,
       ));

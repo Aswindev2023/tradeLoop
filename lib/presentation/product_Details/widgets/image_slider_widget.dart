@@ -59,16 +59,15 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget> {
           options: CarouselOptions(
             height: screenHeight * 0.5,
             viewportFraction: 1.0,
-            autoPlay: !isSingleImage, // Auto-play only for multiple images
+            autoPlay: !isSingleImage,
             autoPlayInterval: const Duration(seconds: 3),
-            enableInfiniteScroll:
-                !isSingleImage, // Prevent infinite scroll for single image
+            enableInfiniteScroll: !isSingleImage,
             scrollPhysics: isSingleImage
-                ? const NeverScrollableScrollPhysics() // Disable scrolling for single image
-                : const BouncingScrollPhysics(), // Default behavior for multiple images
+                ? const NeverScrollableScrollPhysics()
+                : const BouncingScrollPhysics(),
             onPageChanged: (index, reason) {
               setState(() {
-                _currentIndex = index; // Update current index for indicators
+                _currentIndex = index;
               });
             },
           ),
@@ -87,9 +86,7 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget> {
               ),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: _currentIndex == index
-                    ? Colors.blue // Highlight the current indicator
-                    : Colors.grey, // Dull color for inactive indicators
+                color: _currentIndex == index ? Colors.blue : Colors.grey,
               ),
             ),
           ),

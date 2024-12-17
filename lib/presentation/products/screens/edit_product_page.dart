@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
@@ -34,8 +35,6 @@ class _EditProductPageState extends State<EditProductPage> {
   @override
   void initState() {
     super.initState();
-
-    // Initialize the form state with product data using Bloc
     context
         .read<ProductBloc>()
         .add(InitializeProductFormWithData(widget.product));
@@ -80,8 +79,9 @@ class _EditProductPageState extends State<EditProductPage> {
     return Scaffold(
       appBar: const CustomAppbar(
         title: 'Edit Product',
-        fontSize: 15,
+        fontSize: 20,
         centerTitle: true,
+        backgroundColor: appbarColor,
       ),
       body: BlocConsumer<ProductBloc, ProductState>(
         listener: (context, state) {
@@ -90,7 +90,7 @@ class _EditProductPageState extends State<EditProductPage> {
               _isLoading = false;
             });
             SnackbarUtils.showSnackbar(context, 'Product updated successfully');
-            Navigator.pop(context, true); // Navigate back after update
+            Navigator.pop(context, true);
           } else if (state is ProductError) {
             SnackbarUtils.showSnackbar(context, 'Error: ${state.message}');
             setState(() {
@@ -158,7 +158,7 @@ class _EditProductPageState extends State<EditProductPage> {
                               .read<ProductBloc>()
                               .add(UpdateCategory(selectedCategory: category!));
                         },
-                        initialCategory: state.formFields['categoryName'],
+                        initialCategory: state.selectedCategory,
                       ),
                       const SizedBox(height: 16),
                       // Description field
@@ -199,7 +199,7 @@ class _EditProductPageState extends State<EditProductPage> {
                               .read<ProductBloc>()
                               .add(UpdateTags(tags: tags));
                         },
-                        initialTags: state.formFields['tags'] ?? [],
+                        initialTags: state.tags,
                       ),
                       const SizedBox(height: 16),
 

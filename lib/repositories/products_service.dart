@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:trade_loop/presentation/products/model/product_model.dart';
 import 'package:trade_loop/repositories/product_image_upload_service.dart';
 
@@ -56,6 +57,7 @@ class ProductsService {
   Future<void> deleteProduct(String productId, List<String> imageUrls) async {
     try {
       ProductImageUploadService().deleteImages(imageUrls);
+      print('the image urls are:$imageUrls');
       await _productCollection.doc(productId).delete();
     } catch (e) {
       print('Error deleting product: $e');
@@ -65,38 +67,47 @@ class ProductsService {
 
   Future<ProductModel> updateProduct(ProductModel product) async {
     try {
-      // Get the product ID from the product model
       if (product.productId == null) {
         throw Exception('Product ID is required');
       }
 
-      // If the product has new images, upload them
+      // Step 1: Compare existing image URLs with the new ones
+      List<String> oldImageUrls = product.imageUrls;
+
+      // Initialize the newImageUrls as an empty list
       List<String?> newImageUrls = [];
+
+      // Only delete the old images if new images are provided and they differ
       if (product.imageUrls.isNotEmpty) {
-        newImageUrls =
-            await ProductImageUploadService().uploadImages(product.imageUrls);
+        // If there are new images, check if they are different from the old ones
+        if (oldImageUrls.isEmpty ||
+            !listEquals(oldImageUrls, product.imageUrls)) {
+          print('Deleting existing images...');
+          // Delete the old images before uploading new ones
+          await ProductImageUploadService().deleteImages(oldImageUrls);
+          newImageUrls =
+              await ProductImageUploadService().uploadImages(product.imageUrls);
+        } else {
+          // If no change in images, keep the old URLs
+          newImageUrls = oldImageUrls;
+        }
+      } else {
+        // If no new images are provided, keep the old ones
+        newImageUrls = oldImageUrls;
       }
 
-      // If the image URLs were updated, delete old images from Firebase Storage
-      if (newImageUrls.isNotEmpty && newImageUrls != product.imageUrls) {
-        await ProductImageUploadService().deleteImages(product.imageUrls);
-      }
+      // Step 2: Ensure only valid URLs are used (filter out nulls)
       List<String> validImageUrls = newImageUrls.whereType<String>().toList();
-      // Create a new product map with updated fields, including new image URLs if any
+
+      // Step 3: Update the product model with the new image URLs
       final updatedProduct = product.copyWith(imageUrls: validImageUrls);
 
-      // Convert the updated product model to a map
+      // Step 4: Update Firestore with the new product data
       final jsonMap = updatedProduct.toJson();
-
-      // Get the document reference of the product
       DocumentReference docRef = _productCollection.doc(product.productId);
-
-      // Update the product document with the new data
       await docRef.update(jsonMap);
 
       print('Product updated successfully with ID: ${product.productId}');
-
-      // Return the updated product model
       return updatedProduct;
     } catch (e) {
       print('Error updating product: $e');

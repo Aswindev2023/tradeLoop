@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
@@ -80,6 +81,7 @@ class _AddProductPageState extends State<AddProductPage> {
         title: 'Add Product',
         fontSize: 15,
         centerTitle: true,
+        backgroundColor: appbarColor,
       ),
       body: BlocListener<ProductBloc, ProductState>(
         listener: (context, state) {
@@ -189,6 +191,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     onTagsChanged: (tags) {
                       context.read<ProductBloc>().add(UpdateTags(tags: tags));
                     },
+                    initialTags: const [],
                   ),
                   const SizedBox(height: 16),
 

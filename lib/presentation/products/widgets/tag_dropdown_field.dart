@@ -30,7 +30,7 @@ class _TagDropdownFieldState extends State<TagDropdownField> {
   @override
   void initState() {
     super.initState();
-    _selectedTags = widget.initialTags; // Initialize with the initial tags
+    _selectedTags = List<String>.from(widget.initialTags);
   }
 
   void _addTag(String tag) {

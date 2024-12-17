@@ -10,20 +10,28 @@ import 'package:trade_loop/presentation/product_Details/widgets/image_slider_wid
 import 'package:trade_loop/presentation/product_Details/widgets/location_map_widget.dart';
 import 'package:trade_loop/presentation/products/screens/edit_product_page.dart';
 
-class UserProductDetailsPage extends StatelessWidget {
+class UserProductDetailsPage extends StatefulWidget {
   final String productId;
 
-  const UserProductDetailsPage({
-    super.key,
-    required this.productId,
-  });
+  const UserProductDetailsPage({super.key, required this.productId});
+
+  @override
+  State<UserProductDetailsPage> createState() => _UserProductDetailsPageState();
+}
+
+class _UserProductDetailsPageState extends State<UserProductDetailsPage> {
+  double parsedPrice = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    context
+        .read<ProductDetailsBloc>()
+        .add(FetchProductDetailsEvent(widget.productId));
+  }
 
   @override
   Widget build(BuildContext context) {
-    double parsedPrice = 0.0;
-
-    context.read<ProductDetailsBloc>().add(FetchProductDetailsEvent(productId));
-
     return Scaffold(
       appBar: const CustomAppbar(
         title: 'Product Details',
@@ -43,9 +51,7 @@ class UserProductDetailsPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Image Slider
-
                   ImageSliderWidget(imageUrls: product.imageUrls),
-
                   const SizedBox(height: 16.0),
 
                   // Product Name
@@ -57,7 +63,6 @@ class UserProductDetailsPage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-
                   const SizedBox(height: 8.0),
 
                   // Price
@@ -70,14 +75,10 @@ class UserProductDetailsPage extends StatelessWidget {
                       color: const Color.fromARGB(255, 51, 0, 255),
                     ),
                   ),
-
-                  Divider(
-                    thickness: 2,
-                    color: Colors.grey[300],
-                  ),
-
+                  Divider(thickness: 2, color: Colors.grey[300]),
                   const SizedBox(height: 10.0),
 
+                  // Description
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: CustomTextWidget(
@@ -86,19 +87,16 @@ class UserProductDetailsPage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-
-                  // Description
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: CustomTextWidget(
                       text: product.description,
                       fontSize: 16.0,
-                      fontWeight: FontWeight.normal,
                       color: Colors.grey[800],
                     ),
                   ),
-
                   const SizedBox(height: 10.0),
+
                   // Date Posted
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -109,7 +107,7 @@ class UserProductDetailsPage extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 10.0),
+
                   // Availability
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -123,16 +121,12 @@ class UserProductDetailsPage extends StatelessWidget {
                                 ? 'Available'
                                 : 'Out of Stock',
                             fontSize: 16.0,
-                            fontWeight: FontWeight.normal,
                             color: Colors.blueGrey,
-                            overflow: TextOverflow.clip,
-                            softWrap: true,
                           ),
                         ),
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 16.0),
 
                   // Condition
@@ -140,25 +134,18 @@ class UserProductDetailsPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Row(
                       children: [
-                        const Icon(
-                          Icons.info_outline,
-                          color: Colors.blue,
-                        ),
+                        const Icon(Icons.info_outline, color: Colors.blue),
                         const SizedBox(width: 8.0),
                         Expanded(
                           child: CustomTextWidget(
                             text: 'Condition: ${product.condition}',
                             fontSize: 16.0,
-                            fontWeight: FontWeight.normal,
                             color: Colors.blueGrey,
-                            overflow: TextOverflow.clip,
-                            softWrap: true,
                           ),
                         ),
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 16.0),
 
                   // Category and Tags
@@ -186,7 +173,6 @@ class UserProductDetailsPage extends StatelessWidget {
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 16.0),
 
                   // Location
@@ -194,19 +180,13 @@ class UserProductDetailsPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Row(
                       children: [
-                        const Icon(
-                          Icons.location_on,
-                          color: Colors.red,
-                        ),
+                        const Icon(Icons.location_on, color: Colors.red),
                         const SizedBox(width: 8.0),
                         Expanded(
                           child: CustomTextWidget(
                             text: 'Location: ${product.locationName}',
                             fontSize: 16.0,
-                            fontWeight: FontWeight.normal,
                             color: Colors.blueGrey,
-                            overflow: TextOverflow.clip,
-                            softWrap: true,
                           ),
                         ),
                       ],
@@ -217,20 +197,28 @@ class UserProductDetailsPage extends StatelessWidget {
                     latitude: product.location!.latitude,
                     longitude: product.location!.longitude,
                   ),
-
                   const SizedBox(height: 16.0),
 
-                  // Edit Product Button (Placeholder)
+                  // Edit Product Button
                   CustomButton(
                     label: 'Edit Product',
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      final result = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                EditProductPage(product: product)),
+                          builder: (context) =>
+                              EditProductPage(product: product),
+                        ),
                       );
-                      print('Edit Product Button Clicked');
+                      if (mounted && result == true) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          if (mounted) {
+                            context.read<ProductDetailsBloc>().add(
+                                  FetchProductDetailsEvent(widget.productId),
+                                );
+                          }
+                        });
+                      }
                     },
                   ),
                 ],

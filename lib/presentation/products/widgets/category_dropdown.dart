@@ -5,8 +5,7 @@ import 'package:trade_loop/presentation/products/model/category_model.dart';
 
 class CategoryDropdown extends StatefulWidget {
   final Function(CategoryModel?) onCategorySelected;
-  final CategoryModel?
-      initialCategory; // Added an optional parameter for the initial category
+  final CategoryModel? initialCategory;
 
   const CategoryDropdown(
       {super.key, required this.onCategorySelected, this.initialCategory});
@@ -16,14 +15,12 @@ class CategoryDropdown extends StatefulWidget {
 }
 
 class _CategoryDropdownState extends State<CategoryDropdown> {
-  CategoryModel? _selectedCategory;
+  String? _selectedCategoryId; // Store the category id as the selected value
 
   @override
   void initState() {
     super.initState();
-
-    // Initialize with the current category if available
-    _selectedCategory = widget.initialCategory;
+    _selectedCategoryId = widget.initialCategory?.id;
 
     // Load categories when the widget is initialized
     context.read<CategoryBloc>().add(LoadCategoriesEvent());
@@ -40,24 +37,26 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
         } else if (state is CategoryLoaded) {
           return Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: DropdownButton<CategoryModel?>(
-              // Allow null to handle empty category
+            child: DropdownButton<String?>(
+              // Use category ID as value
               elevation: 8,
-              value: _selectedCategory,
+              value: _selectedCategoryId,
               hint: const Text("Select a category"),
               items: state.categories.map((category) {
-                return DropdownMenuItem<CategoryModel?>(
-                  value: category,
+                return DropdownMenuItem<String?>(
+                  value: category?.id, // Use category id as the value
                   child: Text(category?.name ?? ''),
                 );
               }).toList(),
-              onChanged: (selectedCategory) {
+              onChanged: (selectedCategoryId) {
                 setState(() {
-                  _selectedCategory = selectedCategory;
+                  _selectedCategoryId = selectedCategoryId;
                 });
+                final selectedCategory = state.categories.firstWhere(
+                    (category) => category!.id == selectedCategoryId);
                 widget.onCategorySelected(selectedCategory);
 
-                print('Selected category ID: ${selectedCategory?.id}');
+                print('Selected category ID: $selectedCategoryId');
               },
             ),
           );

@@ -18,7 +18,7 @@ class ProductImagePicker extends StatefulWidget {
 
 class _ProductImagePickerState extends State<ProductImagePicker> {
   final ImagePicker _picker = ImagePicker();
-  List<String> _pickedImages = []; // Stores both URLs and file paths
+  List<String> _pickedImages = [];
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _ProductImagePickerState extends State<ProductImagePicker> {
     final List<XFile> pickedFiles = await _picker.pickMultiImage();
     if (pickedFiles.isNotEmpty) {
       setState(() {
-        _pickedImages.addAll(pickedFiles.map((file) => file.path).toList());
+        _pickedImages = pickedFiles.map((file) => file.path).toList();
       });
       widget.onImagesPicked(_pickedImages);
     }
