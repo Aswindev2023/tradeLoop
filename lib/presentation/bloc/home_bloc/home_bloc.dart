@@ -37,11 +37,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(HomePageLoading());
       try {
         final products = await homeServices.searchProducts(
-          query: event.query,
-          userId: event.userId,
-          categoryIds: event.categoryId,
-          tags: event.tags,
-        );
+            query: event.query,
+            userId: event.userId,
+            categoryIds: event.categoryId,
+            tags: event.tags,
+            priceRanges: event.priceRanges);
         print(
             'categoryId and tags from search bloc:${event.categoryId}and ${event.tags}');
         emit(HomePageLoaded(products));

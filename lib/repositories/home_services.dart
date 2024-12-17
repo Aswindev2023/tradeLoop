@@ -51,6 +51,7 @@ class HomeServices {
     required String userId,
     List<String>? categoryIds,
     List<String>? tags,
+    List<Map<String, dynamic>>? priceRanges,
   }) async {
     try {
       print('Searching products for query: $query');
@@ -77,7 +78,8 @@ class HomeServices {
 
       // Applying category and tag filters
       if ((categoryIds != null && categoryIds.isNotEmpty) ||
-          (tags != null && tags.isNotEmpty)) {
+          (tags != null && tags.isNotEmpty) ||
+          (priceRanges != null && priceRanges.isNotEmpty)) {
         print('Applying filters: categoryId = $categoryIds, tags = $tags');
 
         // Filter by category
@@ -94,6 +96,19 @@ class HomeServices {
               .where((product) => product.tags.any((tag) => tags.contains(tag)))
               .toList();
           print('filtering by tags with: tags = $tags');
+        }
+
+        //filter by price
+        if (priceRanges != null && priceRanges.isNotEmpty) {
+          print('Filtering by price ranges: $priceRanges');
+          products = products.where((product) {
+            return priceRanges.any((range) {
+              final min = range['min'] as int?;
+              final max = range['max'] as int?;
+              return (min == null || product.price >= min) &&
+                  (max == null || product.price <= max);
+            });
+          }).toList();
         }
       }
       print('search result from search product function:$products');

@@ -31,14 +31,16 @@ class SearchProductsEvent extends HomeEvent {
   final String userId;
   final List<String>? categoryId;
   final List<String>? tags;
+  final List<Map<String, dynamic>>? priceRanges;
 
   const SearchProductsEvent({
     required this.query,
     required this.userId,
     this.categoryId,
     this.tags,
+    this.priceRanges,
   });
 
   @override
-  List<Object> get props => [query, userId, categoryId!, tags!];
+  List<Object> get props => [query, userId, categoryId!, tags!, priceRanges!];
 }

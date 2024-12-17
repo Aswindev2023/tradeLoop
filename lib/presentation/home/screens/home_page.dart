@@ -63,6 +63,7 @@ class HomePageState extends State<HomePage> {
                 userId: userId,
                 categoryId: filters['categories'],
                 tags: filters['tags'],
+                priceRanges: filters['priceRanges'],
               ));
         },
       ),
