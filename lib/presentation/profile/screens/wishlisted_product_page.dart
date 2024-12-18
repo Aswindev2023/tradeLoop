@@ -69,7 +69,6 @@ class WishlistedProductsPage extends StatelessWidget {
                       trailing: IconButton(
                         icon: const Icon(Icons.favorite, color: Colors.red),
                         onPressed: () {
-                          // Remove from wishlist
                           context.read<WishListBloc>().add(
                               RemoveProductFromWishlistEvent(
                                   userId, product.productId));

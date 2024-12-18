@@ -53,8 +53,14 @@ class ProductGrid extends StatelessWidget {
                         width: double.infinity,
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
-                          return const Center(
-                            child: CircularProgressIndicator(),
+
+                          return Container(
+                            height: imageHeight,
+                            width: double.infinity,
+                            color: Colors.grey.shade200,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
                           );
                         },
                         errorBuilder: (context, error, stackTrace) => Container(

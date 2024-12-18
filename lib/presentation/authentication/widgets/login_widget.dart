@@ -56,7 +56,6 @@ class LoginFormState extends State<LoginForm> {
         if (!mounted) return;
         widget.onLoginTap();
       } finally {
-        if (!mounted) return;
         setState(() {
           _isLoading = false;
         });

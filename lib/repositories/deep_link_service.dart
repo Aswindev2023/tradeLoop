@@ -6,13 +6,16 @@ Future<void> handleDeepLinks(BuildContext context) async {
   final initialLink = await getInitialLink();
   if (initialLink != null && initialLink.startsWith('tradeloop://product/')) {
     final productId = initialLink.split('/').last;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ProductDetailsPage(
-          productId: productId,
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProductDetailsPage(
+            productId: productId,
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

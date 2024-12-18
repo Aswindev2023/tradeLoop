@@ -119,7 +119,6 @@ class _SellerProfilePageState extends State<SellerProfilePage> {
                         }),
                     const SizedBox(height: 16.0),
 
-                    // Divider
                     const Divider(thickness: 2),
 
                     const SizedBox(height: 16.0),

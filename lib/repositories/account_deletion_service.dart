@@ -157,7 +157,7 @@ class AccountDeletionService {
       for (var chat in chatDocs.docs) {
         final chatId = chat.id;
 
-        // Delete messages in the chat
+        // Deleting  messages in the chat
         final messagesSnapshot = await _firestore
             .collection('chats')
             .doc(chatId)
@@ -170,7 +170,7 @@ class AccountDeletionService {
         }
         await batch.commit();
 
-        // Delete the chat document
+        // Deleting  the chat document
         await _firestore.collection('chats').doc(chatId).delete();
       }
     } catch (e) {
@@ -191,11 +191,10 @@ class AccountDeletionService {
     }
   }
 
-  /// Main function to delete a user account.
   Future<void> deleteUserAccount(String userId) async {
     try {
       final profileImagePath = await _getUserProfileImagePath(userId);
-      // Delete user-related data in parallel
+
       await Future.wait([
         _deleteUserProducts(userId),
         _deleteUserDocument(userId),
@@ -205,7 +204,6 @@ class AccountDeletionService {
         _deleteUserProfileImage(profileImagePath),
       ]);
 
-      // Delete authentication user
       await _deleteAuthUser();
     } catch (e) {
       throw Exception("Failed to delete user account: $e");

@@ -6,7 +6,6 @@ import 'package:trade_loop/presentation/chat/models/message_model.dart';
 class ChatServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  /// Creates a new chat document with the initial message.
   Future<String> createChat(
       String userId1, String userId2, String initialMessage) async {
     try {
@@ -18,13 +17,12 @@ class ChatServices {
       for (var doc in existingChat.docs) {
         final participants = List<String>.from(doc.data()['participants']);
         if (participants.contains(userId2)) {
-          return doc.id; // Return existing chat ID
+          return doc.id;
         }
       }
-      // Reference to chats collection
+
       final chatRef = _firestore.collection('chats').doc();
 
-      // Create chat metadata
       final chat = ChatModel(
         chatId: chatRef.id,
         participants: [userId1, userId2],
@@ -133,17 +131,15 @@ class ChatServices {
     }
   }
 
-  /// Deletes an entire chat and its associated messages.
   Future<void> deleteChat(String chatId) async {
     try {
-      // Reference to the chat document
       final chatRef = _firestore.collection('chats').doc(chatId);
       print('chat id in delete chat function is:$chatId');
 
       // Get all messages in the chat
       final messagesSnapshot = await chatRef.collection('messages').get();
 
-      // Batch delete all messages
+      // Batch deleting all messages
       final batch = _firestore.batch();
       for (var doc in messagesSnapshot.docs) {
         batch.delete(doc.reference);

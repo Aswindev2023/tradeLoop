@@ -60,10 +60,8 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
                     return Dismissible(
                       key: Key(message.messageId),
                       direction: isSentByUser
-                          ? DismissDirection
-                              .endToStart // Allow delete only for user's messages
-                          : DismissDirection
-                              .none, // No swipe for other users' messages
+                          ? DismissDirection.endToStart
+                          : DismissDirection.none,
                       onDismissed: (direction) {
                         context.read<MessageBloc>().add(
                               DeleteMessagesEvent(
@@ -110,7 +108,6 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
                 );
               }
 
-              // Default empty state
               return const SizedBox.shrink();
             },
           ),

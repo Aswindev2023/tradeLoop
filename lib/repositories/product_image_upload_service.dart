@@ -35,7 +35,6 @@ class ProductImageUploadService {
 
         String downloadUrl = await snapshot.ref.getDownloadURL();
 
-        // Debug: Output the download URL
         print('Uploaded image URL: $downloadUrl');
 
         downloadUrls.add(downloadUrl);
@@ -52,7 +51,6 @@ class ProductImageUploadService {
   Future<void> deleteImages(List<String> imageUrls) async {
     try {
       for (String url in imageUrls) {
-        // Debug: Log the URL being processed
         print('Processing URL for deletion: $url');
 
         // If the URL is a download URL, convert it to the gs:// format
@@ -62,10 +60,9 @@ class ProductImageUploadService {
                 "https://firebasestorage.googleapis.com/v0/b/",
                 "gs://",
               )
-              .split("?")[0] // Remove the query part of the URL
-              .replaceAll("%2F", "/"); // Decode any URL encoded characters
+              .split("?")[0]
+              .replaceAll("%2F", "/");
 
-          // Remove "/o/" from the URL, as it's not part of the gs:// reference
           gsUrl = gsUrl.replaceFirst("/o/", "/");
 
           print('Converted URL to gs:// format: $gsUrl');
@@ -74,7 +71,6 @@ class ProductImageUploadService {
           await ref.delete();
           print('Deleted image: $gsUrl');
         } else if (url.startsWith("gs://")) {
-          // If it's already in gs:// format, directly delete
           final ref = FirebaseStorage.instance.refFromURL(url);
           await ref.delete();
           print('Deleted image: $url');

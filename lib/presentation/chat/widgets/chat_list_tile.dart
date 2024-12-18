@@ -32,7 +32,6 @@ class ChatListTile extends StatelessWidget {
         child: const Icon(Icons.delete, color: Colors.white),
       ),
       confirmDismiss: (direction) async {
-        // Show confirmation dialog
         return await showDialog(
           context: context,
           builder: (context) => ConfirmationDialog(

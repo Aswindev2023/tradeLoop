@@ -1,9 +1,9 @@
 class MessageModel {
-  final String messageId; // Unique ID for the message
-  final String senderId; // ID of the user who sent the message
-  final String content; // Text content of the message
-  final DateTime timestamp; // Timestamp when the message was sent
-  final String type; // "text" (for now), extendable later to "image", etc.
+  final String messageId;
+  final String senderId;
+  final String content;
+  final DateTime timestamp;
+  final String type;
 
   MessageModel({
     required this.messageId,

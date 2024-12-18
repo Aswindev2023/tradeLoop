@@ -71,38 +71,29 @@ class ProductsService {
         throw Exception('Product ID is required');
       }
 
-      // Step 1: Compare existing image URLs with the new ones
       List<String> oldImageUrls = product.imageUrls;
 
-      // Initialize the newImageUrls as an empty list
       List<String?> newImageUrls = [];
 
-      // Only delete the old images if new images are provided and they differ
       if (product.imageUrls.isNotEmpty) {
-        // If there are new images, check if they are different from the old ones
         if (oldImageUrls.isEmpty ||
             !listEquals(oldImageUrls, product.imageUrls)) {
           print('Deleting existing images...');
-          // Delete the old images before uploading new ones
+
           await ProductImageUploadService().deleteImages(oldImageUrls);
           newImageUrls =
               await ProductImageUploadService().uploadImages(product.imageUrls);
         } else {
-          // If no change in images, keep the old URLs
           newImageUrls = oldImageUrls;
         }
       } else {
-        // If no new images are provided, keep the old ones
         newImageUrls = oldImageUrls;
       }
 
-      // Step 2: Ensure only valid URLs are used (filter out nulls)
       List<String> validImageUrls = newImageUrls.whereType<String>().toList();
 
-      // Step 3: Update the product model with the new image URLs
       final updatedProduct = product.copyWith(imageUrls: validImageUrls);
 
-      // Step 4: Update Firestore with the new product data
       final jsonMap = updatedProduct.toJson();
       DocumentReference docRef = _productCollection.doc(product.productId);
       await docRef.update(jsonMap);

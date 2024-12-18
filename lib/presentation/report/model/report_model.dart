@@ -1,9 +1,9 @@
 class ReportModel {
-  final String sellerId; // ID of the reported seller
-  final String userId; // ID of the current user (who is reporting)
-  final String issueType; // Type of the issue (e.g., fraud, harassment, etc.)
-  final String explanation; // Detailed explanation from the user
-  final DateTime reportDate; // Timestamp of when the report was created
+  final String sellerId;
+  final String userId;
+  final String issueType;
+  final String explanation;
+  final DateTime reportDate;
 
   ReportModel({
     required this.sellerId,
@@ -13,7 +13,6 @@ class ReportModel {
     required this.reportDate,
   });
 
-  // Convert the report to a map for storing in Firestore
   Map<String, dynamic> toMap() {
     return {
       'sellerId': sellerId,
@@ -24,7 +23,6 @@ class ReportModel {
     };
   }
 
-  // Create a ReportModel from a map (for retrieving data from Firestore)
   factory ReportModel.fromMap(Map<String, dynamic> map) {
     return ReportModel(
       sellerId: map['sellerId'],

@@ -43,7 +43,6 @@ class _LogInState extends State<LogIn> {
       backgroundColor: Colors.white,
       body: BlocConsumer<AuthBlocBloc, AuthBlocState>(
         listener: (context, state) {
-          print('current state of login page is:$state');
           if (state is AuthSuccess) {
             Future.microtask(() {
               Navigator.of(context).pushReplacement(

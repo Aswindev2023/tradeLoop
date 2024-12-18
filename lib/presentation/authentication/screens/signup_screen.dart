@@ -25,8 +25,8 @@ class Signup extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      LogIn(successMessage: 'Account created successfully!'),
+                  builder: (context) => const LogIn(
+                      successMessage: 'Account created successfully!'),
                 ),
               );
             });
@@ -63,7 +63,7 @@ class Signup extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute<void>(
-                    builder: (BuildContext context) => LogIn(),
+                    builder: (BuildContext context) => const LogIn(),
                   ),
                 );
               },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/core/utils/custom_button.dart';
+import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/report_bloc/report_bloc.dart';
 import 'package:trade_loop/presentation/products/widgets/custom_textformfield.dart';
 import 'package:trade_loop/presentation/report/model/report_model.dart';
@@ -43,7 +44,6 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
               fontWeight: FontWeight.bold,
             ),
             const SizedBox(height: 20),
-            // Instructional Text
             const CustomTextWidget(
               text: 'Explain the issue in more detail:',
               fontSize: 16,
@@ -77,16 +77,12 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
 
                   context.read<ReportBloc>().add(SubmitReportEvent(report));
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text('Report submitted successfully')),
-                  );
+                  SnackbarUtils.showSnackbar(
+                      context, 'Report submitted successfully');
                   Navigator.pop(context);
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text('Please provide an explanation')),
-                  );
+                  SnackbarUtils.showSnackbar(
+                      context, 'Please provide an explanation');
                 }
               },
             ),

@@ -11,8 +11,6 @@ final class ReportInitial extends ReportState {}
 
 class ReportSubmitting extends ReportState {}
 
-class ReportSubmittedSuccess extends ReportState {}
-
 class ReportSubmittedFailure extends ReportState {
   final String errorMessage;
 

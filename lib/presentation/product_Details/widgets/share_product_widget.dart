@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ShareProductWidget extends StatelessWidget {
-  final String productId; // Unique ID for the product
-  final String productName; // Optional name of the product
+  final String productId;
+  final String productName;
 
   const ShareProductWidget({
     super.key,
@@ -12,15 +12,12 @@ class ShareProductWidget extends StatelessWidget {
   });
 
   void _shareProduct() {
-    // Generate the custom link
     final productLink = 'tradeloop://product/$productId';
 
-    // Text to share
     final shareText = productName.isNotEmpty
         ? 'Check out $productName on TradeLoop: $productLink'
         : 'Check out this product on TradeLoop: $productLink';
 
-    // Trigger sharing
     Share.share(shareText);
   }
 

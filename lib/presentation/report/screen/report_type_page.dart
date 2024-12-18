@@ -14,7 +14,6 @@ class ReportTypePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // List of report types to display
     final List<String> issueTypes = [
       'Fraud or Scams',
       'Inappropriate Content',

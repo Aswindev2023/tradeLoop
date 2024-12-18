@@ -25,7 +25,7 @@ class WishListBloc extends Bloc<WishListEvent, WishListState> {
       try {
         await wishlistServices.addProductToWishlist(
             event.userId, event.productId);
-        add(FetchWishlistEvent(event.userId)); // Refresh wishlist
+        add(FetchWishlistEvent(event.userId));
       } catch (e) {
         emit(WishlistError(e.toString()));
       }
@@ -34,7 +34,7 @@ class WishListBloc extends Bloc<WishListEvent, WishListState> {
       try {
         await wishlistServices.removeProductFromWishlist(
             event.userId, event.productId);
-        add(FetchWishlistEvent(event.userId)); // Refresh wishlist
+        add(FetchWishlistEvent(event.userId));
       } catch (e) {
         emit(WishlistError(e.toString()));
       }

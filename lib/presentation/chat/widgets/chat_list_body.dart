@@ -29,8 +29,6 @@ class ChatListBody extends StatelessWidget {
             ),
           );
         }
-
-        // Default empty state
         return const SizedBox.shrink();
       },
     );

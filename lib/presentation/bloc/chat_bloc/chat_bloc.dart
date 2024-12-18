@@ -64,7 +64,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(ChatsLoading());
         await chatService.deleteChat(event.chatId);
         print('Chat deleted successfully');
-        // You can fetch the updated chats list to reflect the changes
+
         final updatedChats =
             await chatService.fetchChatsWithUserDetails(event.chatId);
         emit(ChatsWithDetailsLoaded(updatedChats));

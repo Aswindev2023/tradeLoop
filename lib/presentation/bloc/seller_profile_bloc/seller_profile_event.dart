@@ -7,7 +7,6 @@ sealed class SellerProfileEvent extends Equatable {
   List<Object> get props => [];
 }
 
-// Event to fetch seller profile details
 final class FetchSellerProfile extends SellerProfileEvent {
   final String sellerId;
 

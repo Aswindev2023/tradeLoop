@@ -18,15 +18,9 @@ class ChatListPage extends StatelessWidget {
 
     context.read<ChatBloc>().add(FetchUserChatsEvent(currentUserId));
     return Scaffold(
-      appBar: CustomAppbar(
+      appBar: const CustomAppbar(
         title: 'Chats',
         backgroundColor: appbarColor,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

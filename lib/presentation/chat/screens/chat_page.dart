@@ -10,7 +10,7 @@ class ChatPage extends StatelessWidget {
   final String sellerId;
   final String currentUserId;
 
-  ChatPage({
+  const ChatPage({
     required this.sellerId,
     required this.currentUserId,
     super.key,
@@ -47,7 +47,7 @@ class ChatPage extends StatelessWidget {
           if (state is ChatPageDataLoaded) {
             return ChatMessagesSection(
               currentUserId: currentUserId,
-              chatId: state.chatId, // Pass the chatId here
+              chatId: state.chatId,
             );
           } else if (state is ChatError) {
             return const Center(
@@ -57,7 +57,6 @@ class ChatPage extends StatelessWidget {
               ),
             );
           } else {
-            // Show a loading indicator while waiting for data
             return const Center(child: CircularProgressIndicator());
           }
         },

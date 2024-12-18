@@ -13,7 +13,6 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
       emit(ReportSubmitting());
       try {
         await _reportService.submitReport(event.report);
-        emit(ReportSubmittedSuccess());
       } catch (e) {
         emit(ReportSubmittedFailure(e.toString()));
       }
