@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:trade_loop/main.dart';
-import 'package:trade_loop/repositories/auth_services.dart';
 
 void main() {
   setUpAll(() async {
@@ -18,11 +17,8 @@ void main() {
     await Firebase.initializeApp();
   });
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    AuthServices authServices = AuthServices();
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp(
-      authServices: authServices,
-    ));
+    await tester.pumpWidget(const MyApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

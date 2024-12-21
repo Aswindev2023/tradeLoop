@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
@@ -36,8 +37,9 @@ class _LogInState extends State<LogIn> {
         SnackbarUtils.showSnackbar(context, widget.successMessage!);
       });
     }
-    double screenWidth = MediaQuery.of(context).size.width;
-    double padding = screenWidth * 0.001;
+
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double padding = screenWidth * 0.05;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -53,7 +55,7 @@ class _LogInState extends State<LogIn> {
             SnackbarUtils.showSnackbar(
               context,
               state.message,
-              backgroundColor: const Color.fromARGB(255, 169, 35, 35),
+              backgroundColor: snackbarColor,
             );
           }
         },
@@ -61,45 +63,58 @@ class _LogInState extends State<LogIn> {
           if (state is AuthLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-          return SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: padding),
-              child: LoginForm(
-                formKey: _formKey,
-                emailController: _emailController,
-                passwordController: _passwordController,
-                onLoginTap: () {
-                  if (_formKey.currentState!.validate()) {
-                    if (FormValidators.isValidEmail(_emailController.text)) {
-                      context.read<AuthBlocBloc>().add(LoginButtonPressed(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          ));
-                    } else {
-                      SnackbarUtils.showSnackbar(
-                          context, 'Invalid Email Format');
-                    }
-                  }
-                },
-                onForgotPasswordTap: () {
-                  Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ForgotPassword()))
-                      .then((result) {
-                    if (result != null) {
-                      SnackbarUtils.showSnackbar(context, result);
-                    }
-                  });
-                },
-                onGoogleSignIn: () {
-                  BlocProvider.of<AuthBlocBloc>(context)
-                      .add(GoogleSignInButtonPressed());
-                },
-                onSignUpTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Signup()));
-                },
+          return Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: padding),
+                  child: LoginForm(
+                    formKey: _formKey,
+                    emailController: _emailController,
+                    passwordController: _passwordController,
+                    onLoginTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        if (FormValidators.isValidEmail(
+                            _emailController.text)) {
+                          context.read<AuthBlocBloc>().add(LoginButtonPressed(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              ));
+                        } else {
+                          SnackbarUtils.showSnackbar(
+                            context,
+                            'Invalid Email Format',
+                          );
+                        }
+                      }
+                    },
+                    onForgotPasswordTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ForgotPassword(),
+                        ),
+                      ).then((result) {
+                        if (result != null) {
+                          SnackbarUtils.showSnackbar(context, result);
+                        }
+                      });
+                    },
+                    onGoogleSignIn: () {
+                      BlocProvider.of<AuthBlocBloc>(context)
+                          .add(GoogleSignInButtonPressed());
+                    },
+                    onSignUpTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Signup(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
           );

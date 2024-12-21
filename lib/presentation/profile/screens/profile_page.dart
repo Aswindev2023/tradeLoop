@@ -98,21 +98,6 @@ class ProfilePage extends StatelessWidget {
               height: 5,
             ),
             CustomTileWidget(
-              title: 'Settings',
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SettingsPage(
-                        userId: userId,
-                      ),
-                    ));
-              },
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            CustomTileWidget(
               title: 'Notices',
               onTap: () {
                 Navigator.push(

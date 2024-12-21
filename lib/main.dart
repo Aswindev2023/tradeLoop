@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/firebase_options.dart';
 import 'package:trade_loop/presentation/authentication/screens/login_screen.dart';
 import 'package:trade_loop/presentation/authentication/widgets/auth_state_handler.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
@@ -17,24 +18,25 @@ import 'package:trade_loop/presentation/bloc/report_bloc/report_bloc.dart';
 import 'package:trade_loop/presentation/bloc/seller_profile_bloc/seller_profile_bloc.dart';
 import 'package:trade_loop/presentation/bloc/wishlist_bloc/wish_list_bloc.dart';
 import 'package:trade_loop/presentation/home/screens/home_page.dart';
-import 'package:trade_loop/repositories/auth_services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  final AuthServices authServices = AuthServices();
-  runApp(MyApp(authServices: authServices));
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final AuthServices authServices;
-  const MyApp({super.key, required this.authServices});
+  const MyApp({
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBlocBloc>(
-          create: (BuildContext context) => AuthBlocBloc(authServices),
+          create: (BuildContext context) => AuthBlocBloc(),
         ),
         BlocProvider<ProfileBloc>(
           create: (context) => ProfileBloc(),

@@ -103,6 +103,7 @@ class HomePageState extends State<HomePage> {
           children: <Widget>[
             // Search Bar
             TextField(
+              autofocus: false,
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Search products...',

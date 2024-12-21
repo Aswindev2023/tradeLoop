@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:trade_loop/core/utils/input_field_utils.dart';
 
@@ -19,23 +20,34 @@ class InputFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: prefer_const_declarations
+    final isWeb = kIsWeb;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 30.0),
+          width: isWeb ? 400 : double.infinity,
+          padding: EdgeInsets.symmetric(
+            vertical: 2.0,
+            horizontal: isWeb ? 20.0 : 30.0,
+          ),
           decoration: BoxDecoration(
             color: const Color(0xFFedf0f8),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(isWeb ? 10 : 20),
           ),
           child: TextFormField(
+            autofocus: false,
             controller: controller,
             obscureText: obscureText,
+            style: TextStyle(fontSize: isWeb ? 16.0 : 18.0),
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: hintText,
-              hintStyle:
-                  const TextStyle(color: Color(0xFFb2b7bf), fontSize: 18.0),
+              hintStyle: TextStyle(
+                color: const Color(0xFFb2b7bf),
+                fontSize: isWeb ? 16.0 : 18.0,
+              ),
               suffixIcon: getPasswordVisibilityIcon(
                 obscureText: obscureText,
                 toggleVisibility: toggleVisibility,
@@ -45,11 +57,16 @@ class InputFieldWidget extends StatelessWidget {
         ),
         if (errorMessage != null && errorMessage!.isNotEmpty)
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
+            padding: EdgeInsets.symmetric(
+              horizontal: isWeb ? 20.0 : 25.0,
+              vertical: 5.0,
+            ),
             child: Text(
               errorMessage!,
-              style: const TextStyle(color: Colors.red, fontSize: 14.0),
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: isWeb ? 12.0 : 14.0,
+              ),
             ),
           ),
       ],

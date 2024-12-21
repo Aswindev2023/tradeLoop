@@ -9,12 +9,10 @@ part 'auth_bloc_event.dart';
 part 'auth_bloc_state.dart';
 
 class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
-  final AuthServices _authServices;
+  final AuthServices _authServices = AuthServices();
   final UserRepository _userRepository = UserRepository();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  AuthBlocBloc(
-    this._authServices,
-  ) : super(AuthBlocInitial()) {
+  AuthBlocBloc() : super(AuthBlocInitial()) {
     //Log In Bloc
     on<LoginButtonPressed>((event, emit) async {
       emit(AuthLoading());

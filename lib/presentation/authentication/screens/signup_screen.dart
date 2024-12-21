@@ -16,6 +16,10 @@ class Signup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double padding =
+        screenWidth * 0.05; // Adjust padding for responsiveness
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocConsumer<AuthBlocBloc, AuthBlocState>(
@@ -31,42 +35,57 @@ class Signup extends StatelessWidget {
               );
             });
           } else if (state is AuthFailure) {
-            SnackbarUtils.showSnackbar(context, state.message,
-                backgroundColor: Colors.orangeAccent);
+            SnackbarUtils.showSnackbar(
+              context,
+              state.message,
+              backgroundColor: Colors.orangeAccent,
+            );
           }
         },
         builder: (context, state) {
-          return SingleChildScrollView(
-            child: SignupWidget(
-              formKey: _formKey,
-              emailController: _emailController,
-              passwordController: _passwordController,
-              nameController: _nameController,
-              onSignUpTap: () {
-                if (_formKey.currentState!.validate()) {
-                  if (FormValidators.isValidEmail(_emailController.text) &&
-                      FormValidators.isValidName(_nameController.text) &&
-                      FormValidators.isValidPassword(
-                          _passwordController.text)) {
-                    context.read<AuthBlocBloc>().add(SignUpButtonPressed(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                          name: _nameController.text,
-                        ));
-                  } else {
-                    SnackbarUtils.showSnackbar(
-                        context, 'Invalid Email/Name/Password Format');
-                  }
-                }
-              },
-              onLogInTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => const LogIn(),
+          return Center(
+            child: ConstrainedBox(
+              constraints:
+                  const BoxConstraints(maxWidth: 400), // Centralized for web
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: padding),
+                  child: SignupWidget(
+                    formKey: _formKey,
+                    emailController: _emailController,
+                    passwordController: _passwordController,
+                    nameController: _nameController,
+                    onSignUpTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        if (FormValidators.isValidEmail(
+                                _emailController.text) &&
+                            FormValidators.isValidName(_nameController.text) &&
+                            FormValidators.isValidPassword(
+                                _passwordController.text)) {
+                          context.read<AuthBlocBloc>().add(SignUpButtonPressed(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                                name: _nameController.text,
+                              ));
+                        } else {
+                          SnackbarUtils.showSnackbar(
+                            context,
+                            'Invalid Email/Name/Password Format',
+                          );
+                        }
+                      }
+                    },
+                    onLogInTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => const LogIn(),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ),
             ),
           );
         },

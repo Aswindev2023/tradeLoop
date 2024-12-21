@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -35,7 +36,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: TextStyle(
-          fontSize: fontSize ?? 25,
+          fontSize: fontSize ?? (kIsWeb ? 28 : 25),
           fontWeight: fontWeight ?? FontWeight.bold,
           color: fontColor ?? Colors.white,
         ),
@@ -45,5 +46,6 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize =>
+      const Size.fromHeight(kIsWeb ? kToolbarHeight + 10 : kToolbarHeight);
 }
