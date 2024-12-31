@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/presentation/authentication/widgets/input_field_widget.dart';
 import 'package:trade_loop/presentation/authentication/widgets/loding_button.dart';
@@ -80,116 +81,130 @@ class SignupWidgetState extends State<SignupWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Image.asset(
-            "images/AnyConv.com__screenimage.jpg",
-            fit: BoxFit.cover,
-          ),
-        ),
+        _SignupHeader(),
         const SizedBox(height: 30.0),
         Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Form(
             key: widget.formKey,
             child: Column(
               children: [
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 5.0),
-                    child: Text(
-                      "Name",
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                InputFieldWidget(
+                InputSection(
+                  label: "Name",
                   controller: widget.nameController,
-                  hintText: 'Name',
                   errorMessage: nameError,
                 ),
                 const SizedBox(height: 30.0),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 5.0),
-                    child: Text(
-                      "Email",
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                InputFieldWidget(
+                InputSection(
+                  label: "Email",
                   controller: widget.emailController,
-                  hintText: 'Email',
                   errorMessage: emailError,
                 ),
                 const SizedBox(height: 30.0),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 5.0),
-                    child: Text(
-                      "Password",
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                InputFieldWidget(
+                InputSection(
+                  label: "Password",
                   controller: widget.passwordController,
-                  hintText: 'Password',
                   obscureText: _obscurePassword,
                   errorMessage: passwordError,
                   toggleVisibility: _togglePasswordVisibility,
                 ),
                 const SizedBox(height: 30.0),
                 LoadingButton(
-                    isLoading: _isLoading,
-                    text: 'Sign Up',
-                    onTap: _handleSignin)
+                  isLoading: _isLoading,
+                  text: 'Sign Up',
+                  onTap: _handleSignin,
+                )
               ],
             ),
           ),
         ),
         const SizedBox(height: 40.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Already have an account?",
-              style: TextStyle(
-                  color: Color(0xFF8c8e98),
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(width: 5.0),
-            GestureDetector(
-              onTap: widget.onLogInTap,
-              child: const Text(
-                "LogIn",
-                style: TextStyle(
-                    color: Color(0xFF273671),
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
-          ],
+        _SignupFooter(onLogInTap: widget.onLogInTap),
+      ],
+    );
+  }
+}
+
+class _SignupHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Image.asset(
+        "images/AnyConv.com__screenimage.jpg",
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+}
+
+class InputSection extends StatelessWidget {
+  final String label;
+  final TextEditingController controller;
+  final String? errorMessage;
+  final bool? obscureText;
+  final VoidCallback? toggleVisibility;
+
+  const InputSection({
+    super.key,
+    required this.label,
+    required this.controller,
+    this.errorMessage,
+    this.obscureText,
+    this.toggleVisibility,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 5.0),
+          child: CustomTextWidget(
+            text: label,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8.0),
+        InputFieldWidget(
+          controller: controller,
+          hintText: label,
+          errorMessage: errorMessage,
+          obscureText: obscureText ?? false,
+          toggleVisibility: toggleVisibility,
+        ),
+      ],
+    );
+  }
+}
+
+class _SignupFooter extends StatelessWidget {
+  final VoidCallback onLogInTap;
+
+  const _SignupFooter({required this.onLogInTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const CustomTextWidget(
+          text: "Already have an account?",
+          color: Color(0xFF8c8e98),
+          fontSize: 18.0,
+          fontWeight: FontWeight.w500,
+        ),
+        const SizedBox(width: 5.0),
+        GestureDetector(
+          onTap: onLogInTap,
+          child: const CustomTextWidget(
+            text: "LogIn",
+            color: Color(0xFF273671),
+            fontSize: 20.0,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ],
     );

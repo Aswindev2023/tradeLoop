@@ -39,12 +39,14 @@ class _LogInState extends State<LogIn> {
     }
 
     final double screenWidth = MediaQuery.of(context).size.width;
-    final double padding = screenWidth * 0.05;
+    final double padding = screenWidth * 0.01;
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocConsumer<AuthBlocBloc, AuthBlocState>(
         listener: (context, state) {
+          print('current state in  login page is:$state');
+
           if (state is AuthSuccess) {
             Future.microtask(() {
               Navigator.of(context).pushReplacement(

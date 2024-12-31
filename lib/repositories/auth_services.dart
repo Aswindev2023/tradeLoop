@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthServices {
@@ -21,17 +22,25 @@ class AuthServices {
 
   Future<UserCredential?> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+      if (kIsWeb) {
+        // Web sign-in
+        final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+        googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
+        return await _firebaseAuth.signInWithPopup(googleProvider);
+      } else {
+        // Mobile sign-in
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+        final GoogleSignInAuthentication? googleAuth =
+            await googleUser?.authentication;
 
-      if (googleAuth == null) return null;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+        if (googleAuth == null) return null;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
 
-      return await _firebaseAuth.signInWithCredential(credential);
+        return await _firebaseAuth.signInWithCredential(credential);
+      }
     } on FirebaseAuthException catch (e) {
       throw Exception('Google Sign-In failed: ${e.message}');
     }

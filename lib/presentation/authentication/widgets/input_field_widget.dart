@@ -37,7 +37,6 @@ class InputFieldWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(isWeb ? 10 : 20),
           ),
           child: TextFormField(
-            autofocus: false,
             controller: controller,
             obscureText: obscureText,
             style: TextStyle(fontSize: isWeb ? 16.0 : 18.0),

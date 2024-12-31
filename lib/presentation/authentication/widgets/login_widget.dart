@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
-
 import 'package:trade_loop/presentation/authentication/widgets/google_signin_button.dart';
 import 'package:trade_loop/presentation/authentication/widgets/input_field_widget.dart';
 import 'package:trade_loop/presentation/authentication/widgets/loding_button.dart';
@@ -37,165 +37,153 @@ class LoginFormState extends State<LoginForm> {
 
   Future<void> _handleLogin() async {
     if (!mounted) return;
-    String? emailValidationError =
-        FormValidators.validateForm(widget.emailController.text, 'Email');
-    String? passwordValidationError =
-        FormValidators.validateForm(widget.passwordController.text, 'Password');
 
     setState(() {
-      emailError = emailValidationError;
-      passwordError = passwordValidationError;
+      emailError =
+          FormValidators.validateForm(widget.emailController.text, 'Email');
+      passwordError = FormValidators.validateForm(
+          widget.passwordController.text, 'Password');
     });
 
     if (emailError == null && passwordError == null) {
-      setState(() {
-        _isLoading = true;
-      });
+      setState(() => _isLoading = true);
+
       try {
         await Future.delayed(const Duration(seconds: 1));
         if (!mounted) return;
         widget.onLoginTap();
       } finally {
-        setState(() {
-          _isLoading = false;
-        });
+        setState(() => _isLoading = false);
       }
     }
   }
 
   void _togglePasswordVisibility() {
-    setState(() {
-      _obscurePassword = !_obscurePassword;
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+    setState(() => _obscurePassword = !_obscurePassword);
   }
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    double labelFontSize = screenWidth < 400 ? 16.0 : 18.0;
-    double paddingHorizontal = screenWidth * 0.05;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Column(
       children: [
-        SizedBox(
-          width: screenWidth,
-          child: Image.asset(
-            "images/AnyConv.com__screenimage.jpg",
-            fit: BoxFit.cover,
-          ),
-        ),
+        _buildHeaderImage(screenWidth),
         const SizedBox(height: 30.0),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: paddingHorizontal),
-          child: Form(
-            key: widget.formKey,
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 5.0),
-                    child: Text(
-                      "Email",
-                      style: TextStyle(
-                        fontSize: labelFontSize,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                InputFieldWidget(
-                  controller: widget.emailController,
-                  hintText: 'Email',
-                  errorMessage: emailError,
-                ),
-                const SizedBox(height: 30.0),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 5.0),
-                    child: Text(
-                      "Password",
-                      style: TextStyle(
-                        fontSize: labelFontSize,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                InputFieldWidget(
-                  controller: widget.passwordController,
-                  hintText: 'Password',
-                  obscureText: _obscurePassword,
-                  errorMessage: passwordError,
-                  toggleVisibility: _togglePasswordVisibility,
-                ),
-                const SizedBox(height: 30.0),
-                LoadingButton(
-                    isLoading: _isLoading, text: 'Log In', onTap: _handleLogin),
-              ],
-            ),
-          ),
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+          child: _buildLoginForm(screenWidth),
         ),
         const SizedBox(height: 20.0),
+        _buildForgotPasswordButton(screenWidth),
+        const SizedBox(height: 20.0),
+        CustomTextWidget(
+          text: "or",
+          fontSize: screenWidth < 400 ? 16.0 : 22.0,
+          fontWeight: FontWeight.w500,
+          color: const Color(0xFF273671),
+        ),
+        const SizedBox(height: 30.0),
+        _buildGoogleSignInButton(),
+        const SizedBox(height: 30.0),
+        _buildSignUpSection(screenWidth),
+      ],
+    );
+  }
+
+  Widget _buildHeaderImage(double screenWidth) {
+    return SizedBox(
+      width: screenWidth,
+      child: Image.asset(
+        "images/AnyConv.com__screenimage.jpg",
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget _buildLoginForm(double screenWidth) {
+    final labelFontSize = screenWidth < 400 ? 16.0 : 18.0;
+
+    return Form(
+      key: widget.formKey,
+      child: Column(
+        children: [
+          CustomTextWidget(
+            text: "Email",
+            fontSize: labelFontSize,
+            fontWeight: FontWeight.bold,
+          ),
+          const SizedBox(height: 8.0),
+          InputFieldWidget(
+            controller: widget.emailController,
+            hintText: 'Email',
+            errorMessage: emailError,
+          ),
+          const SizedBox(height: 30.0),
+          CustomTextWidget(
+            text: "Password",
+            fontSize: labelFontSize,
+            fontWeight: FontWeight.bold,
+          ),
+          const SizedBox(height: 8.0),
+          InputFieldWidget(
+            controller: widget.passwordController,
+            hintText: 'Password',
+            obscureText: _obscurePassword,
+            errorMessage: passwordError,
+            toggleVisibility: _togglePasswordVisibility,
+          ),
+          const SizedBox(height: 30.0),
+          LoadingButton(
+            isLoading: _isLoading,
+            text: 'Log In',
+            onTap: _handleLogin,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildForgotPasswordButton(double screenWidth) {
+    return GestureDetector(
+      onTap: widget.onForgotPasswordTap,
+      child: CustomTextWidget(
+        text: "Forgot Password?",
+        fontSize: screenWidth < 400 ? 16.0 : 18.0,
+        fontWeight: FontWeight.w500,
+        color: const Color(0xFF8c8e98),
+      ),
+    );
+  }
+
+  Widget _buildGoogleSignInButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GoogleSignInButton(onGoogleSignIn: widget.onGoogleSignIn),
+      ],
+    );
+  }
+
+  Widget _buildSignUpSection(double screenWidth) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CustomTextWidget(
+          text: "Don't have an account?",
+          fontSize: screenWidth < 400 ? 16.0 : 18.0,
+          fontWeight: FontWeight.w500,
+          color: const Color(0xFF8c8e98),
+        ),
+        const SizedBox(width: 5.0),
         GestureDetector(
-          onTap: widget.onForgotPasswordTap,
-          child: Text(
-            "Forgot Password?",
-            style: TextStyle(
-                color: const Color(0xFF8c8e98),
-                fontSize: screenWidth < 400 ? 16.0 : 18.0,
-                fontWeight: FontWeight.w500),
+          onTap: widget.onSignUpTap,
+          child: CustomTextWidget(
+            text: "SignUp",
+            fontSize: screenWidth < 400 ? 16.0 : 20.0,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xFF273671),
           ),
-        ),
-        const SizedBox(height: 20.0),
-        Text(
-          "or",
-          style: TextStyle(
-              color: const Color(0xFF273671),
-              fontSize: screenWidth < 400 ? 16.0 : 22.0,
-              fontWeight: FontWeight.w500),
-        ),
-        const SizedBox(height: 30.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GoogleSignInButton(onGoogleSignIn: widget.onGoogleSignIn),
-          ],
-        ),
-        const SizedBox(height: 30.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Don't have an account?",
-              style: TextStyle(
-                  color: const Color(0xFF8c8e98),
-                  fontSize: screenWidth < 400 ? 16.0 : 18.0,
-                  fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(width: 5.0),
-            GestureDetector(
-              onTap: widget.onSignUpTap,
-              child: Text(
-                "SignUp",
-                style: TextStyle(
-                    color: const Color(0xFF273671),
-                    fontSize: screenWidth < 400 ? 16.0 : 20.0,
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
-          ],
         ),
       ],
     );

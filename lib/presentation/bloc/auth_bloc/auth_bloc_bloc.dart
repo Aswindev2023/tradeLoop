@@ -21,7 +21,7 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
         print('Login successful, emitting AuthSuccess');
         emit(AuthSuccess());
       } catch (e) {
-        emit(AuthFailure(message: 'Login Failed'));
+        emit(const AuthFailure(message: 'Login Failed'));
         print('login failed in bloc');
       }
     });
