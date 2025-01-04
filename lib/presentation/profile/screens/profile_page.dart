@@ -25,6 +25,7 @@ class ProfilePage extends StatelessWidget {
 
     return BlocListener<AuthBlocBloc, AuthBlocState>(
       listener: (context, state) {
+        print('state is profile page is:$state');
         if (state is AuthLoggedOut) {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => const LogIn()));

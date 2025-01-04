@@ -10,6 +10,7 @@ class UserModel {
   final String? state;
   final String? postalCode;
   final String? country;
+  final bool? isBanned;
 
   UserModel({
     this.uid,
@@ -23,6 +24,7 @@ class UserModel {
     this.state,
     this.postalCode,
     this.country,
+    this.isBanned,
   });
 
   UserModel copyWith({
@@ -31,14 +33,13 @@ class UserModel {
     String? email,
     String? imagePath,
     String? phone,
-    double? latitude,
-    double? longitude,
     String? houseName,
     String? street,
     String? city,
     String? state,
     String? postalCode,
     String? country,
+    bool? isBanned,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -52,6 +53,7 @@ class UserModel {
       state: state ?? this.state,
       postalCode: postalCode ?? this.postalCode,
       country: country ?? this.country,
+      isBanned: isBanned ?? this.isBanned, // Handle banned status
     );
   }
 
@@ -68,6 +70,7 @@ class UserModel {
       if (state != null) 'state': state,
       if (postalCode != null) 'postalCode': postalCode,
       if (country != null) 'country': country,
+      if (isBanned != null) 'isBanned': isBanned,
     };
   }
 
@@ -84,6 +87,7 @@ class UserModel {
       state: json['state'] as String?,
       postalCode: json['postalCode'] as String?,
       country: json['country'] as String?,
+      isBanned: json['isBanned'] as bool?,
     );
   }
 }

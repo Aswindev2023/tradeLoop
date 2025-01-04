@@ -22,6 +22,15 @@ class AuthFailure extends AuthBlocState {
   List<Object> get props => [message];
 }
 
+class UserBanned extends AuthBlocState {
+  final String message;
+
+  const UserBanned({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
 class PasswordResetSuccess extends AuthBlocState {}
 
 class PasswordResetFailure extends AuthBlocState {
@@ -34,10 +43,3 @@ class PasswordResetFailure extends AuthBlocState {
 }
 
 class AuthLoggedOut extends AuthBlocState {}
-
-class Authenticated extends AuthBlocState {
-  final User? user;
-  const Authenticated(this.user);
-  @override
-  List<Object> get props => [user!];
-}

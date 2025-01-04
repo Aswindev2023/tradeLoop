@@ -48,12 +48,19 @@ class _LogInState extends State<LogIn> {
           print('current state in  login page is:$state');
 
           if (state is AuthSuccess) {
-            Future.microtask(() {
+            Future.delayed(const Duration(milliseconds: 200), () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (_) => const HomePage()),
               );
             });
+            print('state is auth success in login page: $state');
           } else if (state is AuthFailure) {
+            SnackbarUtils.showSnackbar(
+              context,
+              state.message,
+              backgroundColor: snackbarColor,
+            );
+          } else if (state is UserBanned) {
             SnackbarUtils.showSnackbar(
               context,
               state.message,

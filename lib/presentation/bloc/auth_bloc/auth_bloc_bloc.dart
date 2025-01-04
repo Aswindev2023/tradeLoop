@@ -88,11 +88,34 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
 
     on<CheckAuthStatus>((event, emit) async {
       emit(AuthLoading());
-      final user = _firebaseAuth.currentUser;
-      if (user != null) {
-        emit(Authenticated(user));
-      } else {
-        emit(AuthLoggedOut());
+      try {
+        final user = _firebaseAuth.currentUser;
+        if (user != null) {
+          // Fetch user details from Firestore
+          final userDetails = await _userRepository.getUser(user.uid);
+          if (userDetails != null) {
+            final isBanned = userDetails.isBanned ?? false;
+            if (isBanned) {
+              // If user is banned, emit UserBanned state
+              emit(const UserBanned(message: 'Your account has been banned.'));
+              // Optionally log out the user
+              await _authServices.signOut();
+            } else {
+              // User is authenticated and not banned
+              emit(AuthSuccess());
+            }
+          } else {
+            // If user details are not found in Firestore, log them out
+            await _authServices.signOut();
+            emit(AuthLoggedOut());
+          }
+        } else {
+          // If no user is signed in, emit logged out state
+          emit(AuthLoggedOut());
+        }
+      } catch (e) {
+        emit(AuthFailure(
+            message: 'Failed to check authentication status: ${e.toString()}'));
       }
     });
   }

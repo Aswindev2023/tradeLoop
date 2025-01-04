@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/wishlist_bloc/wish_list_bloc.dart';
+import 'package:trade_loop/presentation/product_Details/screens/product_details_page.dart';
 
 class WishlistedProductsPage extends StatelessWidget {
   final String userId;
@@ -76,6 +77,14 @@ class WishlistedProductsPage extends StatelessWidget {
                               context, 'Removed from Wishlist');
                         },
                       ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProductDetailsPage(
+                                  productId: product.productId),
+                            ));
+                      },
                     ),
                   );
                 },

@@ -86,6 +86,7 @@ class MyApp extends StatelessWidget {
         home: const AuthStateHandler(
           homePage: HomePage(),
           loginPage: LogIn(),
+          bannedPage: Placeholder(),
         ),
       ),
     );
