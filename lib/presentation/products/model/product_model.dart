@@ -15,6 +15,7 @@ class ProductModel {
   final String categoryName;
   final LatLng? location;
   final String locationName;
+  final bool isBanned;
 
   ProductModel({
     this.productId,
@@ -31,6 +32,7 @@ class ProductModel {
     required this.categoryName,
     required this.location,
     required this.locationName,
+    this.isBanned = false,
   });
   ProductModel copyWith({
     String? productId,
@@ -47,22 +49,25 @@ class ProductModel {
     String? categoryName,
     LatLng? location,
     String? locationName,
+    bool? isBanned,
   }) {
     return ProductModel(
-        productId: productId ?? this.productId,
-        name: name ?? this.name,
-        description: description ?? this.description,
-        price: price ?? this.price,
-        condition: condition ?? this.condition,
-        datePosted: datePosted ?? this.datePosted,
-        isAvailable: isAvailable ?? this.isAvailable,
-        imageUrls: imageUrls ?? this.imageUrls,
-        tags: tags ?? this.tags,
-        sellerId: sellerId ?? this.sellerId,
-        categoryId: categoryId ?? this.categoryId,
-        categoryName: categoryName ?? this.categoryName,
-        location: location ?? this.location,
-        locationName: locationName ?? this.locationName);
+      productId: productId ?? this.productId,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      price: price ?? this.price,
+      condition: condition ?? this.condition,
+      datePosted: datePosted ?? this.datePosted,
+      isAvailable: isAvailable ?? this.isAvailable,
+      imageUrls: imageUrls ?? this.imageUrls,
+      tags: tags ?? this.tags,
+      sellerId: sellerId ?? this.sellerId,
+      categoryId: categoryId ?? this.categoryId,
+      categoryName: categoryName ?? this.categoryName,
+      location: location ?? this.location,
+      locationName: locationName ?? this.locationName,
+      isBanned: isBanned ?? this.isBanned,
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -80,6 +85,7 @@ class ProductModel {
       'categoryId': categoryId,
       'categoryName': categoryName,
       'locationName': locationName,
+      'isBanned': isBanned,
       'location': location != null
           ? {'latitude': location!.latitude, 'longitude': location!.longitude}
           : null,
@@ -113,6 +119,7 @@ class ProductModel {
               (json['location']['longitude'] as num).toDouble(),
             )
           : null,
+      isBanned: json['isBanned'] as bool? ?? false,
     );
   }
 }

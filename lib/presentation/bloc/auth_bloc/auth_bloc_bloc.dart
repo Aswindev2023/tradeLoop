@@ -12,17 +12,23 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
   final AuthServices _authServices = AuthServices();
   final UserRepository _userRepository = UserRepository();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  bool _isCheckingAuth = false;
   AuthBlocBloc() : super(AuthBlocInitial()) {
     //Log In Bloc
     on<LoginButtonPressed>((event, emit) async {
       emit(AuthLoading());
       try {
+        _isCheckingAuth = true; // Prevent state handler from intervening
         await _authServices.signIn(event.email, event.password);
-        print('Login successful, emitting AuthSuccess');
         emit(AuthSuccess());
       } catch (e) {
-        emit(const AuthFailure(message: 'Login Failed'));
-        print('login failed in bloc');
+        if (e.toString().contains('banned')) {
+          emit(const UserBanned(message: 'Your account has been banned.'));
+        } else {
+          emit(const AuthFailure(message: 'Login Failed'));
+        }
+      } finally {
+        _isCheckingAuth = false;
       }
     });
     //Sign Up Bloc
@@ -87,8 +93,10 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
     });
 
     on<CheckAuthStatus>((event, emit) async {
+      if (_isCheckingAuth) return;
       emit(AuthLoading());
       try {
+        print('check status bloc is called');
         final user = _firebaseAuth.currentUser;
         if (user != null) {
           // Fetch user details from Firestore

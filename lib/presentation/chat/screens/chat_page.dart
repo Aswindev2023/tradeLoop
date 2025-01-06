@@ -48,6 +48,7 @@ class ChatPage extends StatelessWidget {
             return ChatMessagesSection(
               currentUserId: currentUserId,
               chatId: state.chatId,
+              isBanned: state.isBanned,
             );
           } else if (state is ChatError) {
             return const Center(

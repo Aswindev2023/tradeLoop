@@ -10,6 +10,7 @@ class HomePageProductModel {
   final String sellerId;
   final String categoryId;
   final String locationName;
+  final bool isBanned;
 
   HomePageProductModel({
     required this.productId,
@@ -23,6 +24,7 @@ class HomePageProductModel {
     required this.sellerId,
     required this.categoryId,
     required this.locationName,
+    required this.isBanned,
   });
 
   factory HomePageProductModel.fromFirestore(Map<String, dynamic> data) {
@@ -44,6 +46,7 @@ class HomePageProductModel {
       sellerId: data['sellerId'] ?? '',
       categoryId: data['categoryId'] ?? '',
       locationName: data['locationName'] ?? '',
+      isBanned: data['isBanned'] ?? false,
     );
   }
 }

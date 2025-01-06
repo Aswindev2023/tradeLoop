@@ -33,11 +33,13 @@ final class ChatPageDataLoaded extends ChatState {
   final String chatId;
   final String sellerName;
   final String? sellerImage;
+  final bool isBanned;
 
   const ChatPageDataLoaded({
     required this.chatId,
     required this.sellerName,
     this.sellerImage,
+    required this.isBanned,
   });
 
   @override

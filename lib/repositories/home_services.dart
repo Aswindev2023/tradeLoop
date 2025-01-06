@@ -5,27 +5,51 @@ class HomeServices {
   final CollectionReference _productCollection =
       FirebaseFirestore.instance.collection('products');
 
+  // Helper function to check if the seller is banned
+  Future<bool> isSellerBanned(String sellerId) async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(sellerId)
+          .get();
+
+      return userDoc['isBanned'] ?? false;
+    } catch (e) {
+      print('Error fetching banned status for seller $sellerId: $e');
+      return false;
+    }
+  }
+
+  // Fetch products excluding a specific userId and check if sellers are banned
   Future<List<HomePageProductModel>> getProductsExcludingUserId(
       String userId) async {
     try {
       print('Fetching products excluding sellerId: $userId');
       QuerySnapshot querySnapshot = await _productCollection
-          .where(
-            'sellerId',
-            isNotEqualTo: userId,
-          )
+          .where('sellerId', isNotEqualTo: userId)
           .get();
 
-      return querySnapshot.docs.map((doc) {
-        return HomePageProductModel.fromFirestore(
-            doc.data() as Map<String, dynamic>);
-      }).toList();
+      List<HomePageProductModel> products = [];
+
+      for (var doc in querySnapshot.docs) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        String sellerId = data['sellerId'] ?? '';
+
+        bool isBanned = await isSellerBanned(sellerId);
+
+        if (!isBanned) {
+          products.add(HomePageProductModel.fromFirestore(data));
+        }
+      }
+
+      return products;
     } catch (e) {
       print('Error fetching products excluding user ID: $e');
       return [];
     }
   }
 
+  // Fetch category-wise products and check if sellers are banned
   Future<List<HomePageProductModel>> getCategorywiseProducts(
       String userId, String categoryId) async {
     try {
@@ -35,17 +59,27 @@ class HomeServices {
           .where('categoryId', isEqualTo: categoryId)
           .get();
 
-      return querySnapshot.docs
-          .map((doc) => HomePageProductModel.fromFirestore(
-              doc.data() as Map<String, dynamic>))
-          .where((product) => product.sellerId != userId)
-          .toList();
+      List<HomePageProductModel> products = [];
+
+      for (var doc in querySnapshot.docs) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        String sellerId = data['sellerId'] ?? '';
+
+        bool isBanned = await isSellerBanned(sellerId);
+
+        if (!isBanned && sellerId != userId) {
+          products.add(HomePageProductModel.fromFirestore(data));
+        }
+      }
+
+      return products;
     } catch (e) {
-      print('Error fetching products excluding user ID: $e');
+      print('Error fetching category-wise products: $e');
       return [];
     }
   }
 
+  // Search products with multiple filters and check if sellers are banned
   Future<List<HomePageProductModel>> searchProducts({
     required String query,
     required String userId,
@@ -63,20 +97,23 @@ class HomeServices {
             .where('name', isGreaterThanOrEqualTo: query)
             .where('name', isLessThanOrEqualTo: '$query\uf8ff');
       }
-      print('search products results:$queryRef');
-      //  fetch products by name
+
       QuerySnapshot querySnapshot = await queryRef.get();
-      print(
-          'Query Snapshot: ${querySnapshot.docs.map((doc) => doc.data()).toList()}');
 
-      // Maping products into the HomePageProductModel
-      List<HomePageProductModel> products = querySnapshot.docs
-          .map((doc) => HomePageProductModel.fromFirestore(
-              doc.data() as Map<String, dynamic>))
-          .where((product) => product.sellerId != userId)
-          .toList();
+      List<HomePageProductModel> products = [];
 
-      // Applying category and tag filters
+      for (var doc in querySnapshot.docs) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        String sellerId = data['sellerId'] ?? '';
+
+        bool isBanned = await isSellerBanned(sellerId);
+
+        if (!isBanned && sellerId != userId) {
+          products.add(HomePageProductModel.fromFirestore(data));
+        }
+      }
+
+      // Apply additional filters
       if ((categoryIds != null && categoryIds.isNotEmpty) ||
           (tags != null && tags.isNotEmpty) ||
           (priceRanges != null && priceRanges.isNotEmpty)) {
@@ -87,7 +124,6 @@ class HomeServices {
           products = products
               .where((product) => categoryIds.contains(product.categoryId))
               .toList();
-          print(' filter by category with : categoryId = $categoryIds');
         }
 
         // Filter by tags
@@ -95,12 +131,10 @@ class HomeServices {
           products = products
               .where((product) => product.tags.any((tag) => tags.contains(tag)))
               .toList();
-          print('filtering by tags with: tags = $tags');
         }
 
-        //filter by price
+        // Filter by price
         if (priceRanges != null && priceRanges.isNotEmpty) {
-          print('Filtering by price ranges: $priceRanges');
           products = products.where((product) {
             return priceRanges.any((range) {
               final min = range['min'] as int?;
@@ -111,7 +145,7 @@ class HomeServices {
           }).toList();
         }
       }
-      print('search result from search product function:$products');
+
       return products;
     } catch (e) {
       print('Error during searchProducts: $e');
