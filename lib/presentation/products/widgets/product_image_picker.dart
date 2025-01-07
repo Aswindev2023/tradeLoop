@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart';
 
 class ProductImagePicker extends StatefulWidget {
   final Function(List<String>) onImagesPicked;
-  final List<String> initialImages; // Can be URLs or local file paths
+  final List<String> initialImages;
 
   const ProductImagePicker({
     super.key,
@@ -23,19 +24,22 @@ class _ProductImagePickerState extends State<ProductImagePicker> {
   @override
   void initState() {
     super.initState();
-    // Initialize with the provided initial images (URLs or file paths)
     if (widget.initialImages.isNotEmpty) {
       _pickedImages = List.from(widget.initialImages);
     }
   }
 
   Future<void> _pickImages() async {
-    final List<XFile> pickedFiles = await _picker.pickMultiImage();
-    if (pickedFiles.isNotEmpty) {
-      setState(() {
-        _pickedImages = pickedFiles.map((file) => file.path).toList();
-      });
-      widget.onImagesPicked(_pickedImages);
+    try {
+      final pickedFiles = await _picker.pickMultiImage();
+      if (pickedFiles.isNotEmpty) {
+        setState(() {
+          _pickedImages = pickedFiles.map((file) => file.path).toList();
+        });
+        widget.onImagesPicked(_pickedImages);
+      }
+    } catch (e) {
+      debugPrint('Error picking images: $e');
     }
   }
 
@@ -58,7 +62,7 @@ class _ProductImagePickerState extends State<ProductImagePicker> {
                   final image = _pickedImages[index];
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: image.startsWith('http') // Check if it's a URL
+                    child: kIsWeb || image.startsWith('http')
                         ? Image.network(
                             image,
                             fit: BoxFit.cover,

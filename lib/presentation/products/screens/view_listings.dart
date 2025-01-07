@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
@@ -7,6 +8,7 @@ import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/authentication/widgets/confirmation_dialog.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
+import 'package:trade_loop/presentation/navigation/side_navigation_bar_widget.dart';
 import 'package:trade_loop/presentation/products/screens/add_product_page.dart';
 import 'package:trade_loop/presentation/products/screens/user_product_details_page.dart';
 
@@ -29,6 +31,9 @@ class ViewListings extends StatelessWidget {
         fontWeight: FontWeight.bold,
         backgroundColor: appbarColor,
       ),
+      drawer: (kIsWeb)
+          ? SideNavigationBarWidget(selectedIndex: selectedIndex)
+          : null,
       body: Padding(
         padding:
             const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0, top: 15),
@@ -122,8 +127,11 @@ class ViewListings extends StatelessWidget {
           size: 40,
         ),
       ),
-      bottomNavigationBar:
-          BottomNavigationBarWidget(selectedIndex: selectedIndex),
+      bottomNavigationBar: (kIsWeb)
+          ? null
+          : BottomNavigationBarWidget(
+              selectedIndex: selectedIndex,
+            ),
     );
   }
 }

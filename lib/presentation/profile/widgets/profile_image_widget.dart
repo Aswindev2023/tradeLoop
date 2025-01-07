@@ -1,6 +1,8 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart';
 
 class ProfileImage extends StatefulWidget {
   final String? initialImageUrl;
@@ -19,35 +21,46 @@ class ProfileImage extends StatefulWidget {
 }
 
 class _ProfileImageState extends State<ProfileImage> {
-  File? _pickedImage;
+  String? _pickedImage;
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _pickedImage = File(pickedFile.path);
-      });
-      widget.onImagePicked(pickedFile.path);
+    try {
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _pickedImage = pickedFile.path;
+        });
+        widget.onImagePicked(pickedFile.path);
+      }
+    } catch (e) {
+      debugPrint('Error picking image: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    print('ProfileImage widget: ${widget.initialImageUrl}');
     return Align(
       alignment: Alignment.topCenter,
       child: Stack(
         children: [
           ClipOval(
             child: _pickedImage != null
-                ? Image.file(
-                    _pickedImage!,
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  )
+                ? kIsWeb
+                    ? Image.network(
+                        _pickedImage!,
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Icon(Icons.error, size: 200),
+                      )
+                    : Image.file(
+                        File(_pickedImage!),
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      )
                 : widget.initialImageUrl != null &&
                         widget.initialImageUrl!.isNotEmpty
                     ? Image.network(
@@ -55,9 +68,8 @@ class _ProfileImageState extends State<ProfileImage> {
                         width: 200,
                         height: 200,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(Icons.error, size: 200);
-                        },
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Icon(Icons.error, size: 200),
                       )
                     : const Icon(Icons.person, size: 200),
           ),

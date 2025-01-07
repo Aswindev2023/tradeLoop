@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
@@ -8,6 +9,7 @@ import 'package:trade_loop/presentation/home/widgets/category_row_widget.dart';
 import 'package:trade_loop/presentation/home/widgets/filter_bottom_sheet.dart';
 import 'package:trade_loop/presentation/home/widgets/product_grid.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
+import 'package:trade_loop/presentation/navigation/side_navigation_bar_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -96,6 +98,9 @@ class HomePageState extends State<HomePage> {
             ),
         ],
       ),
+      drawer: (kIsWeb)
+          ? SideNavigationBarWidget(selectedIndex: selectedIndex)
+          : null,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -168,9 +173,11 @@ class HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(
-        selectedIndex: selectedIndex,
-      ),
+      bottomNavigationBar: (kIsWeb)
+          ? null
+          : BottomNavigationBarWidget(
+              selectedIndex: selectedIndex,
+            ),
     );
   }
 }
