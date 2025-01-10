@@ -77,7 +77,18 @@ class _AddProductPageState extends State<AddProductPage> {
     final state = context.watch<ProductBloc>().state;
 
     return Scaffold(
-      appBar: const CustomAppbar(
+      appBar: CustomAppbar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(
+                context,
+                true,
+              );
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: iconColor,
+            )),
         title: 'Add Product',
         fontSize: 15,
         centerTitle: true,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart'; // For kIsWeb
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 
@@ -15,14 +15,15 @@ class LocationPickerPage extends StatefulWidget {
 
 class _LocationPickerPageState extends State<LocationPickerPage> {
   LatLng? _selectedLocation;
-  LatLng _currentLocation = const LatLng(9.931233, 76.267303);
+  LatLng _currentLocation =
+      const LatLng(9.931233, 76.267303); // Default location
   final TextEditingController _searchController = TextEditingController();
   final MapController _mapController = MapController();
 
   @override
   void initState() {
     super.initState();
-    _fetchUserLocation();
+    _initializeLocation();
   }
 
   @override
@@ -31,11 +32,34 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
     super.dispose();
   }
 
-  Future<void> requestLocationPermission() async {
-    if (await Permission.location.request().isGranted && mounted) {
+  Future<void> _initializeLocation() async {
+    if (kIsWeb) {
+      // Web-specific geolocation handling
+      await _fetchLocationForWeb();
     } else {
-      SnackbarUtils.showSnackbar(
-          context, 'Location permission is required to pick a location.');
+      // Mobile-specific geolocation handling
+      await _fetchUserLocation();
+    }
+  }
+
+  Future<void> _fetchLocationForWeb() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        // ignore: deprecated_member_use
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      setState(() {
+        _currentLocation = LatLng(position.latitude, position.longitude);
+        _selectedLocation = _currentLocation;
+      });
+      _mapController.move(_currentLocation, 10.0);
+    } catch (e) {
+      if (mounted) {
+        SnackbarUtils.showSnackbar(
+          context,
+          'Unable to fetch location: $e',
+        );
+      }
     }
   }
 
@@ -43,43 +67,53 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // location service enable or not
+    // Check if location services are enabled
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled && mounted) {
-      SnackbarUtils.showSnackbar(
-          context, 'Location services are disabled. Please enable them.');
+    if (!serviceEnabled) {
+      if (mounted) {
+        SnackbarUtils.showSnackbar(
+            context, 'Location services are disabled. Please enable them.');
+      }
       return;
     }
 
-    await requestLocationPermission();
+    // Request location permission
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied && mounted) {
-        SnackbarUtils.showSnackbar(context, 'Location permission denied.');
+      if (permission == LocationPermission.denied) {
+        if (mounted) {
+          SnackbarUtils.showSnackbar(context, 'Location permission denied.');
+        }
         return;
       }
     }
 
-    if (permission == LocationPermission.deniedForever && mounted) {
-      SnackbarUtils.showSnackbar(context,
-          'Location permissions are permanently denied. Please enable them in settings.');
+    if (permission == LocationPermission.deniedForever) {
+      if (mounted) {
+        SnackbarUtils.showSnackbar(context,
+            'Location permissions are permanently denied. Please enable them in settings.');
+      }
       return;
     }
 
-    Position position = await Geolocator.getCurrentPosition(
-      // ignore: deprecated_member_use
-      desiredAccuracy: LocationAccuracy.high,
-    );
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        // ignore: deprecated_member_use
+        desiredAccuracy: LocationAccuracy.high,
+      );
 
-    if (mounted) {
-      setState(() {
-        _currentLocation = LatLng(position.latitude, position.longitude);
-        _selectedLocation = _currentLocation;
-      });
-    }
-    if (mounted) {
-      _mapController.move(_currentLocation, 10.0);
+      if (mounted) {
+        setState(() {
+          _currentLocation = LatLng(position.latitude, position.longitude);
+          _selectedLocation = _currentLocation;
+        });
+        _mapController.move(_currentLocation, 10.0);
+      }
+    } catch (e) {
+      if (mounted) {
+        SnackbarUtils.showSnackbar(context, 'Failed to fetch location: $e');
+      }
     }
   }
 
@@ -94,24 +128,16 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
       if (locations.isNotEmpty) {
         LatLng searchedLocation =
             LatLng(locations[0].latitude, locations[0].longitude);
-        if (mounted) {
-          setState(() {
-            _currentLocation = searchedLocation;
-            _selectedLocation = searchedLocation;
-          });
-        }
-        if (mounted) {
-          _mapController.move(searchedLocation, 14.0);
-        }
+        setState(() {
+          _currentLocation = searchedLocation;
+          _selectedLocation = searchedLocation;
+        });
+        _mapController.move(searchedLocation, 14.0);
       } else {
-        if (mounted) {
-          SnackbarUtils.showSnackbar(context, 'No results found for "$query".');
-        }
+        SnackbarUtils.showSnackbar(context, 'No results found for "$query".');
       }
     } catch (e) {
-      if (mounted) {
-        SnackbarUtils.showSnackbar(context, 'Error searching for location: $e');
-      }
+      SnackbarUtils.showSnackbar(context, 'Error searching for location: $e');
     }
   }
 
@@ -190,7 +216,6 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
               ],
             ),
           ),
-          const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(

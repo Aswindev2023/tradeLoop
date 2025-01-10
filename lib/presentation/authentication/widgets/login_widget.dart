@@ -108,32 +108,53 @@ class LoginFormState extends State<LoginForm> {
       key: widget.formKey,
       child: Column(
         children: [
-          CustomTextWidget(
-            text: "Email",
-            fontSize: labelFontSize,
-            fontWeight: FontWeight.bold,
-          ),
-          const SizedBox(height: 8.0),
-          InputFieldWidget(
-            controller: widget.emailController,
-            hintText: 'Email',
-            errorMessage: emailError,
-          ),
-          const SizedBox(height: 30.0),
-          CustomTextWidget(
-            text: "Password",
-            fontSize: labelFontSize,
-            fontWeight: FontWeight.bold,
-          ),
-          const SizedBox(height: 8.0),
-          InputFieldWidget(
-            controller: widget.passwordController,
-            hintText: 'Password',
-            obscureText: _obscurePassword,
-            errorMessage: passwordError,
-            toggleVisibility: _togglePasswordVisibility,
+          // Email Section
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 5.0),
+                child: CustomTextWidget(
+                  text: "Email",
+                  fontSize: labelFontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8.0),
+              InputFieldWidget(
+                controller: widget.emailController,
+                hintText: 'Email',
+                errorMessage: emailError,
+              ),
+            ],
           ),
           const SizedBox(height: 30.0),
+
+          // Password Section
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 5.0),
+                child: CustomTextWidget(
+                  text: "Password",
+                  fontSize: labelFontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8.0),
+              InputFieldWidget(
+                controller: widget.passwordController,
+                hintText: 'Password',
+                obscureText: _obscurePassword,
+                errorMessage: passwordError,
+                toggleVisibility: _togglePasswordVisibility,
+              ),
+            ],
+          ),
+          const SizedBox(height: 30.0),
+
+          // Login Button
           LoadingButton(
             isLoading: _isLoading,
             text: 'Log In',

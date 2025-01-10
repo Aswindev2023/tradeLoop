@@ -13,7 +13,8 @@ class HomeServices {
           .doc(sellerId)
           .get();
 
-      return userDoc['isBanned'] ?? false;
+      // Safely access the isBanned field using null-aware operators
+      return (userDoc.data() as Map<String, dynamic>?)?['isBanned'] ?? false;
     } catch (e) {
       print('Error fetching banned status for seller $sellerId: $e');
       return false;

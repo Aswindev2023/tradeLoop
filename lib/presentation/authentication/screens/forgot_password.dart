@@ -81,7 +81,7 @@ class ForgotPassword extends StatelessWidget {
                                 const SizedBox(height: 20.0),
                                 SizedBox(
                                   width: isWideScreen
-                                      ? constraints.maxWidth * 0.5
+                                      ? constraints.maxWidth * 0.31
                                       : double.infinity,
                                   child: ElevatedButton(
                                     onPressed: () {

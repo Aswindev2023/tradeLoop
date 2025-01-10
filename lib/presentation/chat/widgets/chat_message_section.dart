@@ -172,7 +172,7 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
         // Message Input
         if (widget.isBanned)
           const Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0),
             child: CustomTextWidget(
               text: "This user is banned. You cannot send messages.",
               fontSize: 16.0,
