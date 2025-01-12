@@ -1,8 +1,9 @@
+import 'package:flutter/foundation.dart'; // For kIsWeb
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/presentation/bloc/recently_viewed_bloc/recently_viewed_bloc.dart';
-
+import 'package:trade_loop/presentation/home/widgets/fav_icon.dart';
 import 'package:trade_loop/presentation/product_Details/screens/product_details_page.dart';
 
 class RecentlyViewedRow extends StatelessWidget {
@@ -13,7 +14,11 @@ class RecentlyViewedRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final imageHeight = screenWidth / 3;
+
+    // Adjust dimensions based on the platform
+    const isWeb = kIsWeb;
+    final cardWidth = isWeb ? screenWidth / 4.5 : screenWidth / 2.2;
+    final imageHeight = cardWidth * 0.6;
 
     return BlocBuilder<RecentlyViewedBloc, RecentlyViewedState>(
       builder: (context, state) {
@@ -30,26 +35,43 @@ class RecentlyViewedRow extends StatelessWidget {
 
           return Column(
             children: [
-              const Text(
-                'Recently Visited',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'Recently Visited',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
               SizedBox(
-                height: 250,
+                height: cardWidth * 1.2, // Dynamically adjust the row height
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: products.length,
                   itemBuilder: (context, index) {
                     final product = products[index];
                     return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetailsPage(
+                                productId: product.productId),
+                          ),
+                        );
+                      },
                       child: Card(
-                        elevation: 3,
+                        elevation: 4,
+                        shadowColor: Colors.black.withOpacity(0.3),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            color: Colors.grey.shade300,
+                            width: 1.5,
+                          ),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,17 +87,26 @@ class RecentlyViewedRow extends StatelessWidget {
                                     product.imageUrls[0],
                                     fit: BoxFit.cover,
                                     height: imageHeight,
-                                    width: screenWidth / 2,
+                                    width: cardWidth,
                                     loadingBuilder:
                                         (context, child, loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      }
+                                      return Container(
+                                        height: imageHeight,
+                                        width: cardWidth,
+                                        color: Colors.grey.shade200,
+                                        child: const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
                                       );
                                     },
                                     errorBuilder:
                                         (context, error, stackTrace) =>
                                             Container(
+                                      height: imageHeight,
+                                      width: cardWidth,
                                       color: Colors.grey.shade200,
                                       alignment: Alignment.center,
                                       child: const Icon(Icons.broken_image,
@@ -87,54 +118,50 @@ class RecentlyViewedRow extends StatelessWidget {
                                   top: 8,
                                   right: 8,
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.7),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: IconButton(
-                                      icon: const Icon(Icons.favorite_border),
-                                      color: Colors.red,
-                                      iconSize: 24,
-                                      onPressed: () {},
-                                    ),
-                                  ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withOpacity(0.8),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: FavIcon(
+                                        product: product,
+                                        userId: userId,
+                                      )),
                                 ),
                               ],
                             ),
                             // Product Details
                             Padding(
-                              padding: EdgeInsets.all(screenWidth * 0.03),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  const SizedBox(height: 8),
                                   // Product Name
                                   CustomTextWidget(
                                     text: product.name,
-                                    fontSize: screenWidth * 0.04,
+                                    fontSize: cardWidth * 0.08,
                                     fontWeight: FontWeight.bold,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                  SizedBox(height: screenWidth * 0.01),
+                                  const SizedBox(height: 4),
                                   // Product Price
                                   CustomTextWidget(
                                     text:
                                         '₹${product.price.toStringAsFixed(2)}',
-                                    fontSize: screenWidth * 0.035,
+                                    fontSize: cardWidth * 0.07,
                                     color: Colors.green,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  SizedBox(height: screenWidth * 0.01),
+                                  const SizedBox(height: 4),
                                   // Location Name
-                                  SizedBox(
-                                    width: screenWidth / 2.4,
-                                    child: CustomTextWidget(
-                                      text: product.locationName,
-                                      fontSize: screenWidth * 0.03,
-                                      color: Colors.grey,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.fade,
-                                    ),
+                                  CustomTextWidget(
+                                    text: product.locationName,
+                                    fontSize: cardWidth * 0.06,
+                                    color: Colors.grey,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ],
                               ),
@@ -142,15 +169,6 @@ class RecentlyViewedRow extends StatelessWidget {
                           ],
                         ),
                       ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProductDetailsPage(
-                                productId: product.productId),
-                          ),
-                        );
-                      },
                     );
                   },
                 ),
