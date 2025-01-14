@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/presentation/navigation/navigation_service.dart';
 
 class SideNavigationBarWidget extends StatelessWidget {
@@ -13,6 +14,7 @@ class SideNavigationBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: whiteColor,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [

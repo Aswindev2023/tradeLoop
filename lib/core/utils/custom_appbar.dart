@@ -11,6 +11,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   final Color? fontColor;
   final double? fontSize;
   final List<Widget>? actions;
+  final String? fontFamily;
 
   const CustomAppbar({
     super.key,
@@ -23,6 +24,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.fontWeight,
     this.fontColor,
     this.actions,
+    this.fontFamily,
   });
 
   @override
@@ -36,10 +38,10 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: TextStyle(
-          fontSize: fontSize ?? (kIsWeb ? 28 : 25),
-          fontWeight: fontWeight ?? FontWeight.bold,
-          color: fontColor ?? Colors.white,
-        ),
+            fontSize: fontSize ?? (kIsWeb ? 28 : 25),
+            fontWeight: fontWeight ?? FontWeight.bold,
+            color: fontColor ?? Colors.white,
+            fontFamily: fontFamily),
       ),
       actions: actions,
     );

@@ -20,13 +20,13 @@ class CustomButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: MouseRegion(
-        cursor: SystemMouseCursors.click, // Hover effect for web
+        cursor: SystemMouseCursors.click,
         child: GestureDetector(
           onTap: onTap,
           child: Container(
             width: kIsWeb
-                ? MediaQuery.of(context).size.width * 0.5 // Half width on web
-                : MediaQuery.of(context).size.width, // Full width on mobile
+                ? MediaQuery.of(context).size.width * 0.5
+                : MediaQuery.of(context).size.width,
             padding: const EdgeInsets.symmetric(
               vertical: 13.0,
               horizontal: 30.0,
@@ -42,16 +42,14 @@ class CustomButton extends StatelessWidget {
                         blurRadius: 8,
                       )
                     ]
-                  : null, // Add shadow on web for better visibility
+                  : null,
             ),
             child: Center(
               child: Text(
                 label,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: kIsWeb
-                      ? fontSize + 2
-                      : fontSize, // Slightly larger font for web
+                  fontSize: kIsWeb ? fontSize + 2 : fontSize,
                   fontWeight: FontWeight.w500,
                 ),
               ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
+import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/presentation/bloc/category_bloc/category_bloc.dart';
 import 'package:trade_loop/presentation/home/screens/category_product_page.dart';
 import 'package:trade_loop/presentation/home/screens/home_page.dart';
@@ -22,7 +24,7 @@ class _CategoryListState extends State<CategoryList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppbar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -32,13 +34,10 @@ class _CategoryListState extends State<CategoryList> {
             );
           },
         ),
-        title: const Text(
-          'Categories',
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
+        title: 'Categories',
+        fontSize: 25,
+        fontWeight: FontWeight.w400,
+        backgroundColor: appbarWhiteColor,
       ),
       body: BlocBuilder<CategoryBloc, CategoryState>(
         builder: (context, state) {

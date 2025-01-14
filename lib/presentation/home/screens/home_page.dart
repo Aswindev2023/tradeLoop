@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
+import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
 import 'package:trade_loop/presentation/home/widgets/category_row_widget.dart';
@@ -75,18 +76,14 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppbar(
         backgroundColor: appbarColor,
         centerTitle: true,
-        title: const Text(
-          'TradeLoop',
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Irish Grover',
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        title: 'TradeLoop',
+        fontColor: Colors.white,
+        fontFamily: 'Irish Grover',
+        fontSize: 30,
+        fontWeight: FontWeight.bold,
         actions: [
           if (_isSearching)
             IconButton(
