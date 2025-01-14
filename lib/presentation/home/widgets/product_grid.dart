@@ -126,7 +126,7 @@ class ProductGrid extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         color: Colors.green,
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 4),
                       // Location Name
                       CustomTextWidget(
                         text: product.locationName,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
+import 'package:trade_loop/core/utils/custom_text_widget.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -20,47 +21,41 @@ class AboutPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // App title section
-            Text(
-              "TradeLoop",
-              style: TextStyle(
-                fontSize: isSmallScreen ? 24 : 32,
-                fontWeight: FontWeight.bold,
-              ),
+            CustomTextWidget(
+              text: "TradeLoop",
+              fontSize: isSmallScreen ? 24 : 32,
+              fontWeight: FontWeight.bold,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
 
             // App description section
-            Text(
-              "TradeLoop is your trusted marketplace for second-hand items, "
-              "where you can buy and sell products easily and securely. Our "
-              "mission is to connect people looking for quality second-hand goods "
-              "with those who no longer need them, creating a sustainable loop.",
-              style: TextStyle(
-                fontSize: isSmallScreen ? 14 : 16,
-                color: Colors.grey[800],
-              ),
+            CustomTextWidget(
+              text:
+                  "TradeLoop is your trusted marketplace for second-hand items, "
+                  "where you can buy and sell products easily and securely. Our "
+                  "mission is to connect people looking for quality second-hand goods "
+                  "with those who no longer need them, creating a sustainable loop.",
+              fontSize: isSmallScreen ? 14 : 16,
+              color: Colors.grey[800],
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
 
             // Vision & Mission Section
-            Text(
-              "Our Vision & Mission",
-              style: TextStyle(
-                fontSize: isSmallScreen ? 18 : 22,
-                fontWeight: FontWeight.w600,
-              ),
+            CustomTextWidget(
+              text: "Our Vision & Mission",
+              fontSize: isSmallScreen ? 18 : 22,
+              fontWeight: FontWeight.w600,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),
-            Text(
-              "Our vision is to create a sustainable marketplace for everyone. "
-              "We aim to reduce waste and promote a circular economy where items find new homes instead of ending up as waste.",
-              style: TextStyle(
-                fontSize: isSmallScreen ? 14 : 16,
-                color: Colors.grey[800],
-              ),
+            CustomTextWidget(
+              text:
+                  "Our vision is to create a sustainable marketplace for everyone. "
+                  "We aim to reduce waste and promote a circular economy where items find new homes instead of ending up as waste.",
+              fontSize: isSmallScreen ? 14 : 16,
+              color: Colors.grey[800],
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
@@ -87,12 +82,10 @@ class AboutPage extends StatelessWidget {
             const SizedBox(height: 24),
 
             // FAQ Section
-            Text(
-              "Frequently Asked Questions",
-              style: TextStyle(
-                fontSize: isSmallScreen ? 18 : 22,
-                fontWeight: FontWeight.w600,
-              ),
+            CustomTextWidget(
+              text: "Frequently Asked Questions",
+              fontSize: isSmallScreen ? 18 : 22,
+              fontWeight: FontWeight.w600,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
@@ -112,12 +105,10 @@ class AboutPage extends StatelessWidget {
                   "Each listing has a 'Contact Seller' option. You can message the seller directly to negotiate and finalize the deal.",
             ),
             // Social media icons section
-            Text(
-              "Follow Us",
-              style: TextStyle(
-                fontSize: isSmallScreen ? 16 : 20,
-                fontWeight: FontWeight.w500,
-              ),
+            CustomTextWidget(
+              text: "Follow Us",
+              fontSize: isSmallScreen ? 16 : 20,
+              fontWeight: FontWeight.w500,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),
@@ -163,12 +154,10 @@ class ContactInfo extends StatelessWidget {
           Icon(icon, size: isSmallScreen ? 20 : 24, color: Colors.grey[600]),
           const SizedBox(width: 8),
           Expanded(
-            child: Text(
-              "$label: $value",
-              style: TextStyle(
-                fontSize: isSmallScreen ? 14 : 16,
-                color: Colors.grey[800],
-              ),
+            child: CustomTextWidget(
+              text: "$label: $value",
+              fontSize: isSmallScreen ? 14 : 16,
+              color: Colors.grey[800],
             ),
           ),
         ],
@@ -210,9 +199,9 @@ class _FAQItemState extends State<FAQItem> {
     return Column(
       children: [
         ListTile(
-          title: Text(
-            widget.question,
-            style: const TextStyle(fontWeight: FontWeight.w600),
+          title: CustomTextWidget(
+            text: widget.question,
+            fontWeight: FontWeight.w600,
           ),
           trailing: Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
           onTap: () => setState(() => _isExpanded = !_isExpanded),
@@ -220,10 +209,9 @@ class _FAQItemState extends State<FAQItem> {
         if (_isExpanded)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              widget.answer,
-              style: const TextStyle(color: Color.fromARGB(255, 93, 93, 93)),
-            ),
+            child: CustomTextWidget(
+                text: widget.answer,
+                color: const Color.fromARGB(255, 93, 93, 93)),
           ),
         const Divider(),
       ],

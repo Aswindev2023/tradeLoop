@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
+import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/wishlist_bloc/wish_list_bloc.dart';
 import 'package:trade_loop/presentation/product_Details/screens/product_details_page.dart';
@@ -33,7 +34,8 @@ class WishlistedProductsPage extends StatelessWidget {
             } else if (state is WishlistLoaded) {
               final products = state.products;
               if (products.isEmpty) {
-                return const Center(child: Text("Your wishlist is empty."));
+                return const Center(
+                    child: CustomTextWidget(text: "Your wishlist is empty."));
               }
               return ListView.separated(
                 itemCount: products.length,
@@ -53,19 +55,15 @@ class WishlistedProductsPage extends StatelessWidget {
                             : const AssetImage('images/profile-user.png')
                                 as ImageProvider,
                       ),
-                      title: Text(
-                        product.name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      title: CustomTextWidget(
+                        text: product.name,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                      subtitle: Text(
-                        '\$${product.price.toStringAsFixed(2)}',
-                        style: const TextStyle(
-                          color: Colors.green,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      subtitle: CustomTextWidget(
+                        text: '\$${product.price.toStringAsFixed(2)}',
+                        color: Colors.green,
+                        fontWeight: FontWeight.w600,
                       ),
                       trailing: IconButton(
                         icon: const Icon(Icons.favorite, color: Colors.red),
@@ -90,9 +88,10 @@ class WishlistedProductsPage extends StatelessWidget {
                 },
               );
             } else if (state is WishlistError) {
-              return Center(child: Text(state.message));
+              return Center(child: CustomTextWidget(text: state.message));
             } else {
-              return const Center(child: Text('No products found.'));
+              return const Center(
+                  child: CustomTextWidget(text: 'No products found.'));
             }
           },
         ),

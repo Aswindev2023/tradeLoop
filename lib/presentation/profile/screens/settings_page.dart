@@ -3,7 +3,7 @@ import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/presentation/profile/screens/about_page.dart';
 import 'package:trade_loop/presentation/profile/screens/terms_and_policies_page.dart';
 import 'package:trade_loop/presentation/profile/widgets/custom_tile_widget.dart';
-import 'package:trade_loop/presentation/profile/widgets/reauthentication_popup.dart';
+import 'package:trade_loop/presentation/profile/screens/reauthentication_page.dart';
 
 class SettingsPage extends StatelessWidget {
   final String userId;
