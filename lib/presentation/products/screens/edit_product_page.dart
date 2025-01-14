@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
+import 'package:trade_loop/core/utils/location_utils.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/products/model/product_model.dart';
-import 'package:trade_loop/presentation/products/screens/location_picker_page.dart';
 import 'package:trade_loop/presentation/products/widgets/category_dropdown.dart';
-import 'package:trade_loop/presentation/products/widgets/custom_textformfield.dart';
-import 'package:trade_loop/presentation/products/widgets/product_image_picker.dart';
+import 'package:trade_loop/presentation/products/widgets/product_page_sections.dart';
 import 'package:trade_loop/presentation/products/widgets/tag_dropdown_field.dart';
-import 'package:trade_loop/presentation/profile/widgets/custom_tile_widget.dart';
 
 class EditProductPage extends StatefulWidget {
   final ProductModel product;
@@ -38,40 +34,6 @@ class _EditProductPageState extends State<EditProductPage> {
     context
         .read<ProductBloc>()
         .add(InitializeProductFormWithData(widget.product));
-  }
-
-  // Location Picker
-  Future<void> _selectLocation() async {
-    final LatLng? pickedLocation = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const LocationPickerPage()),
-    );
-
-    if (pickedLocation != null) {
-      try {
-        List<Placemark> placemarks = await placemarkFromCoordinates(
-          pickedLocation.latitude,
-          pickedLocation.longitude,
-        );
-
-        final locationName = placemarks.isNotEmpty
-            ? "${placemarks.first.locality}, ${placemarks.first.administrativeArea}, ${placemarks.first.country}"
-            : "Unknown Location";
-        if (mounted) {
-          context.read<ProductBloc>().add(UpdateLocation(
-                pickedLocation: pickedLocation,
-                locationName: locationName,
-              ));
-        }
-      } catch (e) {
-        if (mounted) {
-          context.read<ProductBloc>().add(UpdateLocation(
-                pickedLocation: pickedLocation,
-                locationName: "Unknown Location",
-              ));
-        }
-      }
-    }
   }
 
   @override
@@ -115,40 +77,21 @@ class _EditProductPageState extends State<EditProductPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Image picker container
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(12.0),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey[300]!),
-                        ),
-                        child: Column(
-                          children: [
-                            const Text(
-                              "Product Images",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 8),
-                            ProductImagePicker(
-                              onImagesPicked: (images) {
-                                context
-                                    .read<ProductBloc>()
-                                    .add(UpdateImages(imagePaths: images));
-                              },
-                              initialImages: state.pickedImages,
-                            ),
-                          ],
-                        ),
+                      ProductImageSection(
+                        onImagesPicked: (images) {
+                          context
+                              .read<ProductBloc>()
+                              .add(UpdateImages(imagePaths: images));
+                        },
+                        initialImages: state.pickedImages,
                       ),
                       const SizedBox(height: 24),
-                      // Product name field
-                      CustomTextFormField(
-                        controller: _nameController,
-                        label: "Product Name",
-                        validator: (value) =>
-                            value!.isEmpty ? "Enter product name" : null,
+                      //Product Details Section
+                      ProductPageDetailsSection(
+                        nameController: _nameController,
+                        descriptionController: _descriptionController,
+                        priceController: _priceController,
+                        conditionController: _conditionController,
                       ),
 
                       const SizedBox(height: 16),
@@ -159,36 +102,6 @@ class _EditProductPageState extends State<EditProductPage> {
                               .add(UpdateCategory(selectedCategory: category!));
                         },
                         initialCategory: state.selectedCategory,
-                      ),
-                      const SizedBox(height: 16),
-                      // Description field
-                      CustomTextFormField(
-                        controller: _descriptionController,
-                        label: "Description",
-                        maxLines: 3,
-                        validator: (value) =>
-                            value!.isEmpty ? "Enter product description" : null,
-                      ),
-
-                      const SizedBox(height: 16),
-                      // Price field
-                      CustomTextFormField(
-                          controller: _priceController,
-                          label: "Price",
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter a price";
-                            }
-                            return null;
-                          }),
-
-                      const SizedBox(height: 16),
-                      // Condition field
-                      CustomTextFormField(
-                        controller: _conditionController,
-                        label: "Condition (e.g., New, Used)",
-                        validator: (value) =>
-                            value!.isEmpty ? "Specify condition" : null,
                       ),
 
                       const SizedBox(height: 16),
@@ -204,10 +117,9 @@ class _EditProductPageState extends State<EditProductPage> {
                       const SizedBox(height: 16),
 
                       // Availability switch
-                      SwitchListTile(
-                        title: const Text("Available"),
-                        value: state.isAvailable,
-                        onChanged: (value) {
+                      ProductAvailabilitySection(
+                        isAvailable: state.isAvailable,
+                        onAvailabilityChanged: (value) {
                           context
                               .read<ProductBloc>()
                               .add(UpdateAvailability(isAvailable: value));
@@ -216,47 +128,20 @@ class _EditProductPageState extends State<EditProductPage> {
                       const SizedBox(height: 16),
 
                       // Location picker
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CustomTileWidget(
-                          title: state.locationName ?? "No location selected",
-                          onTap: () async {
-                            await _selectLocation();
-                          },
-                          customFontWeight: FontWeight.w400,
-                        ),
+                      ProductLocationSection(
+                        locationName:
+                            state.locationName ?? "No location selected",
+                        onLocationSelected: () async {
+                          await selectLocation(context);
+                        },
                       ),
 
                       const SizedBox(height: 24),
                       // Save changes button
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 10, bottom: 20),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 11, 185, 17),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 12),
-                          ),
-                          onPressed: _isLoading ? null : _updateProduct,
-                          child: _isLoading
-                              ? const SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Text(
-                                  "Save Changes",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.white),
-                                ),
-                        ),
-                      ),
+                      ProductPageButtonSection(
+                          onPressed: _updateProduct,
+                          isLoading: _isLoading,
+                          title: 'Save Changes'),
                     ],
                   ),
                 ),

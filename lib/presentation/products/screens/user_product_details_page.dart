@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/custom_button.dart';
+import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/bloc/product_details_bloc/product_details_bloc.dart';
 import 'package:trade_loop/presentation/product_Details/widgets/products_details_sections.dart';
 import 'package:trade_loop/presentation/products/model/product_model.dart';
@@ -10,8 +11,10 @@ import 'package:trade_loop/presentation/products/screens/edit_product_page.dart'
 
 class UserProductDetailsPage extends StatefulWidget {
   final String productId;
+  final String userId;
 
-  const UserProductDetailsPage({super.key, required this.productId});
+  const UserProductDetailsPage(
+      {super.key, required this.productId, required this.userId});
 
   @override
   State<UserProductDetailsPage> createState() => _UserProductDetailsPageState();
@@ -31,9 +34,17 @@ class _UserProductDetailsPageState extends State<UserProductDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppbar(
+      appBar: CustomAppbar(
         title: 'Product Details',
         backgroundColor: appbarColor,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context, true);
+              context
+                  .read<ProductBloc>()
+                  .add(LoadProducts(userId: widget.userId));
+            },
+            icon: const Icon(Icons.arrow_back)),
       ),
       body: BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
         builder: (context, state) {

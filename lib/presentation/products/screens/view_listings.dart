@@ -63,7 +63,9 @@ class ViewListings extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => UserProductDetailsPage(
-                                productId: product.productId!)),
+                                  productId: product.productId!,
+                                  userId: userId!,
+                                )),
                       );
                     },
                     child: ListTile(

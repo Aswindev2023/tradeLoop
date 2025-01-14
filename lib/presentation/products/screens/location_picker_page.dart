@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart'; // For kIsWeb
+import 'package:flutter/foundation.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -15,8 +15,7 @@ class LocationPickerPage extends StatefulWidget {
 
 class _LocationPickerPageState extends State<LocationPickerPage> {
   LatLng? _selectedLocation;
-  LatLng _currentLocation =
-      const LatLng(9.931233, 76.267303); // Default location
+  LatLng _currentLocation = const LatLng(9.931233, 76.267303);
   final TextEditingController _searchController = TextEditingController();
   final MapController _mapController = MapController();
 
@@ -48,6 +47,8 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
         // ignore: deprecated_member_use
         desiredAccuracy: LocationAccuracy.high,
       );
+      print(
+          'fetched location for web is:latitude:${position.latitude}and longitude:${position.longitude} ');
       setState(() {
         _currentLocation = LatLng(position.latitude, position.longitude);
         _selectedLocation = _currentLocation;
@@ -125,9 +126,11 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
 
     try {
       List<Location> locations = await locationFromAddress(query);
+      print('searched result is:$locations');
       if (locations.isNotEmpty) {
         LatLng searchedLocation =
             LatLng(locations[0].latitude, locations[0].longitude);
+        print('searched location = $searchedLocation');
         setState(() {
           _currentLocation = searchedLocation;
           _selectedLocation = searchedLocation;
@@ -143,6 +146,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
 
   void _confirmLocation() {
     if (_selectedLocation != null) {
+      print('seleted location is:$_selectedLocation');
       Navigator.pop(context, _selectedLocation);
     } else {
       SnackbarUtils.showSnackbar(context, 'Please select a location first.');

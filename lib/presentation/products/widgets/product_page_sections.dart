@@ -8,8 +8,13 @@ import 'package:trade_loop/presentation/profile/widgets/custom_tile_widget.dart'
 //Image Section
 class ProductImageSection extends StatelessWidget {
   final Function(List<String>) onImagesPicked;
+  final List<String> initialImages;
 
-  const ProductImageSection({required this.onImagesPicked, super.key});
+  const ProductImageSection({
+    required this.onImagesPicked,
+    this.initialImages = const [],
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,10 @@ class ProductImageSection extends StatelessWidget {
           const Text("Product Images",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
-          ProductImagePicker(onImagesPicked: onImagesPicked),
+          ProductImagePicker(
+            onImagesPicked: onImagesPicked,
+            initialImages: initialImages,
+          ),
         ],
       ),
     );
@@ -119,13 +127,15 @@ class ProductLocationSection extends StatelessWidget {
   }
 }
 
-class AddPageButtonSection extends StatelessWidget {
-  final VoidCallback onSave;
+class ProductPageButtonSection extends StatelessWidget {
+  final VoidCallback onPressed;
   final bool isLoading;
+  final String title;
 
-  const AddPageButtonSection({
-    required this.onSave,
+  const ProductPageButtonSection({
+    required this.onPressed,
     required this.isLoading,
+    required this.title,
     super.key,
   });
 
@@ -139,14 +149,14 @@ class AddPageButtonSection extends StatelessWidget {
           builder: (context, constraints) {
             bool isWeb = constraints.maxWidth > 600;
             return ElevatedButton(
-                onPressed: isLoading ? null : onSave,
+                onPressed: isLoading ? null : onPressed,
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(
                     horizontal: isWeb ? 120 : 80,
                     vertical: isWeb ? 19 : 15,
                   ),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(25),
                   ),
                   backgroundColor: const Color.fromARGB(255, 11, 185, 17),
                   elevation: 8,
@@ -158,7 +168,7 @@ class AddPageButtonSection extends StatelessWidget {
                         strokeWidth: 2,
                       )
                     : CustomTextWidget(
-                        text: 'Save',
+                        text: title,
                         fontSize: isWeb ? 18 : 16,
                         fontWeight: FontWeight.bold,
                         color: whiteColor,

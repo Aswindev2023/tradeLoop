@@ -146,8 +146,11 @@ class _AddProductPageState extends State<AddProductPage> {
                   const SizedBox(height: 24),
 
                   //  buttons
-                  AddPageButtonSection(
-                      onSave: _saveProduct, isLoading: _isLoading),
+                  ProductPageButtonSection(
+                    onPressed: _saveProduct,
+                    isLoading: _isLoading,
+                    title: 'Save',
+                  ),
                 ],
               ),
             ),
