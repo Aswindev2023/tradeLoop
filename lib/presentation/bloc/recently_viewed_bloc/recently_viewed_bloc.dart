@@ -13,11 +13,14 @@ class RecentlyViewedBloc
   RecentlyViewedBloc() : super(RecentlyViewedInitial()) {
     on<AddRecentlyViewed>((event, emit) async {
       try {
+        print(' add recently viewed bloc is called');
         await _service.addRecentlyViewedProduct(event.userId, event.productId);
+        print(' the addRecentlyViewedProduct is called sucessfully ');
         emit(RecentlyViewedAdded());
       } catch (e) {
         emit(const RecentlyViewedError(
             'Failed to add recently viewed products'));
+        print('Failed to add recently viewed products,due to ${e.toString()}');
       }
     });
 

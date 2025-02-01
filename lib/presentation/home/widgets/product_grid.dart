@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
-import 'package:trade_loop/presentation/bloc/recently_viewed_bloc/recently_viewed_bloc.dart';
 import 'package:trade_loop/presentation/home/model/home_page_product_model.dart';
 import 'package:trade_loop/presentation/home/widgets/fav_icon.dart';
 import 'package:trade_loop/presentation/product_Details/screens/product_details_page.dart';
@@ -42,11 +40,7 @@ class ProductGrid extends StatelessWidget {
                 builder: (context) =>
                     ProductDetailsPage(productId: product.productId),
               ),
-            ).then((_) {
-              context
-                  .read<RecentlyViewedBloc>()
-                  .add(AddRecentlyViewed(product.productId, userId));
-            });
+            );
           },
           child: Card(
             elevation: 4,

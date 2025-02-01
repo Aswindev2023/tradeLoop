@@ -139,7 +139,7 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    DateFormat('HH:mm')
+                                    DateFormat('hh:mm a')
                                         .format(currentMessageDate),
                                     style: TextStyle(
                                       fontSize: 12,
@@ -189,6 +189,8 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
               children: [
                 Expanded(
                   child: TextField(
+                    autocorrect: true,
+                    maxLines: null,
                     controller: messageController,
                     decoration: InputDecoration(
                       hintText: "Type a message...",

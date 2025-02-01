@@ -170,20 +170,24 @@ class _AddProductPageState extends State<AddProductPage> {
         });
         if (state.selectedCategory == null) {
           SnackbarUtils.showSnackbar(context, 'Please select a category');
+          _resetLoadingState();
           return;
         }
         print('this is the selected category id:${state.selectedCategory!.id}');
         if (state.pickedLocation == null) {
           SnackbarUtils.showSnackbar(context, 'Please select a location');
+          _resetLoadingState();
           return;
         }
         if (state.pickedImages.isEmpty) {
           SnackbarUtils.showSnackbar(
               context, 'Please select at least one image');
+          _resetLoadingState();
           return;
         }
         if (!FormValidators.isValidPrice(_priceController.text)) {
           SnackbarUtils.showSnackbar(context, 'Please enter valid price');
+          _resetLoadingState();
           return;
         }
 
@@ -208,5 +212,13 @@ class _AddProductPageState extends State<AddProductPage> {
         SnackbarUtils.showSnackbar(context, 'Please fill all fields');
       }
     }
+  }
+
+  void _resetLoadingState() {
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 }

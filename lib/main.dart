@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
         title: 'TradeLoop',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 30, 0, 255)),
+              seedColor: const Color.fromARGB(255, 21, 0, 255)),
           useMaterial3: true,
         ),
         home: const AuthStateHandler(

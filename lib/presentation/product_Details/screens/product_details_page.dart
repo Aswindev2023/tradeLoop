@@ -6,6 +6,7 @@ import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/presentation/bloc/product_details_bloc/product_details_bloc.dart';
 import 'package:trade_loop/presentation/bloc/recently_viewed_bloc/recently_viewed_bloc.dart';
+import 'package:trade_loop/presentation/home/screens/home_page.dart';
 import 'package:trade_loop/presentation/home/widgets/recently_viewed_row.dart';
 import 'package:trade_loop/presentation/product_Details/widgets/products_details_sections.dart';
 
@@ -21,9 +22,23 @@ class ProductDetailsPage extends StatelessWidget {
     context.read<RecentlyViewedBloc>().add(FetchRecentlyViewed(userId));
 
     return Scaffold(
-      appBar: const CustomAppbar(
+      appBar: CustomAppbar(
         title: 'Product Details',
         backgroundColor: appbarColor,
+        leading: IconButton(
+            onPressed: () {
+              context
+                  .read<RecentlyViewedBloc>()
+                  .add(AddRecentlyViewed(productId, userId));
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomePage(),
+                ),
+                (route) => false,
+              );
+            },
+            icon: const Icon(Icons.arrow_back)),
       ),
       body: BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
         builder: (context, state) {

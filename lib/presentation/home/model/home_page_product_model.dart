@@ -27,6 +27,23 @@ class HomePageProductModel {
     required this.isBanned,
   });
 
+  factory HomePageProductModel.empty() {
+    return HomePageProductModel(
+      productId: '',
+      name: '',
+      description: '',
+      price: 0,
+      categoryId: '',
+      condition: '',
+      imageUrls: [],
+      isAvailable: false,
+      isBanned: false,
+      locationName: '',
+      sellerId: '',
+      tags: [],
+    );
+  }
+
   factory HomePageProductModel.fromFirestore(Map<String, dynamic> data) {
     double parsedPrice = 0.0;
     if (data['price'] is String) {
