@@ -49,7 +49,7 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
                   return const Center(
                     child: Text(
                       "No messages yet. Say hello!",
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                      style: TextStyle(fontSize: 16, color: grey),
                     ),
                   );
                 }
@@ -89,7 +89,7 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey[600],
+                                color: grey600,
                               ),
                             ),
                           ),
@@ -111,11 +111,10 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
                                 context, 'Message deleted');
                           },
                           background: Container(
-                            color: Colors.red,
+                            color: red,
                             alignment: Alignment.centerRight,
                             padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child:
-                                const Icon(Icons.delete, color: Colors.white),
+                            child: const Icon(Icons.delete, color: whiteColor),
                           ),
                           child: Align(
                             alignment: isSentByUser
@@ -125,9 +124,7 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
                               margin: const EdgeInsets.symmetric(vertical: 5),
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                color: isSentByUser
-                                    ? Colors.blue[100]
-                                    : Colors.grey[200],
+                                color: isSentByUser ? blue100 : grey200,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
@@ -143,7 +140,7 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
                                         .format(currentMessageDate),
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Colors.grey[600],
+                                      color: grey600,
                                     ),
                                   ),
                                 ],
@@ -159,7 +156,7 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
                 return const Center(
                   child: Text(
                     "Failed to load messages. Please try again.",
-                    style: TextStyle(fontSize: 16, color: Colors.red),
+                    style: TextStyle(fontSize: 16, color: red),
                   ),
                 );
               }
@@ -176,7 +173,7 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
             child: CustomTextWidget(
               text: "This user is banned. You cannot send messages.",
               fontSize: 16.0,
-              color: Colors.red,
+              color: red,
               fontWeight: FontWeight.bold,
               textAlign: TextAlign.center,
             ),
@@ -184,7 +181,7 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
         else
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            color: Colors.grey[100],
+            color: grey100,
             child: Row(
               children: [
                 Expanded(
@@ -199,7 +196,7 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: const Color.fromARGB(255, 207, 206, 206),
+                      fillColor: messageInputCol,
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 10,
@@ -212,7 +209,7 @@ class _ChatMessagesSectionState extends State<ChatMessagesSection> {
                   radius: 25,
                   backgroundColor: appbarColor,
                   child: IconButton(
-                    icon: const Icon(Icons.send, color: Colors.white),
+                    icon: const Icon(Icons.send, color: whiteColor),
                     onPressed: () {
                       final value = messageController.text.trim();
                       if (value.isNotEmpty) {

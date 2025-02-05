@@ -11,7 +11,6 @@ class SellerService {
   // Fetch products by seller ID
   Future<List<HomePageProductModel>> getProductsByUserId(String userId) async {
     try {
-      print('Fetching products for userId: $userId');
       QuerySnapshot querySnapshot =
           await _productCollection.where('sellerId', isEqualTo: userId).get();
 
@@ -20,7 +19,6 @@ class SellerService {
             doc.data() as Map<String, dynamic>);
       }).toList();
     } catch (e) {
-      print('Error fetching products by user ID: $e');
       return [];
     }
   }
@@ -28,14 +26,12 @@ class SellerService {
   // Fetch user details by user ID
   Future<UserModel?> getUserById(String uid) async {
     try {
-      print('Fetching user details for uid: $uid');
       final doc = await _usersCollection.doc(uid).get();
       if (doc.exists) {
         return UserModel.fromJson(doc.data() as Map<String, dynamic>);
       }
       return null;
     } catch (e) {
-      print('Error fetching user details: $e');
       return null;
     }
   }

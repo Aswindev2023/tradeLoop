@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/wishlist_bloc/wish_list_bloc.dart';
 import 'package:trade_loop/presentation/home/model/home_page_product_model.dart';
@@ -50,7 +51,7 @@ class _FavIconState extends State<FavIcon> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.5),
+        color: whiteColor.withOpacity(0.5),
         shape: BoxShape.circle,
       ),
       child: ValueListenableBuilder<bool>(
@@ -61,7 +62,7 @@ class _FavIconState extends State<FavIcon> {
               duration: const Duration(milliseconds: 200),
               child: Icon(
                 value ? Icons.favorite : Icons.favorite_border,
-                color: value ? Colors.red : Colors.black,
+                color: value ? red : blackColor,
                 key: ValueKey(value),
               ),
             ),

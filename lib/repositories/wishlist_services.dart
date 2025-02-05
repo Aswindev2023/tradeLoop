@@ -22,16 +22,13 @@ class WishlistServices {
   //fetching product from wishlist
 
   Future<List<HomePageProductModel>> fetchWishlist(String userId) async {
-    print('Fetching wishlist for user: $userId');
     final doc = await _firestore.collection('wishlist').doc(userId).get();
     if (!doc.exists || doc.data() == null) {
-      print('No wishlist found for user: $userId');
       return [];
     }
 
     final List<String> productIds =
         List<String>.from(doc.data()?['productIds'] ?? []);
-    print('Fetched product IDs: $productIds');
 
     if (productIds.isEmpty) return [];
 

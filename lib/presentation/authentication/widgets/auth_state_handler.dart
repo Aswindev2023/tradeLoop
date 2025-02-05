@@ -27,12 +27,10 @@ class _AuthStateHandlerState extends State<AuthStateHandler> {
   @override
   void initState() {
     super.initState();
-    print('auth state handler initialized');
 
     // Initialize the listener and store the subscription
     _authSubscription =
         FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      print('auth state handler called listener for auth state changes');
       if (user != null && mounted) {
         context.read<AuthBlocBloc>().add(CheckAuthStatus());
       }
@@ -53,7 +51,6 @@ class _AuthStateHandlerState extends State<AuthStateHandler> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBlocBloc, AuthBlocState>(
       builder: (context, state) {
-        print('state in auth state handler is $state');
         if (state is AuthLoading) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),

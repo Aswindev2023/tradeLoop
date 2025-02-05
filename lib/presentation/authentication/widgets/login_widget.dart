@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/presentation/authentication/widgets/google_signin_button.dart';
@@ -81,7 +82,7 @@ class LoginFormState extends State<LoginForm> {
           text: "or",
           fontSize: screenWidth < 400 ? 16.0 : 22.0,
           fontWeight: FontWeight.w500,
-          color: const Color(0xFF273671),
+          color: darkBlueCo,
         ),
         const SizedBox(height: 30.0),
         _buildGoogleSignInButton(),
@@ -169,11 +170,10 @@ class LoginFormState extends State<LoginForm> {
     return GestureDetector(
       onTap: widget.onForgotPasswordTap,
       child: CustomTextWidget(
-        text: "Forgot Password?",
-        fontSize: screenWidth < 400 ? 16.0 : 18.0,
-        fontWeight: FontWeight.w500,
-        color: const Color(0xFF8c8e98),
-      ),
+          text: "Forgot Password?",
+          fontSize: screenWidth < 400 ? 16.0 : 18.0,
+          fontWeight: FontWeight.w500,
+          color: greyButtonCol),
     );
   }
 
@@ -194,7 +194,7 @@ class LoginFormState extends State<LoginForm> {
           text: "Don't have an account?",
           fontSize: screenWidth < 400 ? 16.0 : 18.0,
           fontWeight: FontWeight.w500,
-          color: const Color(0xFF8c8e98),
+          color: greyButtonCol,
         ),
         const SizedBox(width: 5.0),
         GestureDetector(
@@ -203,7 +203,7 @@ class LoginFormState extends State<LoginForm> {
             text: "SignUp",
             fontSize: screenWidth < 400 ? 16.0 : 20.0,
             fontWeight: FontWeight.w500,
-            color: const Color(0xFF273671),
+            color: darkBlueCo,
           ),
         ),
       ],

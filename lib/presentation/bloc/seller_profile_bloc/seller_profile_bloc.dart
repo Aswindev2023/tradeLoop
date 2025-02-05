@@ -19,7 +19,6 @@ class SellerProfileBloc extends Bloc<SellerProfileEvent, SellerProfileState> {
         emit(SellerProfileLoaded(seller: user!, products: products));
       } catch (e) {
         emit(const SellerProfileError('Failed to load Seller Profile'));
-        print('failed to load seller profile:$e');
       }
     });
   }

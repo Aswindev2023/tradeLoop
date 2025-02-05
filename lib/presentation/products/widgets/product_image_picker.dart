@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 
 class ProductImagePicker extends StatefulWidget {
   final Function(List<String>) onImagesPicked;
@@ -51,9 +52,9 @@ class _ProductImagePickerState extends State<ProductImagePicker> {
         width: double.infinity,
         height: 200,
         decoration: BoxDecoration(
-          color: Colors.grey[200],
+          color: grey200,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey[300]!),
+          border: Border.all(color: grey[300]!),
         ),
         child: _pickedImages.isNotEmpty
             ? PageView.builder(
@@ -77,7 +78,7 @@ class _ProductImagePickerState extends State<ProductImagePicker> {
                                 const Center(
                               child: Icon(
                                 Icons.broken_image,
-                                color: Colors.grey,
+                                color: grey,
                                 size: 50,
                               ),
                             ),
@@ -96,13 +97,13 @@ class _ProductImagePickerState extends State<ProductImagePicker> {
                   children: [
                     Icon(
                       Icons.add_photo_alternate,
-                      color: Colors.grey,
+                      color: grey,
                       size: 50,
                     ),
                     SizedBox(height: 8),
                     Text(
                       "Tap to pick images",
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: grey),
                     ),
                   ],
                 ),

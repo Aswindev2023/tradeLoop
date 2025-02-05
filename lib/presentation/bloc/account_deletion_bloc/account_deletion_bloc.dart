@@ -19,8 +19,6 @@ class AccountDeletionBloc
         emit(DeleteAccountSuccess());
       } catch (e) {
         emit(DeleteAccountFailure(e.toString()));
-        print(
-            'this is the error when trying to delete account:${e.toString()}');
       }
     });
 
@@ -32,8 +30,6 @@ class AccountDeletionBloc
         emit(ReauthenticationSuccess());
       } catch (e) {
         emit(DeleteAccountFailure('Reauthentication failed: ${e.toString()}'));
-        print(
-            'reauthentication with email and password failed:${e.toString()}');
       }
     });
     on<ReauthenticateWithGoogle>((event, emit) async {
@@ -44,7 +40,6 @@ class AccountDeletionBloc
       } catch (e) {
         emit(ReauthenticationFailure(
             'Reauthentication failed: ${e.toString()}'));
-        print('reauthentication with google sign in failed:${e.toString()}');
       }
     });
   }

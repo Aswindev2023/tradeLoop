@@ -1,10 +1,15 @@
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:trade_loop/core/constants/colors.dart';
+import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
+import 'package:trade_loop/presentation/bloc/location_cubit/location_cubit.dart';
 
 class LocationPickerPage extends StatefulWidget {
   const LocationPickerPage({super.key});
@@ -14,14 +19,13 @@ class LocationPickerPage extends StatefulWidget {
 }
 
 class _LocationPickerPageState extends State<LocationPickerPage> {
-  LatLng? _selectedLocation;
-  LatLng _currentLocation = const LatLng(9.931233, 76.267303);
   final TextEditingController _searchController = TextEditingController();
   final MapController _mapController = MapController();
 
   @override
   void initState() {
     super.initState();
+    context.read<LocationCubit>().initializeLocation();
     _initializeLocation();
   }
 
@@ -33,10 +37,8 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
 
   Future<void> _initializeLocation() async {
     if (kIsWeb) {
-      // Web-specific geolocation handling
       await _fetchLocationForWeb();
     } else {
-      // Mobile-specific geolocation handling
       await _fetchUserLocation();
     }
   }
@@ -44,77 +46,50 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
   Future<void> _fetchLocationForWeb() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
-        // ignore: deprecated_member_use
         desiredAccuracy: LocationAccuracy.high,
       );
-      print(
-          'fetched location for web is:latitude:${position.latitude}and longitude:${position.longitude} ');
-      setState(() {
-        _currentLocation = LatLng(position.latitude, position.longitude);
-        _selectedLocation = _currentLocation;
-      });
-      _mapController.move(_currentLocation, 10.0);
+      context
+          .read<LocationCubit>()
+          .updateCurrentLocation(LatLng(position.latitude, position.longitude));
+      _mapController.move(LatLng(position.latitude, position.longitude), 10.0);
     } catch (e) {
-      if (mounted) {
-        SnackbarUtils.showSnackbar(
-          context,
-          'Unable to fetch location: $e',
-        );
-      }
+      SnackbarUtils.showSnackbar(context, 'Unable to fetch location: $e');
     }
   }
 
   Future<void> _fetchUserLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Check if location services are enabled
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      if (mounted) {
-        SnackbarUtils.showSnackbar(
-            context, 'Location services are disabled. Please enable them.');
-      }
+      SnackbarUtils.showSnackbar(
+          context, 'Location services are disabled. Please enable them.');
       return;
     }
 
-    // Request location permission
-    permission = await Geolocator.checkPermission();
+    LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        if (mounted) {
-          SnackbarUtils.showSnackbar(context, 'Location permission denied.');
-        }
+        SnackbarUtils.showSnackbar(context, 'Location permission denied.');
         return;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      if (mounted) {
-        SnackbarUtils.showSnackbar(context,
-            'Location permissions are permanently denied. Please enable them in settings.');
-      }
+      SnackbarUtils.showSnackbar(context,
+          'Location permissions are permanently denied. Please enable them in settings.');
       return;
     }
 
     try {
       Position position = await Geolocator.getCurrentPosition(
-        // ignore: deprecated_member_use
         desiredAccuracy: LocationAccuracy.high,
       );
-
-      if (mounted) {
-        setState(() {
-          _currentLocation = LatLng(position.latitude, position.longitude);
-          _selectedLocation = _currentLocation;
-        });
-        _mapController.move(_currentLocation, 10.0);
-      }
+      context
+          .read<LocationCubit>()
+          .updateCurrentLocation(LatLng(position.latitude, position.longitude));
+      _mapController.move(LatLng(position.latitude, position.longitude), 10.0);
     } catch (e) {
-      if (mounted) {
-        SnackbarUtils.showSnackbar(context, 'Failed to fetch location: $e');
-      }
+      SnackbarUtils.showSnackbar(context, 'Failed to fetch location: $e');
     }
   }
 
@@ -126,15 +101,10 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
 
     try {
       List<Location> locations = await locationFromAddress(query);
-      print('searched result is:$locations');
       if (locations.isNotEmpty) {
         LatLng searchedLocation =
             LatLng(locations[0].latitude, locations[0].longitude);
-        print('searched location = $searchedLocation');
-        setState(() {
-          _currentLocation = searchedLocation;
-          _selectedLocation = searchedLocation;
-        });
+        context.read<LocationCubit>().updateCurrentLocation(searchedLocation);
         _mapController.move(searchedLocation, 14.0);
       } else {
         SnackbarUtils.showSnackbar(context, 'No results found for "$query".');
@@ -145,9 +115,9 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
   }
 
   void _confirmLocation() {
-    if (_selectedLocation != null) {
-      print('seleted location is:$_selectedLocation');
-      Navigator.pop(context, _selectedLocation);
+    final state = context.read<LocationCubit>().state;
+    if (state is LocationLoaded && state.selectedLocation != null) {
+      Navigator.pop(context, state.selectedLocation);
     } else {
       SnackbarUtils.showSnackbar(context, 'Please select a location first.');
     }
@@ -185,50 +155,58 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: FlutterMap(
-              mapController: _mapController,
-              options: MapOptions(
-                initialCenter: _currentLocation,
-                initialZoom: 10.0,
-                onTap: (tapPosition, point) {
-                  setState(() {
-                    _selectedLocation = point;
-                  });
-                },
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                  subdomains: const ['a', 'b', 'c'],
-                ),
-                if (_selectedLocation != null)
-                  MarkerLayer(
-                    markers: [
-                      Marker(
-                        point: _selectedLocation!,
-                        child: const Icon(
-                          Icons.location_pin,
-                          color: Colors.red,
-                          size: 40,
-                        ),
-                      ),
-                    ],
+      body: BlocBuilder<LocationCubit, LocationState>(
+        builder: (context, state) {
+          LatLng center = (state is LocationLoaded)
+              ? state.currentLocation
+              : const LatLng(9.931233, 76.267303);
+          return Column(
+            children: [
+              Expanded(
+                child: FlutterMap(
+                  mapController: _mapController,
+                  options: MapOptions(
+                    initialCenter: center,
+                    initialZoom: 10.0,
+                    onTap: (tapPosition, point) {
+                      context.read<LocationCubit>().setSelectedLocation(point);
+                    },
                   ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              _selectedLocation != null
-                  ? "Selected Location: (${_selectedLocation!.latitude.toStringAsFixed(5)}, ${_selectedLocation!.longitude.toStringAsFixed(5)})"
-                  : "Tap on the map to pick a location.",
-            ),
-          ),
-        ],
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                          "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                      subdomains: const ['a', 'b', 'c'],
+                    ),
+                    if (state is LocationLoaded &&
+                        state.selectedLocation != null)
+                      MarkerLayer(
+                        markers: [
+                          Marker(
+                            point: state.selectedLocation!,
+                            child: const Icon(
+                              Icons.location_pin,
+                              color: red,
+                              size: 40,
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: CustomTextWidget(
+                  text: (state is LocationLoaded &&
+                          state.selectedLocation != null)
+                      ? "Selected Location: (${state.selectedLocation!.latitude.toStringAsFixed(5)}, ${state.selectedLocation!.longitude.toStringAsFixed(5)})"
+                      : "Tap on the map to pick a location.",
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

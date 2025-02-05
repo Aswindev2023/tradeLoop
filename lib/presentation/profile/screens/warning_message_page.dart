@@ -29,7 +29,7 @@ class WarningMessagesPage extends StatelessWidget {
             },
             icon: const Icon(
               Icons.arrow_back,
-              color: Colors.black,
+              color: blackColor,
             )),
       ),
       body: BlocProvider(
@@ -60,7 +60,7 @@ class WarningMessagesPage extends StatelessWidget {
                           const SizedBox(height: 8),
                           CustomTextWidget(
                               text: formatDate(warning.timestamp),
-                              color: Colors.grey,
+                              color: grey,
                               fontSize: 12),
                         ],
                       ),
@@ -68,7 +68,7 @@ class WarningMessagesPage extends StatelessWidget {
                     );
                   },
                   separatorBuilder: (context, index) => Divider(
-                    color: Colors.grey[300],
+                    color: grey[300],
                     thickness: 1,
                     height: 16,
                   ),

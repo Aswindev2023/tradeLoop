@@ -15,14 +15,13 @@ class CategoryDropdown extends StatefulWidget {
 }
 
 class _CategoryDropdownState extends State<CategoryDropdown> {
-  String? _selectedCategoryId; // Store the category id as the selected value
+  String? _selectedCategoryId;
 
   @override
   void initState() {
     super.initState();
     _selectedCategoryId = widget.initialCategory?.id;
 
-    // Load categories when the widget is initialized
     context.read<CategoryBloc>().add(LoadCategoriesEvent());
   }
 
@@ -38,7 +37,6 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
           return Padding(
             padding: const EdgeInsets.only(left: 10),
             child: DropdownButton<String?>(
-              // Use category ID as value
               elevation: 8,
               value: _selectedCategoryId,
               hint: const Text("Select a category"),
@@ -55,8 +53,6 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
                 final selectedCategory = state.categories.firstWhere(
                     (category) => category!.id == selectedCategoryId);
                 widget.onCategorySelected(selectedCategory);
-
-                print('Selected category ID: $selectedCategoryId');
               },
             ),
           );

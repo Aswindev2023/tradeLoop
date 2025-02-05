@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/presentation/home/model/home_page_product_model.dart';
 import 'package:trade_loop/presentation/home/widgets/fav_icon.dart';
@@ -44,11 +45,11 @@ class ProductGrid extends StatelessWidget {
           },
           child: Card(
             elevation: 4,
-            shadowColor: Colors.black.withOpacity(0.3),
+            shadowColor: blackColor.withOpacity(0.3),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
               side: BorderSide(
-                color: Colors.grey.shade300,
+                color: grey.shade300,
                 width: 1.5,
               ),
             ),
@@ -73,7 +74,7 @@ class ProductGrid extends StatelessWidget {
                           return Container(
                             height: imageHeight,
                             width: double.infinity,
-                            color: Colors.grey.shade200,
+                            color: grey.shade200,
                             child: const Center(
                               child: CircularProgressIndicator(),
                             ),
@@ -82,7 +83,7 @@ class ProductGrid extends StatelessWidget {
                         errorBuilder: (context, error, stackTrace) => Container(
                           height: imageHeight,
                           width: double.infinity,
-                          color: Colors.grey.shade200,
+                          color: grey.shade200,
                           alignment: Alignment.center,
                           child: const Icon(Icons.broken_image, size: 40),
                         ),
@@ -118,14 +119,14 @@ class ProductGrid extends StatelessWidget {
                         text: '₹${product.price.toStringAsFixed(2)}',
                         fontSize: cardWidth * 0.07,
                         fontWeight: FontWeight.w600,
-                        color: Colors.green,
+                        color: green,
                       ),
                       const SizedBox(height: 4),
                       // Location Name
                       CustomTextWidget(
                         text: product.locationName,
                         fontSize: cardWidth * 0.06,
-                        color: Colors.grey,
+                        color: grey,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
+import 'package:trade_loop/core/utils/custom_appbar.dart';
+import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
 import 'package:trade_loop/presentation/home/widgets/product_grid.dart';
 
@@ -20,8 +23,9 @@ class CategoryProductsPage extends StatelessWidget {
     context.read<HomeBloc>().add(LoadCategoryProductsEvent(userId, categoryId));
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(categoryName),
+      appBar: CustomAppbar(
+        title: categoryName,
+        backgroundColor: whiteColor,
       ),
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
@@ -29,7 +33,8 @@ class CategoryProductsPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state is HomePageLoaded) {
             if (state.products.isEmpty) {
-              return const Center(child: Text('No Products Available'));
+              return const Center(
+                  child: CustomTextWidget(text: 'No Products Available'));
             } else {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -37,9 +42,10 @@ class CategoryProductsPage extends StatelessWidget {
               );
             }
           } else if (state is HomePageError) {
-            return Center(child: Text(state.message));
+            return Center(child: CustomTextWidget(text: state.message));
           } else {
-            return const Center(child: Text('No Products Available'));
+            return const Center(
+                child: CustomTextWidget(text: 'No Products Available'));
           }
         },
       ),

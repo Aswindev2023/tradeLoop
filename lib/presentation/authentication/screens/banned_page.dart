@@ -24,7 +24,7 @@ class BannedPage extends StatelessWidget {
               (route) => false,
             );
           },
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: blackColor),
         ),
       ),
       body: SingleChildScrollView(
@@ -38,7 +38,7 @@ class BannedPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: isSmallScreen ? 24 : 32,
                 fontWeight: FontWeight.bold,
-                color: Colors.redAccent,
+                color: redAccent,
               ),
               textAlign: TextAlign.center,
             ),
@@ -50,7 +50,7 @@ class BannedPage extends StatelessWidget {
               "This action ensures a safe and respectful environment for all our users.",
               style: TextStyle(
                 fontSize: isSmallScreen ? 14 : 16,
-                color: Colors.grey[800],
+                color: grey800,
               ),
               textAlign: TextAlign.center,
             ),
@@ -71,7 +71,7 @@ class BannedPage extends StatelessWidget {
               "Provide your account details and any additional information to help us review your case.",
               style: TextStyle(
                 fontSize: isSmallScreen ? 14 : 16,
-                color: Colors.grey[800],
+                color: grey800,
               ),
               textAlign: TextAlign.center,
             ),
@@ -84,12 +84,7 @@ class BannedPage extends StatelessWidget {
               value: "support@tradeloop.com",
               isSmallScreen: isSmallScreen,
             ),
-            ContactInfo(
-              icon: Icons.phone,
-              label: "Phone",
-              value: "+91 6478329802",
-              isSmallScreen: isSmallScreen,
-            ),
+
             ContactInfo(
               icon: Icons.location_on,
               label: "Location",
@@ -112,12 +107,11 @@ class BannedPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SocialMediaIcon(
-                    icon: FontAwesomeIcons.facebook, color: Colors.blue),
+                    icon: FontAwesomeIcons.facebook, color: blueColor),
                 SocialMediaIcon(
-                    icon: FontAwesomeIcons.xTwitter,
-                    color: Color.fromARGB(255, 13, 13, 13)),
+                    icon: FontAwesomeIcons.xTwitter, color: twitterBlack),
                 SocialMediaIcon(
-                    icon: FontAwesomeIcons.instagram, color: Colors.pink),
+                    icon: FontAwesomeIcons.instagram, color: instaPink),
               ],
             ),
           ],

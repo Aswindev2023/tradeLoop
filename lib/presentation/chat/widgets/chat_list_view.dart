@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 
 import 'package:trade_loop/presentation/authentication/models/user_model.dart';
 import 'package:trade_loop/presentation/chat/models/chat_model.dart';
@@ -22,7 +23,7 @@ class ChatListView extends StatelessWidget {
       return const Center(
         child: Text(
           "You don't have any messages yet.",
-          style: TextStyle(fontSize: 16, color: Colors.grey),
+          style: TextStyle(fontSize: 16, color: grey),
         ),
       );
     }

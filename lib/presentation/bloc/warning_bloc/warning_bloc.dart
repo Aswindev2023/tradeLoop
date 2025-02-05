@@ -13,7 +13,7 @@ class WarningBloc extends Bloc<WarningEvent, WarningState> {
       emit(WarningLoading());
       try {
         final warnings = await warningServices.fetchWarnings(event.userId);
-        print('loaded warnings are: $warnings');
+
         emit(WarningLoaded(warnings: warnings));
       } catch (e) {
         emit(WarningError(message: e.toString()));

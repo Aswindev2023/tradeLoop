@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 
 class GoogleSignInButton extends StatelessWidget {
   final VoidCallback onGoogleSignIn;
@@ -16,10 +17,10 @@ class GoogleSignInButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
-          color: Colors.white,
+          color: whiteColor,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
+              color: grey.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 5,
               offset: const Offset(0, 3),
@@ -37,7 +38,7 @@ class GoogleSignInButton extends StatelessWidget {
             const Text(
               'Sign in with Google',
               style: TextStyle(
-                color: Colors.black,
+                color: blackColor,
                 fontSize: 18.0,
               ),
             ),

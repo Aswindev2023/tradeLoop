@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 
@@ -37,7 +38,7 @@ class AboutPage extends StatelessWidget {
                   "mission is to connect people looking for quality second-hand goods "
                   "with those who no longer need them, creating a sustainable loop.",
               fontSize: isSmallScreen ? 14 : 16,
-              color: Colors.grey[800],
+              color: grey[800],
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
@@ -55,7 +56,7 @@ class AboutPage extends StatelessWidget {
                   "Our vision is to create a sustainable marketplace for everyone. "
                   "We aim to reduce waste and promote a circular economy where items find new homes instead of ending up as waste.",
               fontSize: isSmallScreen ? 14 : 16,
-              color: Colors.grey[800],
+              color: grey800,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
@@ -65,12 +66,6 @@ class AboutPage extends StatelessWidget {
               icon: Icons.email,
               label: "Email",
               value: "support@tradeloop.com",
-              isSmallScreen: isSmallScreen,
-            ),
-            ContactInfo(
-              icon: Icons.phone,
-              label: "Phone",
-              value: "+91 6478329802",
               isSmallScreen: isSmallScreen,
             ),
             ContactInfo(
@@ -116,12 +111,11 @@ class AboutPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SocialMediaIcon(
-                    icon: FontAwesomeIcons.facebook, color: Colors.blue),
+                    icon: FontAwesomeIcons.facebook, color: blueColor),
                 SocialMediaIcon(
-                    icon: FontAwesomeIcons.xTwitter,
-                    color: Color.fromARGB(255, 13, 13, 13)),
+                    icon: FontAwesomeIcons.xTwitter, color: twitterBlack),
                 SocialMediaIcon(
-                    icon: FontAwesomeIcons.instagram, color: Colors.pink),
+                    icon: FontAwesomeIcons.instagram, color: instaPink),
               ],
             ),
           ],
@@ -151,13 +145,13 @@ class ContactInfo extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Icon(icon, size: isSmallScreen ? 20 : 24, color: Colors.grey[600]),
+          Icon(icon, size: isSmallScreen ? 20 : 24, color: grey600),
           const SizedBox(width: 8),
           Expanded(
             child: CustomTextWidget(
               text: "$label: $value",
               fontSize: isSmallScreen ? 14 : 16,
-              color: Colors.grey[800],
+              color: grey800,
             ),
           ),
         ],
@@ -209,9 +203,7 @@ class _FAQItemState extends State<FAQItem> {
         if (_isExpanded)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: CustomTextWidget(
-                text: widget.answer,
-                color: const Color.fromARGB(255, 93, 93, 93)),
+            child: CustomTextWidget(text: widget.answer, color: faqTextColor),
           ),
         const Divider(),
       ],

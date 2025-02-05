@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/custom_button.dart';
+import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/presentation/bloc/seller_profile_bloc/seller_profile_bloc.dart';
 import 'package:trade_loop/presentation/chat/screens/chat_page.dart';
 import 'package:trade_loop/presentation/report/screen/report_type_page.dart';
@@ -63,14 +64,12 @@ class _SellerProfilePageState extends State<SellerProfilePage> {
         ],
       ),
       body: Container(
-        color: Colors.grey.shade200,
+        color: grey.shade200,
         child: BlocBuilder<SellerProfileBloc, SellerProfileState>(
           builder: (context, state) {
             if (state is SellerProfileLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is SellerProfileLoaded) {
-              print(
-                  'current user id is:${widget.currentUser} && seller id is ${widget.sellerId}');
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,9 +131,10 @@ class _SellerProfilePageState extends State<SellerProfilePage> {
                 ),
               );
             } else if (state is SellerProfileError) {
-              return Center(child: Text(state.message));
+              return Center(child: CustomTextWidget(text: state.message));
             }
-            return const Center(child: Text('No seller found.'));
+            return const Center(
+                child: CustomTextWidget(text: 'No seller found.'));
           },
         ),
       ),

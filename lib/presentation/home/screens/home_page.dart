@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
+import 'package:trade_loop/core/utils/custom_text_widget.dart';
+import 'package:trade_loop/core/utils/filter_utils.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
+import 'package:trade_loop/presentation/bloc/boolean_cubit/bool_cubit.dart';
 import 'package:trade_loop/presentation/home/widgets/category_row_widget.dart';
-import 'package:trade_loop/presentation/home/widgets/filter_bottom_sheet.dart';
 import 'package:trade_loop/presentation/home/widgets/product_grid.dart';
 import 'package:trade_loop/presentation/navigation/bottom_naviagation_widget.dart';
 import 'package:trade_loop/presentation/navigation/side_navigation_bar_widget.dart';
@@ -24,7 +26,6 @@ class HomePageState extends State<HomePage> {
   final int selectedIndex = 0;
   late String userId;
   final TextEditingController _searchController = TextEditingController();
-  bool _isSearching = false;
 
   @override
   void initState() {
@@ -34,43 +35,17 @@ class HomePageState extends State<HomePage> {
 
     _searchController.addListener(() {
       final query = _searchController.text;
-      print("Search Query: $query, Is Searching: $_isSearching");
-      if (query.isNotEmpty) {
-        setState(() {
-          _isSearching = true;
-        });
+      context.read<BoolCubit>().updateSearchState(query);
 
+      if (query.isNotEmpty) {
         context.read<HomeBloc>().add(SearchProductsEvent(
               query: query,
               userId: userId,
             ));
       } else {
-        setState(() {
-          _isSearching = false;
-        });
         context.read<HomeBloc>().add(LoadProductsEvent(userId));
       }
     });
-  }
-
-  void _openFilters() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => FilterBottomSheet(
-        onApplyFilters: (filters) {
-          print('_openFilters: Received filters: ${filters.toString()}');
-          print(
-              '_openFilters:choosed category:${filters['categories']}&&tags:${filters['tags']}');
-          context.read<HomeBloc>().add(SearchProductsEvent(
-                query: _searchController.text,
-                userId: userId,
-                categoryId: filters['categories'],
-                tags: filters['tags'],
-                priceRanges: filters['priceRanges'],
-              ));
-        },
-      ),
-    );
   }
 
   @override
@@ -80,19 +55,26 @@ class HomePageState extends State<HomePage> {
         backgroundColor: appbarColor,
         centerTitle: true,
         title: 'TradeLoop',
-        fontColor: Colors.white,
+        fontColor: whiteColor,
         fontFamily: 'Irish Grover',
         fontSize: 30,
         fontWeight: FontWeight.bold,
         actions: [
-          if (_isSearching)
-            IconButton(
-              icon: const Icon(
-                Icons.filter_list,
-                color: Colors.white,
-              ),
-              onPressed: _openFilters,
-            ),
+          BlocBuilder<BoolCubit, bool>(
+            builder: (context, isSearching) {
+              return Visibility(
+                visible: isSearching,
+                child: IconButton(
+                  icon: const Icon(Icons.filter_list, color: whiteColor),
+                  onPressed: () => openFilters(
+                    context: context,
+                    userId: userId,
+                    searchController: _searchController,
+                  ),
+                ),
+              );
+            },
+          ),
         ],
       ),
       drawer: (kIsWeb)
@@ -118,27 +100,27 @@ class HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 10),
             const Divider(),
-            if (!_isSearching) ...[
-              CategoryRowWidget(
-                userId: userId,
-              ),
-              const Divider(
-                thickness: 2,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
+            BlocBuilder<BoolCubit, bool>(
+              builder: (context, isSearching) {
+                return isSearching
+                    ? const SizedBox()
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CategoryRowWidget(userId: userId),
+                          const Divider(thickness: 2),
+                          const SizedBox(height: 10),
+                          const CustomTextWidget(
+                            text: 'New Products',
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                            color: blueAcc,
+                          ),
+                        ],
+                      );
+              },
+            ),
 
-              // Heading
-              const Text(
-                'New Products',
-                style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blueAccent,
-                ),
-              ),
-            ],
             const SizedBox(height: 10),
             // Product Grid
             Expanded(
@@ -154,16 +136,19 @@ class HomePageState extends State<HomePage> {
                   } else if (state is HomePageLoaded) {
                     if (state.products.isEmpty) {
                       return const Center(
-                          child: Text("No products available."));
+                          child:
+                              CustomTextWidget(text: "No products available."));
                     } else {
                       return ProductGrid(products: state.products);
                     }
                   } else if (state is HomePageError) {
                     return Center(
-                        child:
-                            Text("Failed to load products: ${state.message}"));
+                        child: CustomTextWidget(
+                            text: "Failed to load products: ${state.message}"));
                   } else {
-                    return const Center(child: Text("No products available."));
+                    return const Center(
+                        child:
+                            CustomTextWidget(text: "No products available."));
                   }
                 },
               ),

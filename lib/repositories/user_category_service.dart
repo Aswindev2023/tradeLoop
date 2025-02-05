@@ -13,7 +13,6 @@ class UserCategoryService {
             doc.data() as Map<String, dynamic>, doc.id);
       }).toList();
     } catch (e) {
-      print('Error fetching categories: $e');
       return [];
     }
   }

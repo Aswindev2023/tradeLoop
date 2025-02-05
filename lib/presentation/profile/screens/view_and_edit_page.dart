@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
+import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:trade_loop/presentation/profile/widgets/view_and_edit_sections.dart';
 
@@ -59,23 +60,19 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppbar(
         backgroundColor: appbarColor,
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: whiteColor),
         ),
-        title: const Text(
-          'View & Edit Profile',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        title: 'View & Edit Profile',
+        fontColor: whiteColor,
+        fontSize: 30,
+        fontWeight: FontWeight.bold,
       ),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {

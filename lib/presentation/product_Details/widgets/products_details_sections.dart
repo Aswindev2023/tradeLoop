@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_button.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/presentation/chat/screens/chat_page.dart';
@@ -68,9 +69,9 @@ class ProductDetailsSection extends StatelessWidget {
             text: '₹${parsedPrice.toStringAsFixed(2)}',
             fontSize: 20.0,
             fontWeight: FontWeight.w600,
-            color: const Color.fromARGB(255, 51, 0, 255),
+            color: priceColor,
           ),
-          Divider(color: Colors.grey[300]),
+          Divider(color: grey[300]),
           const SizedBox(height: 10.0),
           const CustomTextWidget(
             text: 'Description',
@@ -81,7 +82,7 @@ class ProductDetailsSection extends StatelessWidget {
           CustomTextWidget(
             text: product.description,
             fontSize: 16.0,
-            color: Colors.grey[800],
+            color: grey800,
           ),
           const SizedBox(height: 10.0),
           CustomTextWidget(
@@ -94,13 +95,13 @@ class ProductDetailsSection extends StatelessWidget {
           CustomTextWidget(
             text: product.isAvailable ? 'Available' : 'Out of Stock',
             fontSize: 16.0,
-            color: Colors.blueGrey,
+            color: blueGrey,
           ),
           const SizedBox(height: 10.0),
           CustomTextWidget(
             text: 'Condition: ${product.condition}',
             fontSize: 16.0,
-            color: Colors.blueGrey,
+            color: blueGrey,
           ),
           const SizedBox(height: 10.0),
           CustomTextWidget(
@@ -114,7 +115,7 @@ class ProductDetailsSection extends StatelessWidget {
             children: product.tags
                 .map((tag) => Chip(
                       label: Text(tag),
-                      backgroundColor: const Color.fromARGB(255, 211, 233, 251),
+                      backgroundColor: tagBackCol,
                     ))
                 .toList(),
           ),
@@ -137,13 +138,13 @@ class LocationSection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
             children: [
-              const Icon(Icons.location_on, color: Colors.red),
+              const Icon(Icons.location_on, color: red),
               const SizedBox(width: 8.0),
               Expanded(
                 child: CustomTextWidget(
                   text: 'Location: ${product.locationName}',
                   fontSize: 16.0,
-                  color: Colors.blueGrey,
+                  color: blueGrey,
                 ),
               ),
             ],

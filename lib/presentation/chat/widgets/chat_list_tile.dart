@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/format_timestamp.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/authentication/models/user_model.dart';
@@ -27,9 +28,9 @@ class ChatListTile extends StatelessWidget {
       direction: DismissDirection.endToStart,
       background: Container(
         alignment: Alignment.centerRight,
-        color: Colors.red,
+        color: red,
         padding: const EdgeInsets.only(right: 20),
-        child: const Icon(Icons.delete, color: Colors.white),
+        child: const Icon(Icons.delete, color: whiteColor),
       ),
       confirmDismiss: (direction) async {
         return await showDialog(
@@ -58,7 +59,7 @@ class ChatListTile extends StatelessWidget {
           chat.lastMessage ?? 'No messages yet',
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
-          style: const TextStyle(color: Colors.grey),
+          style: const TextStyle(color: grey),
         ),
         trailing: Text(formatTimestamp(chat.lastMessageTime)),
         onTap: () {

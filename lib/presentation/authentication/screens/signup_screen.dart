@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
@@ -17,11 +18,10 @@ class Signup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    final double padding =
-        screenWidth * 0.05; // Adjust padding for responsiveness
+    final double padding = screenWidth * 0.05;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: whiteColor,
       body: BlocConsumer<AuthBlocBloc, AuthBlocState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
@@ -38,15 +38,14 @@ class Signup extends StatelessWidget {
             SnackbarUtils.showSnackbar(
               context,
               state.message,
-              backgroundColor: Colors.orangeAccent,
+              backgroundColor: orangeAcc,
             );
           }
         },
         builder: (context, state) {
           return Center(
             child: ConstrainedBox(
-              constraints:
-                  const BoxConstraints(maxWidth: 400), // Centralized for web
+              constraints: const BoxConstraints(maxWidth: 400),
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),

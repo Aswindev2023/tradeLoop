@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart'; // For kIsWeb
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 
 class CustomButton extends StatelessWidget {
   final String label;
@@ -11,7 +12,7 @@ class CustomButton extends StatelessWidget {
     super.key,
     required this.label,
     required this.onTap,
-    this.backgroundColor = const Color.fromARGB(255, 55, 227, 21),
+    this.backgroundColor = buttonColor,
     this.fontSize = 22.0,
   });
 

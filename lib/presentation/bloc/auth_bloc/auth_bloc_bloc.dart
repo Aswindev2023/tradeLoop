@@ -96,7 +96,6 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
       if (_isCheckingAuth) return;
       emit(AuthLoading());
       try {
-        print('check status bloc is called');
         final user = _firebaseAuth.currentUser;
         if (user != null) {
           // Fetch user details from Firestore

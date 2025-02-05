@@ -27,7 +27,7 @@ class ChatPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
-            color: Colors.white,
+            color: whiteColor,
           ),
           onPressed: () {
             context
@@ -54,7 +54,7 @@ class ChatPage extends StatelessWidget {
             return const Center(
               child: Text(
                 'Failed to load chat. Please try again.',
-                style: TextStyle(color: Colors.red, fontSize: 16),
+                style: TextStyle(color: red, fontSize: 16),
               ),
             );
           } else {

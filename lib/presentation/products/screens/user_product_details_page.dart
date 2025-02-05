@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/custom_button.dart';
+import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/bloc/product_details_bloc/product_details_bloc.dart';
 import 'package:trade_loop/presentation/product_Details/widgets/products_details_sections.dart';
@@ -74,15 +75,15 @@ class _UserProductDetailsPageState extends State<UserProductDetailsPage> {
             );
           } else if (state is ProductDetailsError) {
             return Center(
-              child: Text(
-                'Failed to load product details: ${state.error}',
-                style: const TextStyle(color: Colors.red),
+              child: CustomTextWidget(
+                text: 'Failed to load product details: ${state.error}',
+                color: red,
               ),
             );
           }
 
           return const Center(
-            child: Text('Unexpected state!'),
+            child: CustomTextWidget(text: 'Unexpected state!'),
           );
         },
       ),

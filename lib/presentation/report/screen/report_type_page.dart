@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/presentation/profile/widgets/custom_tile_widget.dart';
 import 'package:trade_loop/presentation/report/screen/report_detail_page.dart';
 
@@ -24,7 +25,10 @@ class ReportTypePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Report Seller'),
+        title: const CustomTextWidget(
+          text: 'Report Seller',
+          fontSize: 23,
+        ),
       ),
       body: ListView.builder(
         itemCount: issueTypes.length,

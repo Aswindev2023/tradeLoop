@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
+import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
 import 'package:trade_loop/presentation/authentication/widgets/confirmation_dialog.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
@@ -20,13 +21,12 @@ class ViewListings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('this is the user id from viewListing page:$userId');
     context.read<ProductBloc>().add(LoadProducts(userId: userId!));
     return Scaffold(
       appBar: const CustomAppbar(
         title: 'My listings',
         centerTitle: true,
-        fontColor: Colors.white,
+        fontColor: whiteColor,
         fontSize: 30,
         fontWeight: FontWeight.bold,
         backgroundColor: appbarColor,
@@ -49,7 +49,8 @@ class ViewListings extends StatelessWidget {
             } else if (state is ProductsLoaded) {
               final products = state.products;
               if (products.isEmpty) {
-                return const Center(child: Text("No products found."));
+                return const Center(
+                    child: CustomTextWidget(text: "No products found."));
               }
               return ListView.separated(
                 itemCount: products.length,
@@ -105,9 +106,10 @@ class ViewListings extends StatelessWidget {
                 },
               );
             } else if (state is ProductError) {
-              return Center(child: Text(state.message));
+              return Center(child: CustomTextWidget(text: state.message));
             } else {
-              return const Center(child: Text('No Products Listed '));
+              return const Center(
+                  child: CustomTextWidget(text: 'No Products Listed '));
             }
           },
         ),
@@ -122,10 +124,10 @@ class ViewListings extends StatelessWidget {
             });
           }
         },
-        backgroundColor: const Color.fromARGB(255, 62, 28, 255),
+        backgroundColor: floatButtonCol,
         child: const Icon(
           Icons.add,
-          color: Colors.white,
+          color: whiteColor,
           size: 40,
         ),
       ),

@@ -16,7 +16,6 @@ class ChatListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
-    print("Current User ID: $currentUserId");
 
     context.read<ChatBloc>().add(FetchUserChatsEvent(currentUserId));
     return Scaffold(

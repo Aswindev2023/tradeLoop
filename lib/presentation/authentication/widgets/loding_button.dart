@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 
 class LoadingButton extends StatelessWidget {
   final bool isLoading;
@@ -12,8 +13,8 @@ class LoadingButton extends StatelessWidget {
     required this.isLoading,
     required this.text,
     required this.onTap,
-    this.backgroundColor = const Color.fromARGB(255, 14, 58, 237),
-    this.textColor = Colors.white,
+    this.backgroundColor = authButtonColor,
+    this.textColor = whiteColor,
   });
 
   @override

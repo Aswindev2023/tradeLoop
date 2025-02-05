@@ -184,7 +184,6 @@ class AccountDeletionService {
       final user = _auth.currentUser;
       if (user != null) {
         await user.delete();
-        print('user is deleted');
       }
     } catch (e) {
       throw Exception("Failed to delete authentication user: $e");

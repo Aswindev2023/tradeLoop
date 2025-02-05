@@ -10,16 +10,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeServices homeServices = HomeServices();
   HomeBloc() : super(HomeInitial()) {
     on<LoadProductsEvent>((event, emit) async {
-      print('Loading products for userId: ${event.userId}');
       emit(HomePageLoading());
       try {
         final products =
             await homeServices.getProductsExcludingUserId(event.userId);
-        print('Products loaded: ${products.length}');
+
         emit(HomePageLoaded(products));
       } catch (e) {
         emit(HomePageError('Failed to load products: $e'));
-        print('homepage error: $e');
       }
     });
     on<LoadCategoryProductsEvent>((event, emit) async {
@@ -30,7 +28,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(HomePageLoaded(products));
       } catch (e) {
         emit(HomePageError('Failed to load products by category: $e'));
-        print('Category page error: $e');
       }
     });
     on<SearchProductsEvent>((event, emit) async {
@@ -42,12 +39,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             categoryIds: event.categoryId,
             tags: event.tags,
             priceRanges: event.priceRanges);
-        print(
-            'categoryId and tags from search bloc:${event.categoryId}and ${event.tags}');
+
         emit(HomePageLoaded(products));
       } catch (e) {
         emit(HomePageError('Failed to search products: $e'));
-        print('Search error: $e');
       }
     });
   }

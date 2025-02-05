@@ -17,7 +17,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       try {
         final chatsWithDetails =
             await chatService.fetchChatsWithUserDetails(event.userId);
-        print('fetching chats with details:$chatsWithDetails');
+
         emit(ChatsWithDetailsLoaded(chatsWithDetails));
       } catch (e) {
         emit(ChatError("Failed to fetch chats: $e"));
@@ -31,7 +31,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           event.userId2,
           event.initialMessage,
         );
-        print('create chat is successfull');
       } catch (e) {
         emit(ChatError("Failed to create chat: $e"));
       }
@@ -67,7 +66,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       try {
         emit(ChatsLoading());
         await chatService.deleteChat(event.chatId);
-        print('Chat deleted successfully');
 
         final updatedChats =
             await chatService.fetchChatsWithUserDetails(event.chatId);

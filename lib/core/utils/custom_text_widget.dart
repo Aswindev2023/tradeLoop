@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 
 class CustomTextWidget extends StatelessWidget {
   final String text;
@@ -30,7 +31,7 @@ class CustomTextWidget extends StatelessWidget {
       style: TextStyle(
         fontSize: fontSize ?? (kIsWeb ? 16.0 : 14.0),
         fontWeight: fontWeight ?? FontWeight.normal,
-        color: color ?? Colors.black,
+        color: color ?? blackColor,
       ),
       maxLines: maxLines,
       textAlign: textAlign ?? TextAlign.start,

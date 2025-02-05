@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
+import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/presentation/bloc/category_bloc/category_bloc.dart';
 import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
 import 'package:trade_loop/presentation/home/screens/category_list.dart';
@@ -47,15 +49,16 @@ class _CategoryRowWidgetState extends State<CategoryRowWidget> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 255, 255, 255),
+                        color: whiteColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       alignment: Alignment.center,
                       child: const Text(
                         'All Categories',
                         style: TextStyle(
-                            fontSize: 14,
-                            color: Color.fromARGB(255, 57, 26, 255)),
+                          fontSize: 14,
+                          color: allCategoryCol,
+                        ),
                       ),
                     ),
                   );
@@ -68,20 +71,18 @@ class _CategoryRowWidgetState extends State<CategoryRowWidget> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 255, 255, 255),
+                        color: whiteColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         category!.name,
                         style: const TextStyle(
-                            fontSize: 14,
-                            color: Color.fromARGB(255, 57, 26, 255)),
+                            fontSize: 14, color: allCategoryCol),
                       ),
                     ),
                   ),
                   onTap: () {
-                    print('${category.name} category is pressed ');
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -102,7 +103,8 @@ class _CategoryRowWidgetState extends State<CategoryRowWidget> {
             ),
           );
         } else if (state is CategoryError) {
-          return const Center(child: Text('Failed to load categories.'));
+          return const Center(
+              child: CustomTextWidget(text: 'Failed to load categories.'));
         } else {
           return const SizedBox.shrink();
         }

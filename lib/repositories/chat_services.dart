@@ -134,7 +134,6 @@ class ChatServices {
   Future<void> deleteChat(String chatId) async {
     try {
       final chatRef = _firestore.collection('chats').doc(chatId);
-      print('chat id in delete chat function is:$chatId');
 
       // Get all messages in the chat
       final messagesSnapshot = await chatRef.collection('messages').get();

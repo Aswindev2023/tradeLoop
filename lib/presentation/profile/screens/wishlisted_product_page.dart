@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
@@ -13,17 +14,16 @@ class WishlistedProductsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('User ID from WishlistedProductsPage: $userId');
     context.read<WishListBloc>().add(FetchWishlistEvent(userId));
 
     return Scaffold(
       appBar: const CustomAppbar(
         title: 'Wishlist',
-        fontColor: Colors.white,
+        fontColor: whiteColor,
         fontSize: 30,
         fontWeight: FontWeight.bold,
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 17, 28, 233),
+        backgroundColor: appbarColor,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
@@ -62,11 +62,11 @@ class WishlistedProductsPage extends StatelessWidget {
                       ),
                       subtitle: CustomTextWidget(
                         text: '\$${product.price.toStringAsFixed(2)}',
-                        color: Colors.green,
+                        color: green,
                         fontWeight: FontWeight.w600,
                       ),
                       trailing: IconButton(
-                        icon: const Icon(Icons.favorite, color: Colors.red),
+                        icon: const Icon(Icons.favorite, color: red),
                         onPressed: () {
                           context.read<WishListBloc>().add(
                               RemoveProductFromWishlistEvent(

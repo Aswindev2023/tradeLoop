@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 
 class ShareProductWidget extends StatelessWidget {
   final String productId;
@@ -26,7 +27,7 @@ class ShareProductWidget extends StatelessWidget {
     return IconButton(
       icon: const Icon(
         Icons.share,
-        color: Colors.white,
+        color: whiteColor,
         size: 29,
       ),
       onPressed: _shareProduct,

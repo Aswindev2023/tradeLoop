@@ -5,6 +5,7 @@ import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/location_utils.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
+import 'package:trade_loop/presentation/bloc/boolean_cubit/bool_cubit.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/products/model/product_model.dart';
 import 'package:trade_loop/presentation/products/widgets/category_dropdown.dart';
@@ -26,7 +27,6 @@ class _EditProductPageState extends State<EditProductPage> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _conditionController = TextEditingController();
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -48,20 +48,15 @@ class _EditProductPageState extends State<EditProductPage> {
       body: BlocConsumer<ProductBloc, ProductState>(
         listener: (context, state) {
           if (state is ProductAddedSuccess) {
-            setState(() {
-              _isLoading = false;
-            });
             SnackbarUtils.showSnackbar(context, 'Product updated successfully');
+            context.read<BoolCubit>().setLoading(false);
             Navigator.pop(context, true);
           } else if (state is ProductError) {
             SnackbarUtils.showSnackbar(context, 'Error: ${state.message}');
-            setState(() {
-              _isLoading = false;
-            });
+            context.read<BoolCubit>().setLoading(false);
           }
         },
         builder: (context, state) {
-          print('the state in the edit page is $state');
           if (state is ProductFormState) {
             _nameController.text = state.formFields['name'] ?? "";
             _descriptionController.text = state.formFields['description'] ?? "";
@@ -140,7 +135,7 @@ class _EditProductPageState extends State<EditProductPage> {
                       // Save changes button
                       ProductPageButtonSection(
                           onPressed: _updateProduct,
-                          isLoading: _isLoading,
+                          isLoading: context.watch<BoolCubit>().state,
                           title: 'Save Changes'),
                     ],
                   ),
@@ -160,24 +155,26 @@ class _EditProductPageState extends State<EditProductPage> {
     final state = bloc.state;
     if (state is ProductFormState) {
       if (_formKey.currentState!.validate()) {
-        setState(() {
-          _isLoading = true;
-        });
+        context.read<BoolCubit>().setLoading(true);
         if (state.selectedCategory == null) {
           SnackbarUtils.showSnackbar(context, 'Please select a category');
+          _resetLoadingState;
           return;
         }
         if (state.pickedLocation == null) {
           SnackbarUtils.showSnackbar(context, 'Please select a location');
+          _resetLoadingState;
           return;
         }
         if (state.pickedImages.isEmpty) {
           SnackbarUtils.showSnackbar(
               context, 'Please select at least one image');
+          _resetLoadingState;
           return;
         }
         if (!FormValidators.isValidPrice(_priceController.text)) {
           SnackbarUtils.showSnackbar(context, 'Please enter valid price');
+          _resetLoadingState;
           return;
         }
 
@@ -207,5 +204,11 @@ class _EditProductPageState extends State<EditProductPage> {
     _priceController.dispose();
     _conditionController.dispose();
     super.dispose();
+  }
+
+  void _resetLoadingState() {
+    Future.delayed(const Duration(seconds: 1), () {
+      context.read<BoolCubit>().setLoading(false);
+    });
   }
 }

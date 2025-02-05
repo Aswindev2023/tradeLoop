@@ -6,6 +6,7 @@ import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/core/utils/location_utils.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
+import 'package:trade_loop/presentation/bloc/boolean_cubit/bool_cubit.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:trade_loop/presentation/products/model/product_model.dart';
 import 'package:trade_loop/presentation/products/widgets/category_dropdown.dart';
@@ -25,7 +26,6 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _conditionController = TextEditingController();
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -58,18 +58,13 @@ class _AddProductPageState extends State<AddProductPage> {
       body: BlocListener<ProductBloc, ProductState>(
         listener: (context, state) {
           if (state is ProductAddedSuccess) {
-            setState(() {
-              _isLoading = false;
-            });
             SnackbarUtils.showSnackbar(context, 'Product added successfully');
+            context.read<BoolCubit>().setLoading(false);
             context.read<ProductBloc>().add(InitializeProductForm());
             Navigator.pop(context, true);
           } else if (state is ProductError) {
             SnackbarUtils.showSnackbar(context, 'Error:${state.message}');
-            setState(() {
-              _isLoading = false;
-            });
-            print(state.message);
+            context.read<BoolCubit>().setLoading(false);
           }
         },
         child: Padding(
@@ -140,7 +135,6 @@ class _AddProductPageState extends State<AddProductPage> {
                             : "No location selected",
                     onLocationSelected: () async {
                       await selectLocation(context);
-                      print("UI Rebuilt with new location");
                     },
                   ),
                   const SizedBox(height: 24),
@@ -148,7 +142,7 @@ class _AddProductPageState extends State<AddProductPage> {
                   //  buttons
                   ProductPageButtonSection(
                     onPressed: _saveProduct,
-                    isLoading: _isLoading,
+                    isLoading: context.watch<BoolCubit>().state,
                     title: 'Save',
                   ),
                 ],
@@ -165,15 +159,14 @@ class _AddProductPageState extends State<AddProductPage> {
     final state = bloc.state;
     if (state is ProductFormState) {
       if (_formKey.currentState!.validate()) {
-        setState(() {
-          _isLoading = true;
-        });
+        //set loading state
+        context.read<BoolCubit>().setLoading(true);
         if (state.selectedCategory == null) {
           SnackbarUtils.showSnackbar(context, 'Please select a category');
           _resetLoadingState();
           return;
         }
-        print('this is the selected category id:${state.selectedCategory!.id}');
+
         if (state.pickedLocation == null) {
           SnackbarUtils.showSnackbar(context, 'Please select a location');
           _resetLoadingState();
@@ -216,9 +209,7 @@ class _AddProductPageState extends State<AddProductPage> {
 
   void _resetLoadingState() {
     Future.delayed(const Duration(seconds: 1), () {
-      setState(() {
-        _isLoading = false;
-      });
+      context.read<BoolCubit>().setLoading(false);
     });
   }
 }

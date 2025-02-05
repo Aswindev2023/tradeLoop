@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/presentation/bloc/chat_bloc/chat_bloc.dart';
 
@@ -23,7 +24,7 @@ class ChatAppBar extends StatelessWidget {
               const SizedBox(width: 15),
               CustomTextWidget(
                 text: state.sellerName,
-                color: Colors.white,
+                color: whiteColor,
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),

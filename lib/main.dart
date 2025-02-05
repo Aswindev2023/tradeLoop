@@ -11,6 +11,9 @@ import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
 import 'package:trade_loop/presentation/bloc/account_deletion_bloc/account_deletion_bloc.dart';
 import 'package:trade_loop/presentation/bloc/category_bloc/category_bloc.dart';
 import 'package:trade_loop/presentation/bloc/chat_bloc/chat_bloc.dart';
+import 'package:trade_loop/presentation/bloc/image_cubit/image_slider_cubit.dart';
+import 'package:trade_loop/presentation/bloc/location_cubit/location_cubit.dart';
+import 'package:trade_loop/presentation/bloc/tag_cubit/tag_cubit.dart';
 import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
 import 'package:trade_loop/presentation/bloc/message_bloc/message_bloc.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
@@ -18,6 +21,7 @@ import 'package:trade_loop/presentation/bloc/product_details_bloc/product_detail
 import 'package:trade_loop/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:trade_loop/presentation/bloc/recently_viewed_bloc/recently_viewed_bloc.dart';
 import 'package:trade_loop/presentation/bloc/report_bloc/report_bloc.dart';
+import 'package:trade_loop/presentation/bloc/boolean_cubit/bool_cubit.dart';
 import 'package:trade_loop/presentation/bloc/seller_profile_bloc/seller_profile_bloc.dart';
 import 'package:trade_loop/presentation/bloc/wishlist_bloc/wish_list_bloc.dart';
 import 'package:trade_loop/presentation/home/screens/home_page.dart';
@@ -79,6 +83,18 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ReportBloc>(
           create: (context) => ReportBloc(),
+        ),
+        BlocProvider<BoolCubit>(
+          create: (context) => BoolCubit(),
+        ),
+        BlocProvider<TagCubit>(
+          create: (context) => TagCubit(),
+        ),
+        BlocProvider<ImageSliderCubit>(
+          create: (context) => ImageSliderCubit(),
+        ),
+        BlocProvider<LocationCubit>(
+          create: (context) => LocationCubit(),
         ),
       ],
       child: MaterialApp(

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/input_field_utils.dart';
 
 class InputFieldWidget extends StatelessWidget {
@@ -63,7 +64,7 @@ class InputFieldWidget extends StatelessWidget {
             child: Text(
               errorMessage!,
               style: TextStyle(
-                color: Colors.red,
+                color: red,
                 fontSize: isWeb ? 12.0 : 14.0,
               ),
             ),

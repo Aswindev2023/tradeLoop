@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 
 class SellerProfileImg extends StatelessWidget {
   final String? imageUrl;
@@ -35,9 +36,9 @@ class SellerProfileImg extends StatelessWidget {
         errorBuilder: (context, error, stackTrace) => Container(
           height: size,
           width: size,
-          color: Colors.grey.shade200,
+          color: grey.shade200,
           alignment: Alignment.center,
-          child: const Icon(Icons.person, size: 40, color: Colors.grey),
+          child: const Icon(Icons.person, size: 40, color: grey),
         ),
       ),
     );

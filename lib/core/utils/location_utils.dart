@@ -13,7 +13,6 @@ Future<void> selectLocation(BuildContext context) async {
     context,
     MaterialPageRoute(builder: (context) => const LocationPickerPage()),
   );
-  print('Returned location coordinates from location picker: $pickedLocation');
 
   if (pickedLocation != null) {
     try {
@@ -29,7 +28,6 @@ Future<void> selectLocation(BuildContext context) async {
           locationName = data['address'] != null
               ? "${data['address']['city'] ?? data['address']['town'] ?? data['address']['village']}, ${data['address']['state']}, ${data['address']['country']}"
               : "Unknown Location";
-          print('Location name fetched from Nominatim: $locationName');
         } else {
           throw Exception('Failed to fetch location name for web.');
         }
@@ -39,7 +37,7 @@ Future<void> selectLocation(BuildContext context) async {
           pickedLocation.latitude,
           pickedLocation.longitude,
         );
-        print('Placemark of the location: $placemarks');
+
         locationName = placemarks.isNotEmpty
             ? "${placemarks.first.locality}, ${placemarks.first.administrativeArea}, ${placemarks.first.country}"
             : "Unknown Location";
@@ -49,14 +47,11 @@ Future<void> selectLocation(BuildContext context) async {
             pickedLocation: pickedLocation,
             locationName: locationName,
           ));
-
-      print("Selected Location Name: $locationName");
     } catch (e) {
       context.read<ProductBloc>().add(UpdateLocation(
             pickedLocation: pickedLocation,
             locationName: "Unknown Location",
           ));
-      print('Error in reverse geocoding: $e');
     }
   }
 }

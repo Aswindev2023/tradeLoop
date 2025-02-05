@@ -21,9 +21,9 @@ class ProductImageSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: grey200,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[300]!),
+        border: Border.all(color: grey[300]!),
       ),
       child: Column(
         children: [
@@ -158,13 +158,13 @@ class ProductPageButtonSection extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25),
                   ),
-                  backgroundColor: const Color.fromARGB(255, 11, 185, 17),
+                  backgroundColor: productButtonCol,
                   elevation: 8,
-                  shadowColor: Colors.green.withOpacity(0.5),
+                  shadowColor: green.withOpacity(0.5),
                 ),
                 child: isLoading
                     ? const CircularProgressIndicator(
-                        color: Colors.white,
+                        color: whiteColor,
                         strokeWidth: 2,
                       )
                     : CustomTextWidget(

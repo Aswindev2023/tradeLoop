@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart'; // For kIsWeb
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/presentation/bloc/recently_viewed_bloc/recently_viewed_bloc.dart';
 import 'package:trade_loop/presentation/home/widgets/fav_icon.dart';
@@ -15,7 +16,6 @@ class RecentlyViewedRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    // Adjust dimensions based on the platform
     const isWeb = kIsWeb;
     final cardWidth = isWeb ? screenWidth / 4.5 : screenWidth / 2.2;
     final imageHeight = cardWidth * 0.6;
@@ -29,7 +29,7 @@ class RecentlyViewedRow extends StatelessWidget {
 
           if (products.isEmpty) {
             return const Center(
-              child: Text('No recently viewed products'),
+              child: CustomTextWidget(text: 'No recently viewed products'),
             );
           }
 
@@ -37,12 +37,11 @@ class RecentlyViewedRow extends StatelessWidget {
             children: [
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  'Recently Visited',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
-                  ),
+                child: CustomTextWidget(
+                  text: 'Recently Visited',
+                  color: blackColor,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 10),
@@ -65,11 +64,11 @@ class RecentlyViewedRow extends StatelessWidget {
                       },
                       child: Card(
                         elevation: 4,
-                        shadowColor: Colors.black.withOpacity(0.3),
+                        shadowColor: blackColor.withOpacity(0.3),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                           side: BorderSide(
-                            color: Colors.grey.shade300,
+                            color: grey.shade300,
                             width: 1.5,
                           ),
                         ),
@@ -96,7 +95,7 @@ class RecentlyViewedRow extends StatelessWidget {
                                       return Container(
                                         height: imageHeight,
                                         width: cardWidth,
-                                        color: Colors.grey.shade200,
+                                        color: grey.shade200,
                                         child: const Center(
                                           child: CircularProgressIndicator(),
                                         ),
@@ -107,7 +106,7 @@ class RecentlyViewedRow extends StatelessWidget {
                                             Container(
                                       height: imageHeight,
                                       width: cardWidth,
-                                      color: Colors.grey.shade200,
+                                      color: grey.shade200,
                                       alignment: Alignment.center,
                                       child: const Icon(Icons.broken_image,
                                           size: 40),
@@ -119,7 +118,7 @@ class RecentlyViewedRow extends StatelessWidget {
                                   right: 8,
                                   child: Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.8),
+                                        color: whiteColor.withOpacity(0.8),
                                         shape: BoxShape.circle,
                                       ),
                                       child: FavIcon(
@@ -151,7 +150,7 @@ class RecentlyViewedRow extends StatelessWidget {
                                     text:
                                         '₹${product.price.toStringAsFixed(2)}',
                                     fontSize: cardWidth * 0.07,
-                                    color: Colors.green,
+                                    color: green,
                                     fontWeight: FontWeight.w600,
                                   ),
                                   const SizedBox(height: 4),
@@ -159,7 +158,7 @@ class RecentlyViewedRow extends StatelessWidget {
                                   CustomTextWidget(
                                     text: product.locationName,
                                     fontSize: cardWidth * 0.06,
-                                    color: Colors.grey,
+                                    color: grey,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -176,7 +175,7 @@ class RecentlyViewedRow extends StatelessWidget {
             ],
           );
         } else if (state is RecentlyViewedError) {
-          return Center(child: Text(state.message));
+          return Center(child: CustomTextWidget(text: state.message));
         } else {
           return Container();
         }

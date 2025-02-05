@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/presentation/authentication/widgets/input_field_widget.dart';
@@ -192,7 +193,7 @@ class _SignupFooter extends StatelessWidget {
       children: [
         const CustomTextWidget(
           text: "Already have an account?",
-          color: Color(0xFF8c8e98),
+          color: greyButtonCol,
           fontSize: 18.0,
           fontWeight: FontWeight.w500,
         ),
@@ -201,7 +202,7 @@ class _SignupFooter extends StatelessWidget {
           onTap: onLogInTap,
           child: const CustomTextWidget(
             text: "LogIn",
-            color: Color(0xFF273671),
+            color: darkBlueCo,
             fontSize: 20.0,
             fontWeight: FontWeight.w500,
           ),

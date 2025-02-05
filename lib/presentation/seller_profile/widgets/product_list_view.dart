@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/presentation/bloc/recently_viewed_bloc/recently_viewed_bloc.dart';
 import 'package:trade_loop/presentation/home/model/home_page_product_model.dart';
 import 'package:trade_loop/presentation/home/widgets/fav_icon.dart';
@@ -58,7 +59,7 @@ class ProductListView extends StatelessWidget {
                         errorBuilder: (context, error, stackTrace) => Container(
                           width: screenWidth * 0.2,
                           height: screenWidth * 0.2,
-                          color: Colors.grey.shade200,
+                          color: grey.shade200,
                           alignment: Alignment.center,
                           child: const Icon(Icons.broken_image, size: 30),
                         ),
@@ -83,7 +84,7 @@ class ProductListView extends StatelessWidget {
                             '₹${product.price.toStringAsFixed(2)}',
                             style: TextStyle(
                               fontSize: screenWidth * 0.035,
-                              color: Colors.green,
+                              color: green,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -91,7 +92,7 @@ class ProductListView extends StatelessWidget {
                             product.locationName,
                             style: TextStyle(
                               fontSize: screenWidth * 0.03,
-                              color: Colors.grey,
+                              color: grey,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_appbar.dart';
+import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/presentation/authentication/screens/login_screen.dart';
 import 'package:trade_loop/presentation/authentication/widgets/confirmation_dialog.dart';
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
@@ -33,7 +34,7 @@ class ProfilePage extends StatelessWidget {
               context, MaterialPageRoute(builder: (context) => const LogIn()));
         } else if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
+            SnackBar(content: CustomTextWidget(text: state.message)),
           );
         }
       },
@@ -41,7 +42,7 @@ class ProfilePage extends StatelessWidget {
         appBar: const CustomAppbar(
           centerTitle: true,
           title: 'Profile',
-          fontColor: Colors.white,
+          fontColor: whiteColor,
           fontWeight: FontWeight.bold,
           fontSize: 30,
           backgroundColor: appbarColor,

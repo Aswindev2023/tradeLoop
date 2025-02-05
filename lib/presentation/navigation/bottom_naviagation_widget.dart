@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/presentation/navigation/navigation_service.dart';
 
 class BottomNavigationBarWidget extends StatelessWidget {
@@ -33,9 +34,9 @@ class BottomNavigationBarWidget extends StatelessWidget {
       ],
       currentIndex: selectedIndex,
       onTap: (index) => _onItemTapped(context, index),
-      backgroundColor: Colors.white,
-      selectedItemColor: Colors.blue,
-      unselectedItemColor: const Color.fromARGB(255, 0, 0, 0),
+      backgroundColor: whiteColor,
+      selectedItemColor: blueColor,
+      unselectedItemColor: blackColor,
     );
   }
 

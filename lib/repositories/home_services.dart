@@ -16,7 +16,6 @@ class HomeServices {
       // Safely access the isBanned field using null-aware operators
       return (userDoc.data() as Map<String, dynamic>?)?['isBanned'] ?? false;
     } catch (e) {
-      print('Error fetching banned status for seller $sellerId: $e');
       return false;
     }
   }
@@ -25,7 +24,6 @@ class HomeServices {
   Future<List<HomePageProductModel>> getProductsExcludingUserId(
       String userId) async {
     try {
-      print('Fetching products excluding sellerId: $userId');
       QuerySnapshot querySnapshot = await _productCollection
           .where('sellerId', isNotEqualTo: userId)
           .get();
@@ -45,7 +43,6 @@ class HomeServices {
 
       return products;
     } catch (e) {
-      print('Error fetching products excluding user ID: $e');
       return [];
     }
   }
@@ -54,8 +51,6 @@ class HomeServices {
   Future<List<HomePageProductModel>> getCategorywiseProducts(
       String userId, String categoryId) async {
     try {
-      print(
-          'Fetching products excluding sellerId: $userId & categoryId:$categoryId');
       QuerySnapshot querySnapshot = await _productCollection
           .where('categoryId', isEqualTo: categoryId)
           .get();
@@ -75,7 +70,6 @@ class HomeServices {
 
       return products;
     } catch (e) {
-      print('Error fetching category-wise products: $e');
       return [];
     }
   }
@@ -89,7 +83,6 @@ class HomeServices {
     List<Map<String, dynamic>>? priceRanges,
   }) async {
     try {
-      print('Searching products for query: $query');
       Query queryRef = _productCollection;
 
       // Search by name
@@ -118,8 +111,6 @@ class HomeServices {
       if ((categoryIds != null && categoryIds.isNotEmpty) ||
           (tags != null && tags.isNotEmpty) ||
           (priceRanges != null && priceRanges.isNotEmpty)) {
-        print('Applying filters: categoryId = $categoryIds, tags = $tags');
-
         // Filter by category
         if (categoryIds != null && categoryIds.isNotEmpty) {
           products = products
@@ -149,7 +140,6 @@ class HomeServices {
 
       return products;
     } catch (e) {
-      print('Error during searchProducts: $e');
       return [];
     }
   }

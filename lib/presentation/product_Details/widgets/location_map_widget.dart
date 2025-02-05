@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 
 class LocationMapWidget extends StatelessWidget {
   final double latitude;
@@ -20,7 +21,7 @@ class LocationMapWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
-        border: Border.all(color: Colors.grey),
+        border: Border.all(color: grey),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12.0),
@@ -40,7 +41,7 @@ class LocationMapWidget extends StatelessWidget {
                   point: LatLng(latitude, longitude),
                   child: const Icon(
                     Icons.location_on,
-                    color: Colors.red,
+                    color: red,
                     size: 30.0,
                   ),
                 ),

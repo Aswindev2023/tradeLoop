@@ -42,18 +42,15 @@ class _LogInState extends State<LogIn> {
     final double padding = screenWidth * 0.01;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: whiteColor,
       body: BlocConsumer<AuthBlocBloc, AuthBlocState>(
         listener: (context, state) {
-          print('current state in  login page is:$state');
-
           if (state is AuthSuccess) {
             Future.delayed(const Duration(milliseconds: 200), () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (_) => const HomePage()),
               );
             });
-            print('state is auth success in login page: $state');
           } else if (state is AuthFailure) {
             SnackbarUtils.showSnackbar(
               context,

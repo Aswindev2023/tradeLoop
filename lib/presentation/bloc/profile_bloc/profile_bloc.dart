@@ -22,7 +22,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     });
     on<EditProfilePressed>((event, emit) {
-      print('Edit button pressed');
       if (state is ProfileLoaded) {
         final user = (state as ProfileLoaded).user;
         emit(ProfileEditMode(user: user));
@@ -32,43 +31,33 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileImagePicked>((event, emit) {
       if (state is ProfileEditMode) {
         final currentState = state as ProfileEditMode;
-        print('profile image picked bloc : ${event.imagePath}');
+
         emit(currentState.copyWith(pickedImagePath: event.imagePath));
       }
     });
 
     on<SaveProfileChanges>((event, emit) async {
-      print('calling saveprofile changes bloc');
-
       try {
         String? newImageUrl;
         final currentState = state as ProfileEditMode;
 
-        print('this is the current sate${currentState.pickedImagePath}');
         emit(ProfileSaving());
         if (currentState.pickedImagePath != null &&
             currentState.pickedImagePath!.isNotEmpty) {
-          print('Uploading image from: ${currentState.pickedImagePath}');
           // Deleting  old image
           if (event.updatedUser.imagePath != null &&
               event.updatedUser.imagePath!.isNotEmpty) {
             await imageUploadService.deleteImage(event.updatedUser.imagePath!);
           }
 
-          print('Uploading image...');
-
           // Upload  new image.
           newImageUrl = await imageUploadService
               .uploadImage(currentState.pickedImagePath!);
         }
 
-        print('this is the retrived image url after storing:$newImageUrl');
-
         final updatingUser = event.updatedUser.copyWith(
           imagePath: newImageUrl ?? event.updatedUser.imagePath,
         );
-
-        print('Attempting to update user: ${updatingUser.uid}');
 
         await userRepository.updateUser(
           updatingUser.uid!,
@@ -76,10 +65,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         );
 
         emit(ProfileLoaded(user: updatingUser));
-
-        print('profile updated sucessfully');
       } catch (e) {
-        print('save profile bloc failed$e');
         emit(ProfileError(message: 'Failed to save changes: ${e.toString()}'));
       }
     });

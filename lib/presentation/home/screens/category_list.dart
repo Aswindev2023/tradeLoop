@@ -26,7 +26,7 @@ class _CategoryListState extends State<CategoryList> {
     return Scaffold(
       appBar: CustomAppbar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: blackColor),
           onPressed: () {
             Navigator.pushReplacement(
               context,
