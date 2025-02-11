@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
@@ -49,24 +50,45 @@ class _FavIconState extends State<FavIcon> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: whiteColor.withOpacity(0.5),
-        shape: BoxShape.circle,
-      ),
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isWebMobile = kIsWeb && screenWidth < 600;
+    final iconSize = isWebMobile ? 18.0 : 22.0;
+    final containerSize = iconSize + (isWebMobile ? 10 : 14);
+
+    return Positioned(
+      top: 8,
+      right: 8,
       child: ValueListenableBuilder<bool>(
         valueListenable: isInWishlist,
         builder: (context, value, child) {
-          return IconButton(
-            icon: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              child: Icon(
-                value ? Icons.favorite : Icons.favorite_border,
-                color: value ? red : blackColor,
-                key: ValueKey(value),
-              ),
+          return Container(
+            width: containerSize,
+            height: containerSize,
+            decoration: BoxDecoration(
+              color: whiteColor.withOpacity(0.8),
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 4,
+                  offset: const Offset(2, 2),
+                ),
+              ],
             ),
-            onPressed: _toggleWishlist,
+            child: IconButton(
+              iconSize: iconSize,
+              padding: EdgeInsets.zero,
+              icon: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: Icon(
+                  value ? Icons.favorite : Icons.favorite_border,
+                  color: value ? red : blackColor,
+                  key: ValueKey(value),
+                  size: iconSize,
+                ),
+              ),
+              onPressed: _toggleWishlist,
+            ),
           );
         },
       ),

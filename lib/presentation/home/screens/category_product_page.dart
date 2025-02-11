@@ -25,7 +25,16 @@ class CategoryProductsPage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppbar(
         title: categoryName,
+        fontColor: blackColor,
         backgroundColor: whiteColor,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: blackColor,
+            )),
       ),
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {

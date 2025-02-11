@@ -37,6 +37,7 @@ class _CategoryListState extends State<CategoryList> {
         ),
         title: 'Categories',
         fontSize: 25,
+        fontColor: blackColor,
         fontWeight: FontWeight.w400,
         backgroundColor: appbarWhiteColor,
       ),

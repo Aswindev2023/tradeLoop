@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trade_loop/core/constants/colors.dart';
@@ -214,24 +215,31 @@ class ActionButtonSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isWebMobile = kIsWeb && screenWidth < 600; // Detect mobile web
+    final buttonWidth = isWebMobile ? double.infinity : 250.0; // Adjust width
+
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: CustomButton(
-          label: 'Contact Seller',
-          //Navigate to Chat Section
-          onTap: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ChatPage(
-                  sellerId: sellerId,
-                  currentUserId: userId,
+        child: SizedBox(
+          width: buttonWidth, // Apply dynamic width
+          child: CustomButton(
+            label: 'Contact Seller',
+            //Navigate to Chat Section
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(
+                    sellerId: sellerId,
+                    currentUserId: userId,
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
