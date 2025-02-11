@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/firebase_options.dart';
 import 'package:trade_loop/presentation/authentication/screens/banned_page.dart';
 import 'package:trade_loop/presentation/authentication/screens/login_screen.dart';
@@ -10,10 +11,10 @@ import 'package:trade_loop/presentation/authentication/widgets/auth_state_handle
 import 'package:trade_loop/presentation/bloc/auth_bloc/auth_bloc_bloc.dart';
 import 'package:trade_loop/presentation/bloc/account_deletion_bloc/account_deletion_bloc.dart';
 import 'package:trade_loop/presentation/bloc/category_bloc/category_bloc.dart';
+import 'package:trade_loop/presentation/bloc/category_selection_cubit/category_selection_cubit.dart';
 import 'package:trade_loop/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:trade_loop/presentation/bloc/image_cubit/image_slider_cubit.dart';
 import 'package:trade_loop/presentation/bloc/location_cubit/location_cubit.dart';
-import 'package:trade_loop/presentation/bloc/tag_cubit/tag_cubit.dart';
 import 'package:trade_loop/presentation/bloc/home_bloc/home_bloc.dart';
 import 'package:trade_loop/presentation/bloc/message_bloc/message_bloc.dart';
 import 'package:trade_loop/presentation/bloc/product_bloc/product_bloc.dart';
@@ -87,22 +88,21 @@ class MyApp extends StatelessWidget {
         BlocProvider<BoolCubit>(
           create: (context) => BoolCubit(),
         ),
-        BlocProvider<TagCubit>(
-          create: (context) => TagCubit(),
-        ),
         BlocProvider<ImageSliderCubit>(
           create: (context) => ImageSliderCubit(),
         ),
         BlocProvider<LocationCubit>(
           create: (context) => LocationCubit(),
         ),
+        BlocProvider<CategorySelectionCubit>(
+          create: (context) => CategorySelectionCubit(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'TradeLoop',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 21, 0, 255)),
+          colorScheme: ColorScheme.fromSeed(seedColor: appThemecol),
           useMaterial3: true,
         ),
         home: const AuthStateHandler(

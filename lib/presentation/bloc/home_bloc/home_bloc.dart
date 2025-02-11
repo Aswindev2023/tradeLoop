@@ -9,6 +9,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeServices homeServices = HomeServices();
   HomeBloc() : super(HomeInitial()) {
+    //Load products
     on<LoadProductsEvent>((event, emit) async {
       emit(HomePageLoading());
       try {
@@ -20,6 +21,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(HomePageError('Failed to load products: $e'));
       }
     });
+
+    //Load products for category
     on<LoadCategoryProductsEvent>((event, emit) async {
       emit(HomePageLoading());
       try {
@@ -30,6 +33,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(HomePageError('Failed to load products by category: $e'));
       }
     });
+    //Search bloc
     on<SearchProductsEvent>((event, emit) async {
       emit(HomePageLoading());
       try {

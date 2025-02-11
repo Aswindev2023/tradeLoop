@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 
 class ProfileImage extends StatefulWidget {
   final String? initialImageUrl;
@@ -79,9 +80,9 @@ class _ProfileImageState extends State<ProfileImage> {
               bottom: 0,
               child: ClipOval(
                 child: Container(
-                  color: const Color.fromARGB(255, 32, 81, 228),
+                  color: editButtonCol,
                   child: IconButton(
-                    icon: const Icon(Icons.add_a_photo, color: Colors.white),
+                    icon: const Icon(Icons.add_a_photo, color: whiteColor),
                     onPressed: widget.isEditable ? _pickImage : null,
                   ),
                 ),

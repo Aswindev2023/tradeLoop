@@ -32,7 +32,7 @@ class RecentlyViewedRow extends StatelessWidget {
               child: CustomTextWidget(text: 'No recently viewed products'),
             );
           }
-
+          //Display recently viewed products
           return Column(
             children: [
               const Padding(
@@ -46,7 +46,7 @@ class RecentlyViewedRow extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               SizedBox(
-                height: cardWidth * 1.2, // Dynamically adjust the row height
+                height: cardWidth * 1.2,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: products.length,
@@ -62,6 +62,7 @@ class RecentlyViewedRow extends StatelessWidget {
                           ),
                         );
                       },
+                      //Display recently viewed products in card
                       child: Card(
                         elevation: 4,
                         shadowColor: blackColor.withOpacity(0.3),

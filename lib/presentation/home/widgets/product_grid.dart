@@ -32,7 +32,7 @@ class ProductGrid extends StatelessWidget {
       itemCount: products.length,
       itemBuilder: (context, index) {
         final product = products[index];
-
+        //Navigate to product detalis page
         return GestureDetector(
           onTap: () {
             Navigator.push(
@@ -43,6 +43,7 @@ class ProductGrid extends StatelessWidget {
               ),
             );
           },
+          //Display the products in card
           child: Card(
             elevation: 4,
             shadowColor: blackColor.withOpacity(0.3),

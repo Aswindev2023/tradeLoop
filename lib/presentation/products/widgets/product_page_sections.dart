@@ -127,6 +127,7 @@ class ProductLocationSection extends StatelessWidget {
   }
 }
 
+//Add Or Edit product button
 class ProductPageButtonSection extends StatelessWidget {
   final VoidCallback onPressed;
   final bool isLoading;

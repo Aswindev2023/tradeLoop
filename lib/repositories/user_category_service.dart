@@ -4,7 +4,7 @@ import 'package:trade_loop/presentation/products/model/category_model.dart';
 class UserCategoryService {
   final CollectionReference _categoryList =
       FirebaseFirestore.instance.collection('categories');
-
+  //Get All the categories
   Future<List<CategoryModel?>> getCategories() async {
     try {
       QuerySnapshot querySnapshot = await _categoryList.get();

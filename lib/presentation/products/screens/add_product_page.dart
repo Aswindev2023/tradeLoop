@@ -51,7 +51,7 @@ class _AddProductPageState extends State<AddProductPage> {
               color: iconColor,
             )),
         title: 'Add Product',
-        fontSize: 15,
+        fontSize: 25,
         centerTitle: true,
         backgroundColor: appbarColor,
       ),

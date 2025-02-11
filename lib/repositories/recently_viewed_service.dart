@@ -34,6 +34,7 @@ class RecentlyViewedService {
     }
   }
 
+  //Fetch recently viewed products of current user
   Future<List<HomePageProductModel>> getRecentlyViewedProducts(
       String userId) async {
     final snapshot =

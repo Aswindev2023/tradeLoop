@@ -34,7 +34,7 @@ class InputFieldWidget extends StatelessWidget {
             horizontal: isWeb ? 20.0 : 30.0,
           ),
           decoration: BoxDecoration(
-            color: const Color(0xFFedf0f8),
+            color: inputFieldwhiteCol,
             borderRadius: BorderRadius.circular(isWeb ? 10 : 20),
           ),
           child: TextFormField(
@@ -45,7 +45,7 @@ class InputFieldWidget extends StatelessWidget {
               border: InputBorder.none,
               hintText: hintText,
               hintStyle: TextStyle(
-                color: const Color(0xFFb2b7bf),
+                color: formfieldCol,
                 fontSize: isWeb ? 16.0 : 18.0,
               ),
               suffixIcon: getPasswordVisibilityIcon(

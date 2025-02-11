@@ -9,6 +9,7 @@ part 'warning_state.dart';
 class WarningBloc extends Bloc<WarningEvent, WarningState> {
   WarningServices warningServices = WarningServices();
   WarningBloc() : super(WarningInitial()) {
+    //Display user's warning messages
     on<FetchWarningsEvent>((event, emit) async {
       emit(WarningLoading());
       try {

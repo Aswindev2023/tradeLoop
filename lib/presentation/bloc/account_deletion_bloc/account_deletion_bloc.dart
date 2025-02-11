@@ -10,6 +10,7 @@ class AccountDeletionBloc
   final AccountDeletionService accountDeletionService =
       AccountDeletionService();
   AccountDeletionBloc() : super(AccountDeletionInitial()) {
+    //Delete User Account
     on<DeleteAccountRequested>((event, emit) async {
       emit(DeleteAccountInProgress());
       try {
@@ -21,7 +22,7 @@ class AccountDeletionBloc
         emit(DeleteAccountFailure(e.toString()));
       }
     });
-
+    //Re-authentication bloc
     on<ReauthenticateWithEmailPassword>((event, emit) async {
       emit(DeleteAccountInProgress());
       try {
@@ -32,6 +33,8 @@ class AccountDeletionBloc
         emit(DeleteAccountFailure('Reauthentication failed: ${e.toString()}'));
       }
     });
+
+    //Google re-authentication
     on<ReauthenticateWithGoogle>((event, emit) async {
       emit(DeleteAccountInProgress());
       try {

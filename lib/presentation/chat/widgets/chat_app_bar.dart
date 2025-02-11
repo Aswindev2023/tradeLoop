@@ -14,6 +14,7 @@ class ChatAppBar extends StatelessWidget {
         if (state is ChatPageDataLoaded) {
           return Row(
             children: [
+              //Display Seller's profile image
               CircleAvatar(
                 radius: 20,
                 backgroundImage: NetworkImage(
@@ -22,6 +23,7 @@ class ChatAppBar extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 15),
+              //Display Seller's name
               CustomTextWidget(
                 text: state.sellerName,
                 color: whiteColor,

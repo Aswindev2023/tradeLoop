@@ -9,6 +9,7 @@ part 'wish_list_state.dart';
 class WishListBloc extends Bloc<WishListEvent, WishListState> {
   final WishlistServices wishlistServices = WishlistServices();
   WishListBloc() : super(WishListInitial()) {
+    //Fetch wishlisted products
     on<FetchWishlistEvent>((event, emit) async {
       emit(WishlistLoading());
       try {
@@ -20,7 +21,7 @@ class WishListBloc extends Bloc<WishListEvent, WishListState> {
         emit(WishlistError(e.toString()));
       }
     });
-
+    //Add products to wishlist
     on<AddProductToWishlistEvent>((event, emit) async {
       try {
         await wishlistServices.addProductToWishlist(
@@ -30,6 +31,7 @@ class WishListBloc extends Bloc<WishListEvent, WishListState> {
         emit(WishlistError(e.toString()));
       }
     });
+    //Remove products from wishlist
     on<RemoveProductFromWishlistEvent>((event, emit) async {
       try {
         await wishlistServices.removeProductFromWishlist(

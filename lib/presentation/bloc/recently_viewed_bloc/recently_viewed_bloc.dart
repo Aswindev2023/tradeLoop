@@ -11,6 +11,7 @@ class RecentlyViewedBloc
   final RecentlyViewedService _service = RecentlyViewedService();
 
   RecentlyViewedBloc() : super(RecentlyViewedInitial()) {
+    //Add products to recently viewed list
     on<AddRecentlyViewed>((event, emit) async {
       try {
         await _service.addRecentlyViewedProduct(event.userId, event.productId);
@@ -21,7 +22,7 @@ class RecentlyViewedBloc
             'Failed to add recently viewed products'));
       }
     });
-
+    //Fetch recently viewed products
     on<FetchRecentlyViewed>((event, emit) async {
       emit(RecentlyViewedLoading());
       try {

@@ -51,6 +51,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(ProductError(message: 'Failed to load products: $e'));
       }
     });
+    //Saving products changes
     on<SaveProductChanges>((event, emit) async {
       emit(ProductLoading());
       try {
@@ -140,6 +141,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<UpdateImages>((event, emit) {
       if (state is ProductFormState) {
         final currentState = state as ProductFormState;
+
         emit(currentState.copyWith(pickedImages: event.imagePaths));
       }
     });

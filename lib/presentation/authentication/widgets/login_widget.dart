@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/presentation/authentication/widgets/google_signin_button.dart';
 import 'package:trade_loop/presentation/authentication/widgets/input_field_widget.dart';
 import 'package:trade_loop/presentation/authentication/widgets/loding_button.dart';
+import 'package:trade_loop/presentation/bloc/boolean_cubit/bool_cubit.dart';
 
 class LoginForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -34,7 +36,6 @@ class LoginFormState extends State<LoginForm> {
   String? emailError;
   String? passwordError;
   bool _obscurePassword = true;
-  bool _isLoading = false;
 
   Future<void> _handleLogin() async {
     if (!mounted) return;
@@ -47,14 +48,15 @@ class LoginFormState extends State<LoginForm> {
     });
 
     if (emailError == null && passwordError == null) {
-      setState(() => _isLoading = true);
+      final boolCubit = context.read<BoolCubit>();
+      boolCubit.setLoading(true);
 
       try {
         await Future.delayed(const Duration(seconds: 1));
         if (!mounted) return;
         widget.onLoginTap();
       } finally {
-        setState(() => _isLoading = false);
+        boolCubit.setLoading(false);
       }
     }
   }
@@ -92,6 +94,7 @@ class LoginFormState extends State<LoginForm> {
     );
   }
 
+  //Image Section
   Widget _buildHeaderImage(double screenWidth) {
     return SizedBox(
       width: screenWidth,
@@ -102,6 +105,7 @@ class LoginFormState extends State<LoginForm> {
     );
   }
 
+  //Login Form
   Widget _buildLoginForm(double screenWidth) {
     final labelFontSize = screenWidth < 400 ? 16.0 : 18.0;
 
@@ -156,16 +160,21 @@ class LoginFormState extends State<LoginForm> {
           const SizedBox(height: 30.0),
 
           // Login Button
-          LoadingButton(
-            isLoading: _isLoading,
-            text: 'Log In',
-            onTap: _handleLogin,
+          BlocBuilder<BoolCubit, bool>(
+            builder: (context, isLoading) {
+              return LoadingButton(
+                isLoading: isLoading,
+                text: 'Log In',
+                onTap: _handleLogin,
+              );
+            },
           ),
         ],
       ),
     );
   }
 
+//Forgot password
   Widget _buildForgotPasswordButton(double screenWidth) {
     return GestureDetector(
       onTap: widget.onForgotPasswordTap,
@@ -177,6 +186,7 @@ class LoginFormState extends State<LoginForm> {
     );
   }
 
+//Sign in with google
   Widget _buildGoogleSignInButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -186,6 +196,7 @@ class LoginFormState extends State<LoginForm> {
     );
   }
 
+// Sign up page
   Widget _buildSignUpSection(double screenWidth) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

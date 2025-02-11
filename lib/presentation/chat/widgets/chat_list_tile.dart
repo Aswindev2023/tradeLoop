@@ -32,6 +32,7 @@ class ChatListTile extends StatelessWidget {
         padding: const EdgeInsets.only(right: 20),
         child: const Icon(Icons.delete, color: whiteColor),
       ),
+      //Delete chat
       confirmDismiss: (direction) async {
         return await showDialog(
           context: context,
@@ -40,21 +41,25 @@ class ChatListTile extends StatelessWidget {
             content: 'Are you sure you want to delete this chat?',
             onConfirm: () {
               onDeleteChat(chat.chatId);
-              SnackbarUtils.showSnackbar(context, 'Deletion initiated.');
+
+              SnackbarUtils.showSnackbar(context, 'Chat Deleted Sucessfully.');
             },
           ),
         );
       },
       child: ListTile(
+        //Display seller's profile image
         leading: CircleAvatar(
           radius: 25,
           backgroundImage: NetworkImage(otherUser.imagePath ??
               'https://robohash.org/placeholder?set=set4&size=200x200'),
         ),
+        //Display seller's name
         title: Text(
           otherUser.name,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
+        //Display the last message
         subtitle: Text(
           chat.lastMessage ?? 'No messages yet',
           overflow: TextOverflow.ellipsis,
@@ -62,6 +67,7 @@ class ChatListTile extends StatelessWidget {
           style: const TextStyle(color: grey),
         ),
         trailing: Text(formatTimestamp(chat.lastMessageTime)),
+        //Navigate to the chating page between user & seller
         onTap: () {
           Navigator.push(
             context,

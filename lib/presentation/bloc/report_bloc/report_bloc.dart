@@ -9,6 +9,7 @@ part 'report_state.dart';
 class ReportBloc extends Bloc<ReportEvent, ReportState> {
   final ReportService _reportService = ReportService();
   ReportBloc() : super(ReportInitial()) {
+    //Submit user reports
     on<SubmitReportEvent>((event, emit) async {
       emit(ReportSubmitting());
       try {

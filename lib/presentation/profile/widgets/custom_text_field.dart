@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/input_field_utils.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -28,8 +29,7 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           filled: true,
-          fillColor:
-              controller.text.isEmpty ? Colors.grey[300] : Colors.transparent,
+          fillColor: controller.text.isEmpty ? grey[300] : Colors.transparent,
           border: const OutlineInputBorder(),
           suffixIcon: getPasswordVisibilityIcon(
             obscureText: isObscured,

@@ -9,6 +9,7 @@ part 'category_state.dart';
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final UserCategoryService categoryService = UserCategoryService();
   CategoryBloc() : super(CategoryInitial()) {
+    //Category Loading
     on<LoadCategoriesEvent>((event, emit) async {
       emit(CategoryLoading());
       try {

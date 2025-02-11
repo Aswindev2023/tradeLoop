@@ -31,10 +31,12 @@ class LocationMapWidget extends StatelessWidget {
             initialZoom: 13.0,
           ),
           children: [
+            // Loads map tiles from OpenStreetMap
             TileLayer(
               urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
               userAgentPackageName: 'com.example.trade_loop',
             ),
+            // Adds a marker to indicate the location
             MarkerLayer(
               markers: [
                 Marker(

@@ -27,6 +27,7 @@ class ImageSection extends StatelessWidget {
       padding: const EdgeInsets.only(top: 5),
       child: Stack(
         children: [
+          //Display sliding image
           ImageSliderWidget(imageUrls: product.imageUrls),
           Positioned(
             top: 8,
@@ -59,12 +60,14 @@ class ProductDetailsSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          //Product Name
           CustomTextWidget(
             text: product.name,
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
           ),
           const SizedBox(height: 8.0),
+          //Product Price
           CustomTextWidget(
             text: '₹${parsedPrice.toStringAsFixed(2)}',
             fontSize: 20.0,
@@ -73,6 +76,7 @@ class ProductDetailsSection extends StatelessWidget {
           ),
           Divider(color: grey[300]),
           const SizedBox(height: 10.0),
+          //Display Description heading & Description content
           const CustomTextWidget(
             text: 'Description',
             fontSize: 25,
@@ -85,6 +89,7 @@ class ProductDetailsSection extends StatelessWidget {
             color: grey800,
           ),
           const SizedBox(height: 10.0),
+          //Display Posted Date
           CustomTextWidget(
             text:
                 'Posted on ${DateFormat('d MMM yyyy').format(DateTime.parse(product.datePosted))}',
@@ -92,24 +97,28 @@ class ProductDetailsSection extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
           const SizedBox(height: 10.0),
+          //Display Availability
           CustomTextWidget(
             text: product.isAvailable ? 'Available' : 'Out of Stock',
             fontSize: 16.0,
             color: blueGrey,
           ),
           const SizedBox(height: 10.0),
+          //Display Condition
           CustomTextWidget(
             text: 'Condition: ${product.condition}',
             fontSize: 16.0,
             color: blueGrey,
           ),
           const SizedBox(height: 10.0),
+          //Display Category Name
           CustomTextWidget(
             text: 'Category: ${product.categoryName}',
             fontSize: 16.0,
             fontWeight: FontWeight.w600,
           ),
           const SizedBox(height: 8.0),
+          //Display Tags
           Wrap(
             spacing: 8.0,
             children: product.tags
@@ -140,6 +149,7 @@ class LocationSection extends StatelessWidget {
             children: [
               const Icon(Icons.location_on, color: red),
               const SizedBox(width: 8.0),
+              //Location Name
               Expanded(
                 child: CustomTextWidget(
                   text: 'Location: ${product.locationName}',
@@ -150,6 +160,7 @@ class LocationSection extends StatelessWidget {
             ],
           ),
         ),
+        //Display Location Snippet
         LocationMapWidget(
           latitude: product.location!.latitude,
           longitude: product.location!.longitude,
@@ -209,6 +220,7 @@ class ActionButtonSection extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: CustomButton(
           label: 'Contact Seller',
+          //Navigate to Chat Section
           onTap: () {
             Navigator.pushReplacement(
               context,

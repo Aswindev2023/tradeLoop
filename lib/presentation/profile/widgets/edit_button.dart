@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 
 class EditButton extends StatelessWidget {
   final bool isEditing;
@@ -17,7 +18,7 @@ class EditButton extends StatelessWidget {
       height: 60,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 16, 95, 214),
+          backgroundColor: editButtonCol,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -28,7 +29,7 @@ class EditButton extends StatelessWidget {
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: whiteColor,
           ),
         ),
       ),

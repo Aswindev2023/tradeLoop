@@ -11,6 +11,7 @@ class ProductDetailsBloc
   final ProductsService productsService = ProductsService();
 
   ProductDetailsBloc() : super(ProductDetailsInitial()) {
+    //Fetch products details
     on<FetchProductDetailsEvent>((event, emit) async {
       emit(ProductDetailsLoading());
       try {

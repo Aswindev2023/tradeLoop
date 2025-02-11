@@ -91,7 +91,7 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
         emit(AuthFailure(message: 'Logout Failed: ${e.toString()}'));
       }
     });
-
+    //Check User's Authentication Status
     on<CheckAuthStatus>((event, emit) async {
       if (_isCheckingAuth) return;
       emit(AuthLoading());
@@ -105,7 +105,6 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
             if (isBanned) {
               // If user is banned, emit UserBanned state
               emit(const UserBanned(message: 'Your account has been banned.'));
-              // Optionally log out the user
               await _authServices.signOut();
             } else {
               // User is authenticated and not banned

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trade_loop/core/constants/colors.dart';
 
 class CustomTileWidget extends StatelessWidget {
   final String title;
@@ -16,7 +17,7 @@ class CustomTileWidget extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 249, 249, 249),
+          color: customTileCol,
           borderRadius: BorderRadius.circular(7),
         ),
         child: ListTile(

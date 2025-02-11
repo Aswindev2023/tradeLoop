@@ -25,6 +25,7 @@ class SettingsPage extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 15),
+            //Navigate to About Us page
             CustomTileWidget(
               title: 'About Us',
               onTap: () {
@@ -37,6 +38,7 @@ class SettingsPage extends StatelessWidget {
               },
             ),
             const SizedBox(height: 15),
+            //Navigate to Terms & Policies page
             CustomTileWidget(
               title: 'Terms & Policies',
               onTap: () {
@@ -49,6 +51,7 @@ class SettingsPage extends StatelessWidget {
               },
             ),
             const SizedBox(height: 15),
+            //Navigate to Delete Account Page
             CustomTileWidget(
               title: 'Delete Account',
               onTap: () {

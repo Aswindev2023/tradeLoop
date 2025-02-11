@@ -21,6 +21,7 @@ class ViewListings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Trigger an event to load the user's products when the page builds
     context.read<ProductBloc>().add(LoadProducts(userId: userId!));
     return Scaffold(
       appBar: const CustomAppbar(
@@ -31,6 +32,7 @@ class ViewListings extends StatelessWidget {
         fontWeight: FontWeight.bold,
         backgroundColor: appbarColor,
       ),
+      // Sidebar for Web View
       drawer: (kIsWeb)
           ? SideNavigationBarWidget(selectedIndex: selectedIndex)
           : null,
@@ -40,6 +42,7 @@ class ViewListings extends StatelessWidget {
         child: BlocConsumer<ProductBloc, ProductState>(
           listener: (context, state) {
             if (state is ProductAddedSuccess) {
+              // Reload the products when a new product is successfully added
               context.read<ProductBloc>().add(LoadProducts(userId: userId!));
             }
           },
@@ -59,6 +62,7 @@ class ViewListings extends StatelessWidget {
                   final product = products[index];
 
                   return GestureDetector(
+                    // Navigate to product details page
                     onTap: () {
                       Navigator.push(
                         context,
@@ -80,6 +84,7 @@ class ViewListings extends StatelessWidget {
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
                         onPressed: () {
+                          // Show confirmation dialog before deleting a product
                           showDialog(
                             context: context,
                             builder: (context) {
@@ -88,6 +93,7 @@ class ViewListings extends StatelessWidget {
                                 content:
                                     'Are you sure you want to delete this product?',
                                 onConfirm: () {
+                                  // Dispatch delete event
                                   context.read<ProductBloc>().add(DeleteProduct(
                                         productId: product.productId!,
                                         imageUrls: product.imageUrls,
@@ -114,11 +120,13 @@ class ViewListings extends StatelessWidget {
           },
         ),
       ),
+      // Floating Action Button to Add a New Product
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final result = await Navigator.push(context,
               MaterialPageRoute(builder: (context) => const AddProductPage()));
           if (result == true) {
+            // Reload products after adding a new product
             WidgetsBinding.instance.addPostFrameCallback((_) {
               context.read<ProductBloc>().add(LoadProducts(userId: userId!));
             });
@@ -131,6 +139,7 @@ class ViewListings extends StatelessWidget {
           size: 40,
         ),
       ),
+      // Bottom Navigation Bar for Mobile View
       bottomNavigationBar: (kIsWeb)
           ? null
           : BottomNavigationBarWidget(

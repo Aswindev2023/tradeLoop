@@ -27,6 +27,7 @@ class InputFieldsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        // Email input field
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 400),
           child: InputFieldWidget(
@@ -36,6 +37,7 @@ class InputFieldsSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 15.0),
+        // Password input field
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 400),
           child: InputFieldWidget(
@@ -51,6 +53,7 @@ class InputFieldsSection extends StatelessWidget {
   }
 }
 
+// A section that displays the Google Sign-In button.
 class GoogleSignInSection extends StatelessWidget {
   const GoogleSignInSection({super.key});
 
@@ -69,6 +72,7 @@ class GoogleSignInSection extends StatelessWidget {
   }
 }
 
+// A section that contains a submit button for reauthentication.
 class ReauthButtonsSection extends StatelessWidget {
   final VoidCallback onSubmit;
 

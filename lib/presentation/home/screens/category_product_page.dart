@@ -38,6 +38,7 @@ class CategoryProductsPage extends StatelessWidget {
             } else {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
+                //Display products under each category in grid format
                 child: ProductGrid(products: state.products),
               );
             }

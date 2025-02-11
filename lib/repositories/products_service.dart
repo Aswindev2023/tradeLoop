@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:trade_loop/presentation/products/model/product_model.dart';
 import 'package:trade_loop/repositories/product_image_upload_service.dart';
 
 class ProductsService {
   final CollectionReference _productCollection =
       FirebaseFirestore.instance.collection('products');
-
+  //Add product to firestore
   Future<ProductModel> addProduct(ProductModel product) async {
     try {
       final jsonMap = product.toJson();
@@ -21,6 +20,7 @@ class ProductsService {
     }
   }
 
+  //Get products of current user
   Future<List<ProductModel>> getProductsByUserId(String userId) async {
     try {
       QuerySnapshot querySnapshot =
@@ -34,6 +34,7 @@ class ProductsService {
     }
   }
 
+  //Get product details of current user's product
   Future<ProductModel?> getProductDetailsById(String productId) async {
     try {
       DocumentSnapshot doc = await _productCollection.doc(productId).get();
@@ -47,6 +48,7 @@ class ProductsService {
     }
   }
 
+  //Delete product from firestore
   Future<void> deleteProduct(String productId, List<String> imageUrls) async {
     try {
       ProductImageUploadService().deleteImages(imageUrls);
@@ -57,6 +59,7 @@ class ProductsService {
     }
   }
 
+  //Update the product details
   Future<ProductModel> updateProduct(ProductModel product) async {
     try {
       if (product.productId == null) {
@@ -68,14 +71,9 @@ class ProductsService {
       List<String?> newImageUrls = [];
 
       if (product.imageUrls.isNotEmpty) {
-        if (oldImageUrls.isEmpty ||
-            !listEquals(oldImageUrls, product.imageUrls)) {
-          await ProductImageUploadService().deleteImages(oldImageUrls);
-          newImageUrls =
-              await ProductImageUploadService().uploadImages(product.imageUrls);
-        } else {
-          newImageUrls = oldImageUrls;
-        }
+        await ProductImageUploadService().deleteImages(oldImageUrls);
+        newImageUrls =
+            await ProductImageUploadService().uploadImages(product.imageUrls);
       } else {
         newImageUrls = oldImageUrls;
       }

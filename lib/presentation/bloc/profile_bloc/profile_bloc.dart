@@ -12,6 +12,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ImageUploadService imageUploadService = ImageUploadService();
 
   ProfileBloc() : super(ProfileInitial()) {
+    //Get user's profile
     on<ProfilePageLoaded>((event, emit) async {
       emit(ProfileLoading());
       try {
@@ -21,13 +22,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         emit(ProfileError(message: 'Failed to load profile: ${e.toString()}'));
       }
     });
+    //Start edit user profile event
     on<EditProfilePressed>((event, emit) {
       if (state is ProfileLoaded) {
         final user = (state as ProfileLoaded).user;
         emit(ProfileEditMode(user: user));
       }
     });
-
+    //Picking image for profile
     on<ProfileImagePicked>((event, emit) {
       if (state is ProfileEditMode) {
         final currentState = state as ProfileEditMode;
@@ -35,7 +37,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         emit(currentState.copyWith(pickedImagePath: event.imagePath));
       }
     });
-
+    //Save edited data
     on<SaveProfileChanges>((event, emit) async {
       try {
         String? newImageUrl;

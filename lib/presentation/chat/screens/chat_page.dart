@@ -40,11 +40,13 @@ class ChatPage extends StatelessWidget {
             );
           },
         ),
+        //Display the appbar with seller's info
         title: const ChatAppBar(),
       ),
       body: BlocBuilder<ChatBloc, ChatState>(
         builder: (context, state) {
           if (state is ChatPageDataLoaded) {
+            //Display the section for messages between user & seller
             return ChatMessagesSection(
               currentUserId: currentUserId,
               chatId: state.chatId,

@@ -4,6 +4,7 @@ import 'package:trade_loop/presentation/authentication/models/user_model.dart';
 class UserRepository {
   final CollectionReference _usersCollection =
       FirebaseFirestore.instance.collection('users');
+  //Store user's data to firestore
   Future<void> storeUser(UserModel user) async {
     try {
       assert(user.uid != null, 'User ID cannot be null.');
@@ -14,6 +15,7 @@ class UserRepository {
     }
   }
 
+  //Fetch user's details
   Future<UserModel?> getUser(String uid) async {
     try {
       final doc = await _usersCollection.doc(uid).get();
@@ -27,6 +29,7 @@ class UserRepository {
     }
   }
 
+  //update user data
   Future<void> updateUser(
       String uid, Map<String, dynamic> updatedFields) async {
     try {

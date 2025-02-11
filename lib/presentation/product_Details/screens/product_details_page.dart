@@ -26,6 +26,7 @@ class ProductDetailsPage extends StatelessWidget {
       appBar: CustomAppbar(
         title: 'Product Details',
         backgroundColor: appbarColor,
+        //Navigate back to homepage
         leading: IconButton(
             onPressed: () {
               context
@@ -47,25 +48,31 @@ class ProductDetailsPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ProductDetailsLoaded) {
             final product = state.product;
-
+            //Product Details section
             return SingleChildScrollView(
               child: Column(
                 children: [
+                  //Image section
                   ImageSection(product: product, productId: productId),
+                  //General Details such as name,price,description,category,tags..etc
                   ProductDetailsSection(product: product),
                   const SizedBox(
                     height: 10,
                   ),
+                  //Display Location
                   LocationSection(product: product),
+                  //Navigate to seller's profile
                   ViewSellerSection(
                     currentUser: userId,
                     sellerId: product.sellerId,
                   ),
                   const SizedBox(height: 16.0),
+                  //Display the recently viewed products
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: RecentlyViewedRow(userId: userId),
                   ),
+                  //Contact Seller Button
                   ActionButtonSection(
                     userId: userId,
                     sellerId: product.sellerId,

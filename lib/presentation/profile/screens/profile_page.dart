@@ -28,6 +28,7 @@ class ProfilePage extends StatelessWidget {
     context.read<ProfileBloc>().add(ProfilePageLoaded(userId: userId!));
 
     return BlocListener<AuthBlocBloc, AuthBlocState>(
+      // Handle logout event
       listener: (context, state) {
         if (state is AuthLoggedOut) {
           Navigator.pushReplacement(
@@ -47,6 +48,7 @@ class ProfilePage extends StatelessWidget {
           fontSize: 30,
           backgroundColor: appbarColor,
         ),
+        // Show side navigation bar for web version
         drawer: (kIsWeb)
             ? SideNavigationBarWidget(selectedIndex: selectedIndex)
             : null,
@@ -58,11 +60,13 @@ class ProfilePage extends StatelessWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 15),
+                    // Display user's profile image
                     Align(
                       alignment: Alignment.topCenter,
                       child: _buildProfileImage(context),
                     ),
                     const SizedBox(height: 20),
+                    // Build profile option tiles
                     ..._buildProfileOptions(context, userId),
                   ],
                 ),
@@ -70,6 +74,7 @@ class ProfilePage extends StatelessWidget {
             );
           },
         ),
+        // Show bottom navigation bar for mobile version
         bottomNavigationBar: (kIsWeb)
             ? null
             : BottomNavigationBarWidget(
@@ -79,6 +84,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+  // List of profile options with navigation
   List<Widget> _buildProfileOptions(BuildContext context, String userId) {
     return [
       CustomTileWidget(
@@ -136,6 +142,7 @@ class ProfilePage extends StatelessWidget {
     ];
   }
 
+  // Builds the profile image widget based on the profile state
   Widget _buildProfileImage(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
@@ -150,6 +157,7 @@ class ProfilePage extends StatelessWidget {
             ),
           );
         } else if (state is ProfileLoading) {
+          // Show a default profile image in case of error
           return const ClipOval(
             child: SizedBox(
               width: 200,
@@ -171,6 +179,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+  // Shows a logout confirmation dialog
   void _showLogoutDialog(BuildContext context) {
     final rootContext = context;
     showDialog(

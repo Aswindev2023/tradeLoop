@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 const authButtonColor = Color.fromARGB(255, 14, 58, 237);
 const floatButtonCol = Color.fromARGB(255, 62, 28, 255);
+const inputFieldwhiteCol = Color(0xFFedf0f8);
+const formfieldCol = Color(0xFFb2b7bf);
 const authButtonTextColor = Colors.white;
 const priceColor = Color.fromARGB(255, 51, 0, 255);
 const appbarColor = Color.fromARGB(255, 17, 28, 233);
@@ -33,3 +35,6 @@ const messageInputCol = Color.fromARGB(255, 207, 206, 206);
 const allCategoryCol = Color.fromARGB(255, 57, 26, 255);
 const tagBackCol = Color.fromARGB(255, 211, 233, 251);
 const faqTextColor = Color.fromARGB(255, 93, 93, 93);
+const customTileCol = Color.fromARGB(255, 249, 249, 249);
+const editButtonCol = Color.fromARGB(255, 16, 95, 214);
+const appThemecol = Color.fromARGB(255, 21, 0, 255);

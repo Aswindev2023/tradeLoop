@@ -9,6 +9,7 @@ import 'package:trade_loop/presentation/authentication/widgets/input_field_widge
 
 class ForgotPassword extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
+  // Form key for validation
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   ForgotPassword({super.key});
@@ -24,10 +25,12 @@ class ForgotPassword extends StatelessWidget {
       ),
       body: BlocListener<AuthBlocBloc, AuthBlocState>(
         listener: (context, state) {
+          // If password reset is successful, navigate to the login screen
           if (state is PasswordResetSuccess) {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const LogIn()));
           } else if (state is AuthFailure) {
+            // If there is an error, show a snackbar with the failure message
             SnackbarUtils.showSnackbar(
               context,
               state.message,
@@ -45,6 +48,7 @@ class ForgotPassword extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
+                      // Display an image
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,
                         height: MediaQuery.of(context).size.height * 0.3,
@@ -54,6 +58,7 @@ class ForgotPassword extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 30),
+                      // Email input form
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: isWideScreen ? 32.0 : 16.0),
@@ -78,6 +83,7 @@ class ForgotPassword extends StatelessWidget {
                                   controller: _emailController,
                                   hintText: 'Email',
                                 ),
+                                // Send Email button
                                 const SizedBox(height: 20.0),
                                 SizedBox(
                                   width: isWideScreen

@@ -4,9 +4,34 @@ import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:trade_loop/presentation/chat/widgets/chat_list_view.dart';
 
-class ChatListBody extends StatelessWidget {
+class ChatListBody extends StatefulWidget {
   final String currentUserId;
   const ChatListBody({required this.currentUserId, super.key});
+
+  @override
+  State<ChatListBody> createState() => _ChatListBodyState();
+}
+
+class _ChatListBodyState extends State<ChatListBody> {
+  @override
+  void initState() {
+    super.initState();
+    _fetchChats();
+  }
+
+  void _fetchChats() {
+    context.read<ChatBloc>().add(FetchUserChatsEvent(widget.currentUserId));
+  }
+
+  void _deleteChat(String chatId) {
+    final chatBloc = context.read<ChatBloc>();
+    chatBloc.add(DeleteChatEvent(chatId));
+
+    // Ensure the list is refetched after deletion
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _fetchChats();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +42,8 @@ class ChatListBody extends StatelessWidget {
         } else if (state is ChatsWithDetailsLoaded) {
           return ChatListView(
             chatsWithDetails: state.chatsWithDetails,
-            currentUserId: currentUserId,
-            onDeleteChat: (String chatId) {
-              context.read<ChatBloc>().add(DeleteChatEvent(chatId));
-            },
+            currentUserId: widget.currentUserId,
+            onDeleteChat: _deleteChat,
           );
         } else if (state is ChatError) {
           return const Center(

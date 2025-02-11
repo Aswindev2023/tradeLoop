@@ -32,7 +32,7 @@ class HomePageState extends State<HomePage> {
     super.initState();
     userId = FirebaseAuth.instance.currentUser!.uid;
     context.read<HomeBloc>().add(LoadProductsEvent(userId));
-
+    //Search Listener
     _searchController.addListener(() {
       final query = _searchController.text;
       context.read<BoolCubit>().updateSearchState(query);
@@ -60,6 +60,7 @@ class HomePageState extends State<HomePage> {
         fontSize: 30,
         fontWeight: FontWeight.bold,
         actions: [
+          //Display filter icon during search
           BlocBuilder<BoolCubit, bool>(
             builder: (context, isSearching) {
               return Visibility(
@@ -77,6 +78,7 @@ class HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      //Display navigation section for web
       drawer: (kIsWeb)
           ? SideNavigationBarWidget(selectedIndex: selectedIndex)
           : null,
@@ -100,6 +102,7 @@ class HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 10),
             const Divider(),
+            //Display category section & text when not searching
             BlocBuilder<BoolCubit, bool>(
               builder: (context, isSearching) {
                 return isSearching
@@ -156,6 +159,7 @@ class HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      //Display navigationbar for android
       bottomNavigationBar: (kIsWeb)
           ? null
           : BottomNavigationBarWidget(

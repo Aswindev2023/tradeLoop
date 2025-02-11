@@ -27,7 +27,6 @@ class _EditProductPageState extends State<EditProductPage> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _conditionController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -158,23 +157,24 @@ class _EditProductPageState extends State<EditProductPage> {
         context.read<BoolCubit>().setLoading(true);
         if (state.selectedCategory == null) {
           SnackbarUtils.showSnackbar(context, 'Please select a category');
-          _resetLoadingState;
+          _resetLoadingState();
           return;
         }
         if (state.pickedLocation == null) {
           SnackbarUtils.showSnackbar(context, 'Please select a location');
-          _resetLoadingState;
+          _resetLoadingState();
           return;
         }
+
         if (state.pickedImages.isEmpty) {
           SnackbarUtils.showSnackbar(
               context, 'Please select at least one image');
-          _resetLoadingState;
+          _resetLoadingState();
           return;
         }
         if (!FormValidators.isValidPrice(_priceController.text)) {
           SnackbarUtils.showSnackbar(context, 'Please enter valid price');
-          _resetLoadingState;
+          _resetLoadingState();
           return;
         }
 

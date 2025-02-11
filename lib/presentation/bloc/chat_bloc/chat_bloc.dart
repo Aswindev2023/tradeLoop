@@ -12,6 +12,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final UserRepository userRepository = UserRepository();
   final HomeServices homeServices = HomeServices();
   ChatBloc() : super(ChatInitial()) {
+    //Fetch user's chats
     on<FetchUserChatsEvent>((event, emit) async {
       emit(ChatsLoading());
       try {
@@ -23,7 +24,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(ChatError("Failed to fetch chats: $e"));
       }
     });
-
+    //Create new chats
     on<CreateChatEvent>((event, emit) async {
       try {
         await chatService.createChat(
@@ -35,7 +36,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(ChatError("Failed to create chat: $e"));
       }
     });
-
+    //Get user's chat list data
     on<LoadChatPageDataEvent>((event, emit) async {
       emit(ChatsLoading());
       try {
@@ -62,6 +63,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(ChatError("Failed to load chat page data: $e"));
       }
     });
+    //Delete chat
     on<DeleteChatEvent>((event, emit) async {
       try {
         emit(ChatsLoading());

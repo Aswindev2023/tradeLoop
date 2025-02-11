@@ -40,6 +40,7 @@ class WarningMessagesPage extends StatelessWidget {
             if (state is WarningLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is WarningLoaded) {
+              /// Display the list of warnings if data is successfully loaded
               final warnings = state.warnings;
               if (warnings.isEmpty) {
                 return const Center(child: Text('No warnings found.'));
@@ -51,11 +52,13 @@ class WarningMessagesPage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final warning = warnings[index];
                     return ListTile(
+                      /// Display the warning title in bold
                       title: CustomTextWidget(
                           text: warning.title, fontWeight: FontWeight.bold),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          /// Display the warning message and timestamp
                           CustomTextWidget(text: warning.message),
                           const SizedBox(height: 8),
                           CustomTextWidget(
@@ -67,6 +70,8 @@ class WarningMessagesPage extends StatelessWidget {
                       isThreeLine: true,
                     );
                   },
+
+                  /// Divider between warning messages for better UI clarity
                   separatorBuilder: (context, index) => Divider(
                     color: grey[300],
                     thickness: 1,

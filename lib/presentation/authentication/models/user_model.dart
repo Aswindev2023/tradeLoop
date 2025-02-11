@@ -53,7 +53,7 @@ class UserModel {
       state: state ?? this.state,
       postalCode: postalCode ?? this.postalCode,
       country: country ?? this.country,
-      isBanned: isBanned ?? this.isBanned, // Handle banned status
+      isBanned: isBanned ?? this.isBanned,
     );
   }
 

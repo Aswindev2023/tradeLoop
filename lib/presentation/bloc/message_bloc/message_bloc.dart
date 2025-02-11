@@ -10,6 +10,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   final ChatServices chatService = ChatServices();
 
   MessageBloc() : super(MessageInitial()) {
+    //fetch user's messages
     on<FetchMessagesEvent>((event, emit) async {
       emit(MessagesLoading());
       try {
@@ -28,7 +29,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         emit(MessageError("Failed to fetch messages: $e"));
       }
     });
-
+    //Send messages
     on<SendMessageEvent>((event, emit) async {
       try {
         await chatService.sendMessage(event.chatId, event.message);
@@ -36,7 +37,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         emit(MessageError("Failed to send message: $e"));
       }
     });
-
+    //Delete messages
     on<DeleteMessagesEvent>((event, emit) async {
       emit(MessagesLoading());
       try {

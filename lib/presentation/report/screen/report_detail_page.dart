@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trade_loop/core/constants/colors.dart';
+import 'package:trade_loop/core/utils/custom_appbar.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/core/utils/custom_button.dart';
 import 'package:trade_loop/core/utils/snackbar_utils.dart';
@@ -29,8 +31,19 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Report Details'),
+      appBar: CustomAppbar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: blackColor,
+            )),
+        title: 'Report Details',
+        backgroundColor: whiteColor,
+        fontColor: blackColor,
+        fontSize: 20,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -62,7 +75,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
               },
             ),
             const SizedBox(height: 20),
-
+            //Submit Button
             CustomButton(
               label: 'Submit Report',
               onTap: () {

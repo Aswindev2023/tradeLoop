@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_loop/core/constants/colors.dart';
 import 'package:trade_loop/core/utils/custom_text_widget.dart';
 import 'package:trade_loop/core/utils/form_validation_message.dart';
 import 'package:trade_loop/presentation/authentication/widgets/input_field_widget.dart';
 import 'package:trade_loop/presentation/authentication/widgets/loding_button.dart';
+import 'package:trade_loop/presentation/bloc/boolean_cubit/bool_cubit.dart';
 
 class SignupWidget extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -32,7 +34,6 @@ class SignupWidgetState extends State<SignupWidget> {
   String? passwordError;
   String? nameError;
   bool _obscurePassword = true;
-  bool _isLoading = false;
 
   Future<void> _handleSignin() async {
     String? emailValidationError =
@@ -49,17 +50,14 @@ class SignupWidgetState extends State<SignupWidget> {
     });
 
     if (emailError == null && passwordError == null && nameError == null) {
-      setState(() {
-        _isLoading = true;
-      });
+      final boolCubit = context.read<BoolCubit>();
+      boolCubit.setLoading(true);
 
       try {
         await Future.delayed(const Duration(seconds: 1));
         widget.onSignUpTap();
       } finally {
-        setState(() {
-          _isLoading = false;
-        });
+        boolCubit.setLoading(false);
       }
     }
   }
@@ -110,11 +108,15 @@ class SignupWidgetState extends State<SignupWidget> {
                   toggleVisibility: _togglePasswordVisibility,
                 ),
                 const SizedBox(height: 30.0),
-                LoadingButton(
-                  isLoading: _isLoading,
-                  text: 'Sign Up',
-                  onTap: _handleSignin,
-                )
+                BlocBuilder<BoolCubit, bool>(
+                  builder: (context, isLoading) {
+                    return LoadingButton(
+                      isLoading: isLoading,
+                      text: 'Sign In',
+                      onTap: _handleSignin,
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -126,6 +128,7 @@ class SignupWidgetState extends State<SignupWidget> {
   }
 }
 
+//Image section
 class _SignupHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -139,6 +142,7 @@ class _SignupHeader extends StatelessWidget {
   }
 }
 
+//Input Section for each text fields
 class InputSection extends StatelessWidget {
   final String label;
   final TextEditingController controller;
@@ -181,6 +185,7 @@ class InputSection extends StatelessWidget {
   }
 }
 
+//Navigate to login page
 class _SignupFooter extends StatelessWidget {
   final VoidCallback onLogInTap;
 

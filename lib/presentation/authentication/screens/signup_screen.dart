@@ -24,6 +24,7 @@ class Signup extends StatelessWidget {
       backgroundColor: whiteColor,
       body: BlocConsumer<AuthBlocBloc, AuthBlocState>(
         listener: (context, state) {
+          //After Success Navigate to login page
           if (state is AuthSuccess) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.pushReplacement(
@@ -49,6 +50,7 @@ class Signup extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
+                  //Sign up Widget Session
                   child: SignupWidget(
                     formKey: _formKey,
                     emailController: _emailController,
@@ -74,6 +76,7 @@ class Signup extends StatelessWidget {
                         }
                       }
                     },
+                    //Navigate to login page
                     onLogInTap: () {
                       Navigator.pushReplacement(
                         context,

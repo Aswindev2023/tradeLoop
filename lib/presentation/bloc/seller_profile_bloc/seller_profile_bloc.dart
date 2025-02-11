@@ -10,6 +10,7 @@ part 'seller_profile_state.dart';
 class SellerProfileBloc extends Bloc<SellerProfileEvent, SellerProfileState> {
   final SellerService sellerService = SellerService();
   SellerProfileBloc() : super(SellerProfileInitial()) {
+    //Fetch Seller's profile data
     on<FetchSellerProfile>((event, emit) async {
       emit(SellerProfileLoading());
       try {

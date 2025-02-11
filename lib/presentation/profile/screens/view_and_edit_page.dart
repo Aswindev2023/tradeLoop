@@ -14,6 +14,7 @@ class ViewAndEditPage extends StatefulWidget {
 }
 
 class _ViewAndEditPageState extends State<ViewAndEditPage> {
+  // Controllers for handling text input fields
   late TextEditingController nameController;
   late TextEditingController emailController;
   late TextEditingController mobileController;
@@ -36,7 +37,7 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
     stateController = TextEditingController();
     countryController = TextEditingController();
     postalController = TextEditingController();
-
+    // Fetch user details when the page loads
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       context.read<ProfileBloc>().add(ProfilePageLoaded(userId: user.uid));
@@ -77,6 +78,7 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state is ProfileLoaded) {
+            // Update text fields with user data
             nameController.text = state.user.name;
             emailController.text = state.user.email;
             houseController.text = state.user.houseName ?? '';
@@ -98,7 +100,9 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
+                  // Displays user profile image
                   ImageSection(state: state),
+                  // Displays and allows editing of user details
                   TextFieldsSection(
                     state: state,
                     nameController: nameController,
@@ -111,6 +115,7 @@ class _ViewAndEditPageState extends State<ViewAndEditPage> {
                     countryController: countryController,
                     mobileController: mobileController,
                   ),
+                  // Buttons for updating profile information
                   ButtonSection(
                     state: state,
                     nameController: nameController,

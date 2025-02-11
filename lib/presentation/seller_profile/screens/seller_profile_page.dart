@@ -40,6 +40,7 @@ class _SellerProfilePageState extends State<SellerProfilePage> {
         title: 'Seller Profile',
         backgroundColor: appbarColor,
         actions: [
+          //Report Seller Section
           PopupMenuButton<String>(
             onSelected: (value) {
               if (value == 'report') {
@@ -82,11 +83,13 @@ class _SellerProfilePageState extends State<SellerProfilePage> {
                           EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
                       child: Row(
                         children: [
+                          //Display Seller Image
                           SellerProfileImg(
                             size: screenWidth * 0.2,
                             imageUrl: state.seller.imagePath,
                           ),
                           SizedBox(width: screenWidth * 0.06),
+                          //Display Seller Name
                           Flexible(
                             fit: FlexFit.loose,
                             child: Text(

@@ -3,7 +3,7 @@ import 'package:trade_loop/presentation/profile/model/warning_message_model.dart
 
 class WarningServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  //Fetch entire warnings of current user
   Future<List<WarningMessageModel>> fetchWarnings(String userId) async {
     try {
       QuerySnapshot querySnapshot = await _firestore

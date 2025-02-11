@@ -5,6 +5,7 @@ import 'package:trade_loop/presentation/authentication/models/user_model.dart';
 import 'package:trade_loop/presentation/chat/models/chat_model.dart';
 import 'package:trade_loop/presentation/chat/widgets/chat_list_tile.dart';
 
+//Section for displaying list of chats user has:
 class ChatListView extends StatelessWidget {
   final List<Map<String, dynamic>> chatsWithDetails;
   final String currentUserId;
@@ -37,7 +38,7 @@ class ChatListView extends StatelessWidget {
 
         final otherUser =
             participants.firstWhere((user) => user!.uid != currentUserId);
-
+        //Section for each list tile for showing chats
         return ChatListTile(
           chat: chat,
           otherUser: otherUser!,

@@ -7,6 +7,7 @@ class CategoryModel {
     required this.name,
   });
 
+  /// Factory constructor to create a CategoryModel instance from Firestore data.
   factory CategoryModel.fromFirestore(Map<String, dynamic> json, String docId) {
     return CategoryModel(
       id: docId,
@@ -14,12 +15,14 @@ class CategoryModel {
     );
   }
 
+  /// Converts the CategoryModel instance into a Firestore-compatible Map.
   Map<String, dynamic> toFirestore() {
     return {
       'name': name,
     };
   }
 
+  /// Creates a copy of the current CategoryModel with optional updated values.
   CategoryModel copyWith({
     String? id,
     String? name,

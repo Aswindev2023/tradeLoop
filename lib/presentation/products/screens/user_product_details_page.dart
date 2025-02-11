@@ -60,12 +60,16 @@ class _UserProductDetailsPageState extends State<UserProductDetailsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  //Display user's product images
                   ImageSection(product: product, productId: widget.productId),
                   const SizedBox(height: 16.0),
+                  //Display product details
                   ProductDetailsSection(product: product),
                   const SizedBox(height: 16.0),
+                  //Display the location
                   LocationSection(product: product),
                   const SizedBox(height: 16.0),
+                  //Edit Product
                   EditProductButton(
                     product: product,
                     productId: widget.productId,

@@ -19,7 +19,10 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
+  // Form key for validation
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  // Controllers for email and password input fields
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -45,6 +48,7 @@ class _LogInState extends State<LogIn> {
       backgroundColor: whiteColor,
       body: BlocConsumer<AuthBlocBloc, AuthBlocState>(
         listener: (context, state) {
+          // Navigate to HomePage on successful login
           if (state is AuthSuccess) {
             Future.delayed(const Duration(milliseconds: 200), () {
               Navigator.of(context).pushReplacement(
@@ -52,12 +56,14 @@ class _LogInState extends State<LogIn> {
               );
             });
           } else if (state is AuthFailure) {
+            // Show error message
             SnackbarUtils.showSnackbar(
               context,
               state.message,
               backgroundColor: snackbarColor,
             );
           } else if (state is UserBanned) {
+            // Handle banned users
             SnackbarUtils.showSnackbar(
               context,
               state.message,
@@ -79,6 +85,7 @@ class _LogInState extends State<LogIn> {
                     formKey: _formKey,
                     emailController: _emailController,
                     passwordController: _passwordController,
+                    // Handle login button press
                     onLoginTap: () {
                       if (_formKey.currentState!.validate()) {
                         if (FormValidators.isValidEmail(
@@ -95,6 +102,7 @@ class _LogInState extends State<LogIn> {
                         }
                       }
                     },
+                    // Navigate to Forgot Password screen
                     onForgotPasswordTap: () {
                       Navigator.push(
                         context,
@@ -107,10 +115,12 @@ class _LogInState extends State<LogIn> {
                         }
                       });
                     },
+                    // Handle Google sign-in
                     onGoogleSignIn: () {
                       BlocProvider.of<AuthBlocBloc>(context)
                           .add(GoogleSignInButtonPressed());
                     },
+                    // Navigate to Sign Up screen
                     onSignUpTap: () {
                       Navigator.push(
                         context,

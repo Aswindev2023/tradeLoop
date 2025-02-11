@@ -29,6 +29,7 @@ class _CategoryRowWidgetState extends State<CategoryRowWidget> {
         if (state is CategoryLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is CategoryLoaded) {
+          //Display list of categories in horzontal format
           return SizedBox(
             height: 40,
             child: ListView.builder(
@@ -36,6 +37,7 @@ class _CategoryRowWidgetState extends State<CategoryRowWidget> {
               itemCount: state.categories.length + 1,
               itemBuilder: (context, index) {
                 if (index == state.categories.length) {
+                  //Navigate to category list page
                   return GestureDetector(
                     onTap: () {
                       Navigator.pushReplacement(
@@ -75,6 +77,7 @@ class _CategoryRowWidgetState extends State<CategoryRowWidget> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       alignment: Alignment.center,
+                      //Display the name of category
                       child: Text(
                         category!.name,
                         style: const TextStyle(
@@ -82,6 +85,7 @@ class _CategoryRowWidgetState extends State<CategoryRowWidget> {
                       ),
                     ),
                   ),
+                  //Navigate to products page for each category
                   onTap: () {
                     Navigator.push(
                       context,

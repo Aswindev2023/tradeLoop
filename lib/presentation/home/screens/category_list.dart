@@ -27,6 +27,7 @@ class _CategoryListState extends State<CategoryList> {
       appBar: CustomAppbar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: blackColor),
+          //Navigate back to homepage
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -46,6 +47,7 @@ class _CategoryListState extends State<CategoryList> {
               child: CircularProgressIndicator(),
             );
           } else if (state is CategoryLoaded) {
+            //Display list of categories available
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.separated(
@@ -56,6 +58,7 @@ class _CategoryListState extends State<CategoryList> {
                   return ListTile(
                     title: Text(category!.name),
                     onTap: () {
+                      //Navigate to products page for each category
                       Navigator.push(
                         context,
                         MaterialPageRoute(

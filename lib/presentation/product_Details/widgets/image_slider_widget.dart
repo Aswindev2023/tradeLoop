@@ -17,10 +17,12 @@ class ImageSliderWidget extends StatelessWidget {
 
     return Column(
       children: [
+        // BlocBuilder listens to changes in the image index
         BlocBuilder<ImageSliderCubit, int>(
           builder: (context, currentIndex) {
             return Column(
               children: [
+                // Image carousel slider
                 CarouselSlider.builder(
                   itemCount: imageUrls.length,
                   itemBuilder: (context, index, realIndex) {
@@ -44,9 +46,11 @@ class ImageSliderWidget extends StatelessWidget {
                   options: CarouselOptions(
                     height: screenHeight * 0.5,
                     viewportFraction: 1.0,
-                    autoPlay: !isSingleImage,
+                    autoPlay:
+                        !isSingleImage, // Enables autoplay if there are multiple images
                     autoPlayInterval: const Duration(seconds: 3),
-                    enableInfiniteScroll: !isSingleImage,
+                    enableInfiniteScroll:
+                        !isSingleImage, // Disables infinite scroll for a single image
                     scrollPhysics: isSingleImage
                         ? const NeverScrollableScrollPhysics()
                         : const BouncingScrollPhysics(),

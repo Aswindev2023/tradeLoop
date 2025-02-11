@@ -4,7 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class ProductImageUploadService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
-
+  //Upload product image to firebase storage
   Future<List<String?>> uploadImages(List<String> filePaths) async {
     List<String?> downloadUrls = [];
 
@@ -40,6 +40,7 @@ class ProductImageUploadService {
     return downloadUrls;
   }
 
+  //Delete images from firebase storage
   Future<void> deleteImages(List<String> imageUrls) async {
     try {
       for (String url in imageUrls) {

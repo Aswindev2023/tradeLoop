@@ -37,6 +37,7 @@ class WishlistedProductsPage extends StatelessWidget {
                 return const Center(
                     child: CustomTextWidget(text: "Your wishlist is empty."));
               }
+              // Display the list of wishlisted products
               return ListView.separated(
                 itemCount: products.length,
                 separatorBuilder: (context, index) => const Divider(),
@@ -48,6 +49,7 @@ class WishlistedProductsPage extends StatelessWidget {
                     child: ListTile(
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 8.0),
+                      // Display product image or a default placeholder
                       leading: CircleAvatar(
                         radius: 35,
                         backgroundImage: product.imageUrls.isNotEmpty
@@ -55,6 +57,7 @@ class WishlistedProductsPage extends StatelessWidget {
                             : const AssetImage('images/profile-user.png')
                                 as ImageProvider,
                       ),
+                      //Display Product Details
                       title: CustomTextWidget(
                         text: product.name,
                         fontSize: 18,
