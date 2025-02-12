@@ -22,7 +22,6 @@ class _FavIconState extends State<FavIcon> {
   @override
   void initState() {
     super.initState();
-
     final wishlistState = context.read<WishListBloc>().state;
     if (wishlistState is WishlistLoaded) {
       isInWishlist = ValueNotifier(
@@ -55,43 +54,39 @@ class _FavIconState extends State<FavIcon> {
     final iconSize = isWebMobile ? 18.0 : 22.0;
     final containerSize = iconSize + (isWebMobile ? 10 : 14);
 
-    return Positioned(
-      top: 8,
-      right: 8,
-      child: ValueListenableBuilder<bool>(
-        valueListenable: isInWishlist,
-        builder: (context, value, child) {
-          return Container(
-            width: containerSize,
-            height: containerSize,
-            decoration: BoxDecoration(
-              color: whiteColor.withOpacity(0.8),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 4,
-                  offset: const Offset(2, 2),
-                ),
-              ],
-            ),
-            child: IconButton(
-              iconSize: iconSize,
-              padding: EdgeInsets.zero,
-              icon: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                child: Icon(
-                  value ? Icons.favorite : Icons.favorite_border,
-                  color: value ? red : blackColor,
-                  key: ValueKey(value),
-                  size: iconSize,
-                ),
+    return ValueListenableBuilder<bool>(
+      valueListenable: isInWishlist,
+      builder: (context, value, child) {
+        return Container(
+          width: containerSize,
+          height: containerSize,
+          decoration: BoxDecoration(
+            color: whiteColor.withOpacity(0.8),
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 4,
+                offset: const Offset(2, 2),
               ),
-              onPressed: _toggleWishlist,
+            ],
+          ),
+          child: IconButton(
+            iconSize: iconSize,
+            padding: EdgeInsets.zero,
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              child: Icon(
+                value ? Icons.favorite : Icons.favorite_border,
+                color: value ? red : blackColor,
+                key: ValueKey(value),
+                size: iconSize,
+              ),
             ),
-          );
-        },
-      ),
+            onPressed: _toggleWishlist,
+          ),
+        );
+      },
     );
   }
 }

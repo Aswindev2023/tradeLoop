@@ -1,1 +1,48 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"tradeloop-baf12","appId":"1:512712190568:android:f5e65ccd9af8862d6ea9dd","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"tradeloop-baf12","configurations":{"android":"1:512712190568:android:f5e65ccd9af8862d6ea9dd","web":"1:512712190568:web:749617769004527f6ea9dd","windows":"1:512712190568:web:aa6bd2cef7fff7e06ea9dd"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "tradeloop-baf12",
+          "appId": "1:512712190568:android:f5e65ccd9af8862d6ea9dd",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "tradeloop-baf12",
+          "configurations": {
+            "android": "1:512712190568:android:f5e65ccd9af8862d6ea9dd",
+            "web": "1:512712190568:web:749617769004527f6ea9dd",
+            "windows": "1:512712190568:web:aa6bd2cef7fff7e06ea9dd"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source": "/icons/*",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=86400"
+          }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
