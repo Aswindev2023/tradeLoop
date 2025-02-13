@@ -19,7 +19,6 @@ class ProductGrid extends StatelessWidget {
     const isWeb = kIsWeb;
     final crossAxisCount = isWeb ? (screenWidth > 1200 ? 4 : 3) : 2;
     final cardWidth = screenWidth / crossAxisCount - (isWeb ? 24 : 16);
-    final imageHeight = cardWidth * 0.6;
 
     return GridView.builder(
       padding: const EdgeInsets.all(10),
@@ -32,7 +31,7 @@ class ProductGrid extends StatelessWidget {
       itemCount: products.length,
       itemBuilder: (context, index) {
         final product = products[index];
-        //Navigate to product detalis page
+
         return GestureDetector(
           onTap: () {
             Navigator.push(
@@ -43,7 +42,6 @@ class ProductGrid extends StatelessWidget {
               ),
             );
           },
-          //Display the products in card
           child: Card(
             elevation: 4,
             shadowColor: blackColor.withOpacity(0.3),
@@ -64,29 +62,28 @@ class ProductGrid extends StatelessWidget {
                       borderRadius: const BorderRadius.vertical(
                         top: Radius.circular(12),
                       ),
-                      child: Image.network(
-                        product.imageUrls[0],
-                        fit: BoxFit.cover,
-                        height: imageHeight,
-                        width: double.infinity,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-
-                          return Container(
-                            height: imageHeight,
-                            width: double.infinity,
-                            color: grey.shade200,
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) => Container(
-                          height: imageHeight,
+                      child: AspectRatio(
+                        aspectRatio: 16 / 10, // Maintain aspect ratio
+                        child: Image.network(
+                          product.imageUrls[0],
+                          fit: BoxFit.cover,
                           width: double.infinity,
-                          color: grey.shade200,
-                          alignment: Alignment.center,
-                          child: const Icon(Icons.broken_image, size: 40),
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+
+                            return Container(
+                              color: grey.shade200,
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                            color: grey.shade200,
+                            alignment: Alignment.center,
+                            child: const Icon(Icons.broken_image, size: 40),
+                          ),
                         ),
                       ),
                     ),
@@ -98,40 +95,43 @@ class ProductGrid extends StatelessWidget {
                   ],
                 ),
                 // Product Details
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8.0,
-                    vertical: 6.0,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Product Name
-                      CustomTextWidget(
-                        text: product.name,
-                        fontSize: cardWidth * 0.08,
-                        fontWeight: FontWeight.bold,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      // Product Price
-                      CustomTextWidget(
-                        text: '₹${product.price.toStringAsFixed(2)}',
-                        fontSize: cardWidth * 0.07,
-                        fontWeight: FontWeight.w600,
-                        color: green,
-                      ),
-                      const SizedBox(height: 4),
-                      // Location Name
-                      CustomTextWidget(
-                        text: product.locationName,
-                        fontSize: cardWidth * 0.06,
-                        color: grey,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 6.0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize
+                          .min, // Ensure the column takes minimal space
+                      children: [
+                        Expanded(
+                          child: CustomTextWidget(
+                            text: product.name,
+                            fontSize: cardWidth * 0.08,
+                            fontWeight: FontWeight.bold,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        CustomTextWidget(
+                          text: '₹${product.price.toStringAsFixed(2)}',
+                          fontSize: cardWidth * 0.07,
+                          fontWeight: FontWeight.w600,
+                          color: green,
+                        ),
+                        const SizedBox(height: 4),
+                        CustomTextWidget(
+                          text: product.locationName,
+                          fontSize: cardWidth * 0.06,
+                          color: grey,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

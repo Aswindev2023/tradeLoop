@@ -23,8 +23,35 @@ class _TagDropdownFieldState extends State<TagDropdownField> {
     "Sports",
     "Toys",
     "Mobiles",
-    "Laptops"
+    "Laptops",
+    "Android",
+    "Apple",
+    "Women",
+    "Men",
+    "Children",
+    "Headphones",
+    "Smartwatches",
+    "Tablets",
+    "Gaming Consoles",
+    "Cameras",
+    "Shoes",
+    "Accessories",
+    "Jewelry",
+    "Watches",
+    "Decor",
+    "Kitchen",
+    "Office Furniture",
+    "Lighting",
+    "Bikes",
+    "Cars",
+    "Electric",
+    "SUV",
+    "Music",
+    "Photography",
+    "Fitness",
+    "Outdoor"
   ];
+
   List<String> _selectedTags = [];
 
   @override
