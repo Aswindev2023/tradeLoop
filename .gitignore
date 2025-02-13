@@ -45,5 +45,8 @@ app.*.map.json
 # Ignore google-services.json
 android/app/google-services.json
 
-#Ignor firebase_options.dart
+#Ignore firebase_options.dart
 lib/firebase_options.dart
+
+#Ignore trade-loop-app-key.jks
+android/app/trade-loop-app-key.jks
